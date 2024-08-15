@@ -20,7 +20,7 @@ const TypingExperience = () => {
 
   return (
     <div className='min-h-screen place-content-center bg-gray-500'>
-      <p className='text-xl font-semibold text-red-500'>{typeTextplaceHolder}</p>
+      <p className='text-5xl font-semibold text-gray-100'>{typeTextplaceHolder}</p>
     </div>
   );
 };
