@@ -1,24 +1,28 @@
 import React, { useEffect, useState } from 'react';
 
 const COLORWINDOW = 20;
+const SLIDINGTHRESHOLD = 15;
+const SLIDINGWINDOW = 50;
 const STARTCOLORS = [200, 140, 0];
 const COLORINCREASE = [10, 20, 30];
 const GRAYTONE = 200;
-const GRAYMAX = 240;
+const WHITEMAX = 240;
 
 const TypingExperience = () => {
 
-  const typeTextplaceHolder = "Spüre den Atemfluss, lasse deine Gedanken los und finde Ruhe in jedem Tastenanschlag.";
+  const typeTextplaceHolder = "Spüre den Atemfluss, lasse deine Gedanken los und finde Ruhe in jedem Tastenanschlag. Atme tief ein und aus, und lass dich von der Schönheit des Augenblicks tragen. Du bist hier und jetzt, und das ist alles, was zählt.";
 
   const [typedText, setTypedText] = useState("");
+  const [slidingWindowStart, setSlidingWindowStart] = useState(0);
 
   const handleKeyDown = (event) => {
     if (typeTextplaceHolder[typedText.length] !== event.key) {
       return;
-    } else if (event.key === " ") {
-      setTypedText(typedText + " ");
-    } else {
-      setTypedText(typedText + event.key);
+    }
+    setTypedText(typedText + event.key);
+    if (typedText.length > SLIDINGTHRESHOLD) {
+      setSlidingWindowStart( slidingWindowStart + 1);
+
     }
   };
 
@@ -31,7 +35,8 @@ const TypingExperience = () => {
   }, [typedText]);
 
 
-  const formattedTypedText = typeTextplaceHolder.split('').map((char, index) => {
+  const formattedTypedText = typeTextplaceHolder.slice(slidingWindowStart, slidingWindowStart + SLIDINGWINDOW).split('').map((char, index) => {
+    index += slidingWindowStart;
     const typedLength = typedText.length;
     const distance = index - typedLength;
 
@@ -40,12 +45,11 @@ const TypingExperience = () => {
     } else if (index === typedLength ) {
       return <span key={index} className="text-5xl text-amber-600">{char === ' ' ? '•' : char}</span>;
     } else if (index < typedLength + COLORWINDOW) {
-      const red = Math.min(STARTCOLORS[0] + distance * COLORINCREASE[0], GRAYMAX)
-      const green = Math.min(STARTCOLORS[1] + distance * COLORINCREASE[1], GRAYMAX)
-      const blue = Math.min(STARTCOLORS[2] + distance * COLORINCREASE[2], GRAYMAX)
-      const maxed = red === blue && red === green && red === GRAYMAX;
-      const minim = maxed ? GRAYTONE : GRAYMAX;
-
+      const red = Math.min(STARTCOLORS[0] + distance * COLORINCREASE[0], WHITEMAX)
+      const green = Math.min(STARTCOLORS[1] + distance * COLORINCREASE[1], WHITEMAX)
+      const blue = Math.min(STARTCOLORS[2] + distance * COLORINCREASE[2], WHITEMAX)
+      const maxed = red === blue && red === green && red === WHITEMAX;
+      const minim = maxed ? GRAYTONE : WHITEMAX;
       const inlineColor = `rgb(${Math.min(red, minim)}, ${Math.min(green, minim)}, ${Math.min(blue, minim)})`;
       return (
         <span
