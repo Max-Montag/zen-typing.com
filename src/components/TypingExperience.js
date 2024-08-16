@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./styles/bubble.css";
 
-const COLORWINDOW = 20;
+const COLORWINDOW = 10;
 const SLIDINGWINDOW = 50;
 const STARTCOLORS = [200, 140, 0];
-const COLORINCREASE = [10, 20, 30];
-const GRAYTONE = 200;
+const COLORSTEP = [10, 20, 30];
+const GRAYTONE = 180;
 const WHITEMAX = 240;
 const BUBBLEDISTANCE = 1500;
 
@@ -42,20 +42,23 @@ const TypingExperience = () => {
 
   const launchWordBubble = (word) => {
     const randomX = Math.random() * - BUBBLEDISTANCE;
-    // choose y so that the absolute distance from the center is exactly BUBBLEDISTANCE (pythagoras)
     const randomY = Math.sqrt(BUBBLEDISTANCE ** 2 - randomX ** 2) * (Math.random() < 0.5 ? 1 : -1);
+    const randomRotate = `${Math.random() * 90 - 45}deg`;
 
     const newBubble = (
       <div
         key={wordBubbles.length}
-        className="absolute p-8 bg-gray-800 rounded-full flex items-center justify-center moving-bubble"
+        className="absolute -z-1 opacity-70 flex items-center justify-center moving-bubble"
         style={{
           animation: `moveBubble 3.5s cubic-bezier(0.01, 0.2, 0.9, 0.1) forwards`,
           transform: `translate(${randomX}px, ${randomY}px) scale(0.1)`,
+          "--randomX": `${randomX}px`,
+          "--randomY": `${randomY}px`,
+          "--randomRotate": randomRotate,
         }}
         onAnimationEnd={(e) => (e.target.style.display = "none")}
       >
-        <p className="text-gray-100 text-5xl">{word}</p>
+        <p className="text-gray-400 text-5xl">{word}</p>
       </div>
     );
 
@@ -72,27 +75,27 @@ const TypingExperience = () => {
 
       if (index < typedLength) {
         return (
-          <span key={index} className="text-5xl text-gray-800">
+          <span key={index} className="text-5xl text-gray-600">
             {char}
           </span>
         );
       } else if (index === typedLength) {
         return (
-          <span key={index} className="text-5xl text-amber-600">
+          <span key={index} className="text-5xl underline font-bold text-amber-600">
             {char === " " ? "•" : char}
           </span>
         );
       } else if (index < typedLength + COLORWINDOW) {
         const red = Math.min(
-          STARTCOLORS[0] + distance * COLORINCREASE[0],
+          STARTCOLORS[0] + distance * COLORSTEP[0],
           WHITEMAX,
         );
         const green = Math.min(
-          STARTCOLORS[1] + distance * COLORINCREASE[1],
+          STARTCOLORS[1] + distance * COLORSTEP[1],
           WHITEMAX,
         );
         const blue = Math.min(
-          STARTCOLORS[2] + distance * COLORINCREASE[2],
+          STARTCOLORS[2] + distance * COLORSTEP[2],
           WHITEMAX,
         );
         const maxed = red === blue && red === green && red === WHITEMAX;
@@ -105,7 +108,7 @@ const TypingExperience = () => {
         );
       } else {
         return (
-          <span key={index} className="text-5xl text-gray-300">
+          <span key={index} className="text-5xl text-gray-400">
             {char}
           </span>
         );
@@ -114,10 +117,10 @@ const TypingExperience = () => {
 
   return (
     <>
-      <div className="min-h-screen bg-gray-500 flex flex-row items-center justify-center">
+      <div className="min-h-screen bg-gray-300 flex flex-row items-center justify-center">
         <div>
           <div className="absolute">{wordBubbles}</div>
-          <p className="text-5xl font-semibold text-gray-300">
+          <p className="text-5xl font-semibold">
             {formattedTypedText}
           </p>
         </div>

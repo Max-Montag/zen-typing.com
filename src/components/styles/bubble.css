@@ -9,10 +9,10 @@
   }
   15% {
     opacity: 1;
-    filter: blur(1px);
   }
   100% {
     opacity: 0.2;
     filter: blur(10px);
+    transform: translate(var(--randomX), var(--randomY)) scale(1) rotate(var(--randomRotate));
   }
 }
