@@ -1,0 +1,13 @@
+.moving-bubble {
+  animation-timing-function: linear;
+}
+
+@keyframes moveBubble {
+  0% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
