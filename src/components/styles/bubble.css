@@ -5,9 +5,14 @@
 @keyframes moveBubble {
   0% {
     transform: translate(0, 0);
+    opacity: 0.1;
+  }
+  15% {
     opacity: 1;
+    filter: blur(1px);
   }
   100% {
     opacity: 0.2;
+    filter: blur(10px);
   }
 }

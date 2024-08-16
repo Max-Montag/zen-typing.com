@@ -27,7 +27,7 @@ const TypingExperience = () => {
           typedText.length + 1,
         );
         setSlidingWindowStart(slidingWindowStart + word.length);
-        lauchWordBubble(word.trim().replace(",.!?-;:", ""));
+        launchWordBubble(word.trim().replace(/[,!?;:.\-]/g, ""));
       }
     }
   };
@@ -40,7 +40,7 @@ const TypingExperience = () => {
     };
   }, [typedText]);
 
-  const lauchWordBubble = (word) => {
+  const launchWordBubble = (word) => {
     const randomX = Math.random() * - BUBBLEDISTANCE;
     // choose y so that the absolute distance from the center is exactly BUBBLEDISTANCE (pythagoras)
     const randomY = Math.sqrt(BUBBLEDISTANCE ** 2 - randomX ** 2) * (Math.random() < 0.5 ? 1 : -1);
@@ -48,14 +48,14 @@ const TypingExperience = () => {
     const newBubble = (
       <div
         key={wordBubbles.length}
-        className="absolute w-20 h-20 bg-gray-800 rounded-full flex items-center justify-center moving-bubble"
+        className="absolute p-8 bg-gray-800 rounded-full flex items-center justify-center moving-bubble"
         style={{
           animation: `moveBubble 3.5s cubic-bezier(0.01, 0.2, 0.9, 0.1) forwards`,
-          transform: `translate(${randomX}px, ${randomY}px)`
+          transform: `translate(${randomX}px, ${randomY}px) scale(0.1)`,
         }}
         onAnimationEnd={(e) => (e.target.style.display = "none")}
       >
-        {word}
+        <p className="text-gray-100 text-5xl">{word}</p>
       </div>
     );
 
