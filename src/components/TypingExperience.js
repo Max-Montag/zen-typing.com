@@ -1,15 +1,28 @@
 import React, { useEffect, useState } from "react";
 import "./styles/bubble.css";
+import "./styles/typing.css";
 
 const SLIDINGWINDOWSIZE = 50;
 const BUBBLEDISTANCE = 1500;
 
+function penultimateIndexOf(str, char) {
+  let lastIndex = str.lastIndexOf(char);
+  if (lastIndex === -1) return -1;
+  let penultimateIndex = str.lastIndexOf(char, lastIndex - 1);
+  return penultimateIndex;
+}
+
 const TypingExperience = () => {
   const [textToType, setTextToType] = useState(
-    "Spüre den Atemfluss, lasse deine Gedanken los und finde Ruhe in jedem Tastenanschlag. Atme tief ein und aus, und lass dich von der Schönheit des Augenblicks tragen. Du bist hier und jetzt, und das ist alles, was zählt.",
+    "Finde den Atem, lasse die Gedanken los und finde Ruhe, das ist alles was wichtig ist ist ist ist das was wichtig ist.",
   );
+
   const [typedText, setTypedText] = useState("");
   const [wordBubbles, setWordBubbles] = useState([]);
+  const [lastWord, setLastWord] = useState("");
+  const [lastWordElem, setLastWordElem] = useState(null);
+
+  const currentWindow = textToType.slice(0, SLIDINGWINDOWSIZE);
 
   const handleKeyDown = (event) => {
     if (textToType[0] === event.key) {
@@ -18,6 +31,16 @@ const TypingExperience = () => {
       if (event.key === " " || textToType.length <= 1) {
         launchWordBubble(typedText.trim().replace(/[,!?;:.\-]/g, ""));
         setTypedText("");
+        setLastWord("");
+        setLastWordElem(null);
+      }
+      const newLastWord = currentWindow.slice(penultimateIndexOf(currentWindow, " ") + 1, currentWindow.lastIndexOf(" "));
+      if(lastWord !== newLastWord) {
+        setLastWord(newLastWord);
+        const uniqueKey = Math.random();
+        setLastWordElem(
+          <span key={uniqueKey} className="text-5xl text-gray-500 text-focus-in">{newLastWord}</span>,
+        );
       }
     }
   };
@@ -73,8 +96,16 @@ const TypingExperience = () => {
             </span>
           )}
           <span className="text-5xl text-gray-500">
-            {textToType.slice(1, SLIDINGWINDOWSIZE)}
+            {currentWindow.slice(1, penultimateIndexOf(currentWindow, " "))}{" "}
+            {/**TODO: Weird bahavior for last word in sliding window"*/}
           </span>
+          {/* <span className="text-5xl text-gray-400 text-focus-in">
+            {currentWindow.slice(
+              penultimateIndexOf(currentWindow, " ") + 1,
+              currentWindow.lastIndexOf(" "),
+            )}
+          </span> */}
+          {lastWordElem}
         </div>
       </div>
     </>
