@@ -9,7 +9,6 @@ const TypingExperience = () => {
     "Spüre den Atemfluss, lasse deine Gedanken los und finde Ruhe in jedem Tastenanschlag. Atme tief ein und aus, und lass dich von der Schönheit des Augenblicks tragen. Du bist hier und jetzt, und das ist alles, was zählt.",
   );
   const [typedText, setTypedText] = useState("");
-  // const [slidingWindowStart, setslidingWindowStart] = useState(0);
   const [wordBubbles, setWordBubbles] = useState([]);
 
   const handleKeyDown = (event) => {
@@ -61,42 +60,6 @@ const TypingExperience = () => {
   const removeBubble = (index) => {
     setWordBubbles((prevBubbles) => prevBubbles.filter((_, i) => i !== index));
   };
-
-  // const formattedTypedText = textToType
-  //   .slice(slidingWindowStart, slidingWindowStart + SLIDINGWINDOWSIZE)
-  //   .split("")
-  //   .map((char, index) => {
-  //     index += slidingWindowStart;
-  //     const typedLength = typedText.length;
-
-  //     if (index - typedLength === SLIDINGWINDOWSIZE - 1) {
-  //       return (
-  //         <span key={index} className="text-5xl text-blue-500">
-  //           {char}
-  //         </span>
-  //       );
-
-  //     } else if (index < typedLength) {
-  //       return (
-  //         <span key={index} className="text-5xl text-gray-600">
-  //           {char}
-  //         </span>
-  //       );
-  //     }
-  //     else if (index > typedLength) {
-  //       return (
-  //         <span key={index} className="text-5xl text-gray-500">
-  //           {char}
-  //         </span>
-  //       );
-  //     } else {
-  //         return (
-  //           <span key={index} className="my-0 rounded-lg ring-offset-1 ring ring-emerald-500 p-1 m-1 text-6xl font-bold text-emerald-400">
-  //             {char === " " ? "•" : char}
-  //           </span>
-  //         );
-  //     }
-  //   });
 
   return (
     <>
