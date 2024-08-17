@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./styles/bubble.css";
 
-const COLORWINDOW = 10;
-const SLIDINGWINDOW = 50;
-const STARTCOLORS = [200, 140, 0];
-const COLORSTEP = [10, 20, 30];
-const GRAYTONE = 180;
-const WHITEMAX = 240;
+const SLIDINGWINDOWSIZE = 50;
 const BUBBLEDISTANCE = 1500;
 
 const TypingExperience = () => {
@@ -14,19 +9,22 @@ const TypingExperience = () => {
     "Spüre den Atemfluss, lasse deine Gedanken los und finde Ruhe in jedem Tastenanschlag. Atme tief ein und aus, und lass dich von der Schönheit des Augenblicks tragen. Du bist hier und jetzt, und das ist alles, was zählt.";
 
   const [typedText, setTypedText] = useState("");
-  const [slidingWindowStart, setSlidingWindowStart] = useState(0);
+  const [slidingWindowStart, setslidingWindowStart] = useState(0);
   const [wordBubbles, setWordBubbles] = useState([]);
 
   const handleKeyDown = (event) => {
     if (typeTextplaceHolder[typedText.length] === event.key) {
       setTypedText(typedText + event.key);
 
-      if (event.key === " " || typedText.length + 1 === typeTextplaceHolder.length ) {
+      if (
+        event.key === " " ||
+        typedText.length + 1 === typeTextplaceHolder.length
+      ) {
         const word = typeTextplaceHolder.slice(
           slidingWindowStart,
           typedText.length + 1,
         );
-        setSlidingWindowStart(slidingWindowStart + word.length);
+        setslidingWindowStart(slidingWindowStart + word.length);
         launchWordBubble(word.trim().replace(/[,!?;:.\-]/g, ""));
       }
     }
@@ -41,8 +39,10 @@ const TypingExperience = () => {
   }, [typedText]);
 
   const launchWordBubble = (word) => {
-    const randomX = Math.random() * - BUBBLEDISTANCE;
-    const randomY = Math.sqrt(BUBBLEDISTANCE ** 2 - randomX ** 2) * (Math.random() < 0.5 ? 1 : -1);
+    const randomX = Math.random() * -BUBBLEDISTANCE;
+    const randomY =
+      Math.sqrt(BUBBLEDISTANCE ** 2 - randomX ** 2) *
+      (Math.random() < 0.5 ? 1 : -1);
     const randomRotate = `${Math.random() * 90 - 45}deg`;
 
     const newBubble = (
@@ -56,71 +56,71 @@ const TypingExperience = () => {
           "--randomY": `${randomY}px`,
           "--randomRotate": randomRotate,
         }}
-        onAnimationEnd={(e) => (e.target.style.display = "none")}
+        onAnimationEnd={() => removeBubble(wordBubbles.length)}
       >
         <p className="text-gray-400 text-5xl">{word}</p>
       </div>
     );
 
-    setWordBubbles([...wordBubbles, newBubble]);
+    setWordBubbles((prevBubbles) => [...prevBubbles, newBubble]);
   };
 
+  const removeBubble = (index) => {
+    setWordBubbles((prevBubbles) => prevBubbles.filter((_, i) => i !== index));
+  };
+
+
   const formattedTypedText = typeTextplaceHolder
-    .slice(slidingWindowStart, slidingWindowStart + SLIDINGWINDOW)
+    .slice(slidingWindowStart, slidingWindowStart + SLIDINGWINDOWSIZE)
     .split("")
     .map((char, index) => {
       index += slidingWindowStart;
       const typedLength = typedText.length;
-      const distance = index - typedLength;
 
-      if (index < typedLength) {
+
+
+
+      if (index - typedLength === SLIDINGWINDOWSIZE - 1) { //!!!!!!
+        return (
+          <span key={index} className="text-5xl text-blue-500">
+            {char}
+          </span>
+        );
+
+      } else if (index < typedLength) {
         return (
           <span key={index} className="text-5xl text-gray-600">
             {char}
           </span>
         );
-      } else if (index === typedLength) {
+      } 
+      else if (index > typedLength) {
         return (
-          <span key={index} className="text-5xl underline font-bold text-amber-600">
-            {char === " " ? "•" : char}
-          </span>
-        );
-      } else if (index < typedLength + COLORWINDOW) {
-        const red = Math.min(
-          STARTCOLORS[0] + distance * COLORSTEP[0],
-          WHITEMAX,
-        );
-        const green = Math.min(
-          STARTCOLORS[1] + distance * COLORSTEP[1],
-          WHITEMAX,
-        );
-        const blue = Math.min(
-          STARTCOLORS[2] + distance * COLORSTEP[2],
-          WHITEMAX,
-        );
-        const maxed = red === blue && red === green && red === WHITEMAX;
-        const minim = maxed ? GRAYTONE : WHITEMAX;
-        const inlineColor = `rgb(${Math.min(red, minim)}, ${Math.min(green, minim)}, ${Math.min(blue, minim)})`;
-        return (
-          <span key={index} style={{ color: inlineColor }} className="text-5xl">
-            {char === " " ? "•" : char}
-          </span>
-        );
-      } else {
-        return (
-          <span key={index} className="text-5xl text-gray-400">
+          <span key={index} className="text-5xl text-gray-500">
             {char}
           </span>
         );
+      } else {
+          return (
+            <span key={index} className="my-0 rounded-lg ring-offset-1 ring ring-emerald-500 p-1 m-1 text-6xl font-bold text-emerald-400">
+              {char === " " ? "•" : char}
+            </span>
+          );
       }
     });
 
   return (
     <>
-      <div className="min-h-screen bg-gray-300 flex flex-row items-center justify-center">
+      <div className="min-h-screen bg-zinc-200 flex flex-row items-center justify-center">
         <div>
           <div className="absolute">{wordBubbles}</div>
           <p className="text-5xl font-semibold">
+            {/* {formattedTypedText(
+              typeTextplaceHolder.slice(
+                slidingWindowStart,
+                slidingWindowStart + SLIDINGWINDOWSIZE,
+              ),
+            )} */}
             {formattedTypedText}
           </p>
         </div>
