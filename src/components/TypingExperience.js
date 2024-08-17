@@ -33,25 +33,16 @@ const TypingExperience = () => {
         setTypedText("");
       }
 
-      // TODO: are those checks for " " actually necessary?
       const newLastWord = (
-        textToType.includes(" ")
-          ? textToType.charAt(SLIDINGWINDOWSIZE) === " " ||
-            textToType.split(" ").length - 1 === 1
-            ?  "" 
-            : currentWindow.slice(
-                penultimateIndexOf(currentWindow, " ") + 1,
-                currentWindow.lastIndexOf(" "),
-              )
-          : ""
+        textToType.charAt(SLIDINGWINDOWSIZE) === " "
+          ? ""
+          : currentWindow.slice(
+              penultimateIndexOf(currentWindow, " ") + 1,
+              currentWindow.lastIndexOf(" "),
+            )
       ).trim();
-
-      if (lastWord !== newLastWord && newLastWord !== "") {
+      if (lastWord !== newLastWord) {
         setLastWord(newLastWord);
-        if(newLastWord === "") {
-          setLastWordElem(null);
-          return;
-        }
         const uniqueKey = `${newLastWord}-${Date.now()}`;
         setLastWordElem(
           <span
@@ -116,17 +107,16 @@ const TypingExperience = () => {
             </span>
           )}
           <span className="text-5xl text-gray-500">
-          {(textToType.length > SLIDINGWINDOWSIZE) ? (
-  currentWindow.slice(
-    1,
-    penultimateIndexOf(currentWindow, " ") === -1
-      ? currentWindow.length
-      : penultimateIndexOf(currentWindow, " ")
-  ) + " " 
-) : currentWindow}
-            {/**TODO: Weird bahavior for last word in sliding window"*/}
+            {textToType.length > SLIDINGWINDOWSIZE
+              ? currentWindow.slice(
+                  1,
+                  penultimateIndexOf(currentWindow, " ") === -1
+                    ? currentWindow.length
+                    : penultimateIndexOf(currentWindow, " "),
+                ) + " "
+              : currentWindow.slice(1)}
           </span>
-          {(textToType.length > SLIDINGWINDOWSIZE) && lastWordElem}
+          {textToType.length > SLIDINGWINDOWSIZE && lastWordElem}
         </div>
       </div>
     </>
