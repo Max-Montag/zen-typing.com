@@ -5,27 +5,20 @@ const SLIDINGWINDOWSIZE = 50;
 const BUBBLEDISTANCE = 1500;
 
 const TypingExperience = () => {
-  const typeTextplaceHolder =
-    "Spüre den Atemfluss, lasse deine Gedanken los und finde Ruhe in jedem Tastenanschlag. Atme tief ein und aus, und lass dich von der Schönheit des Augenblicks tragen. Du bist hier und jetzt, und das ist alles, was zählt.";
-
+  const [textToType, setTextToType] = useState(
+    "Spüre den Atemfluss, lasse deine Gedanken los und finde Ruhe in jedem Tastenanschlag. Atme tief ein und aus, und lass dich von der Schönheit des Augenblicks tragen. Du bist hier und jetzt, und das ist alles, was zählt.",
+  );
   const [typedText, setTypedText] = useState("");
-  const [slidingWindowStart, setslidingWindowStart] = useState(0);
+  // const [slidingWindowStart, setslidingWindowStart] = useState(0);
   const [wordBubbles, setWordBubbles] = useState([]);
 
   const handleKeyDown = (event) => {
-    if (typeTextplaceHolder[typedText.length] === event.key) {
+    if (textToType[0] === event.key) {
       setTypedText(typedText + event.key);
-
-      if (
-        event.key === " " ||
-        typedText.length + 1 === typeTextplaceHolder.length
-      ) {
-        const word = typeTextplaceHolder.slice(
-          slidingWindowStart,
-          typedText.length + 1,
-        );
-        setslidingWindowStart(slidingWindowStart + word.length);
-        launchWordBubble(word.trim().replace(/[,!?;:.\-]/g, ""));
+      setTextToType(textToType.slice(1));
+      if (event.key === " " || textToType.length <= 1) {
+        launchWordBubble(typedText.trim().replace(/[,!?;:.\-]/g, ""));
+        setTypedText("");
       }
     }
   };
@@ -69,60 +62,56 @@ const TypingExperience = () => {
     setWordBubbles((prevBubbles) => prevBubbles.filter((_, i) => i !== index));
   };
 
+  // const formattedTypedText = textToType
+  //   .slice(slidingWindowStart, slidingWindowStart + SLIDINGWINDOWSIZE)
+  //   .split("")
+  //   .map((char, index) => {
+  //     index += slidingWindowStart;
+  //     const typedLength = typedText.length;
 
-  const formattedTypedText = typeTextplaceHolder
-    .slice(slidingWindowStart, slidingWindowStart + SLIDINGWINDOWSIZE)
-    .split("")
-    .map((char, index) => {
-      index += slidingWindowStart;
-      const typedLength = typedText.length;
+  //     if (index - typedLength === SLIDINGWINDOWSIZE - 1) {
+  //       return (
+  //         <span key={index} className="text-5xl text-blue-500">
+  //           {char}
+  //         </span>
+  //       );
 
-
-
-
-      if (index - typedLength === SLIDINGWINDOWSIZE - 1) { //!!!!!!
-        return (
-          <span key={index} className="text-5xl text-blue-500">
-            {char}
-          </span>
-        );
-
-      } else if (index < typedLength) {
-        return (
-          <span key={index} className="text-5xl text-gray-600">
-            {char}
-          </span>
-        );
-      } 
-      else if (index > typedLength) {
-        return (
-          <span key={index} className="text-5xl text-gray-500">
-            {char}
-          </span>
-        );
-      } else {
-          return (
-            <span key={index} className="my-0 rounded-lg ring-offset-1 ring ring-emerald-500 p-1 m-1 text-6xl font-bold text-emerald-400">
-              {char === " " ? "•" : char}
-            </span>
-          );
-      }
-    });
+  //     } else if (index < typedLength) {
+  //       return (
+  //         <span key={index} className="text-5xl text-gray-600">
+  //           {char}
+  //         </span>
+  //       );
+  //     }
+  //     else if (index > typedLength) {
+  //       return (
+  //         <span key={index} className="text-5xl text-gray-500">
+  //           {char}
+  //         </span>
+  //       );
+  //     } else {
+  //         return (
+  //           <span key={index} className="my-0 rounded-lg ring-offset-1 ring ring-emerald-500 p-1 m-1 text-6xl font-bold text-emerald-400">
+  //             {char === " " ? "•" : char}
+  //           </span>
+  //         );
+  //     }
+  //   });
 
   return (
     <>
       <div className="min-h-screen bg-zinc-200 flex flex-row items-center justify-center">
         <div>
           <div className="absolute">{wordBubbles}</div>
-          <p className="text-5xl font-semibold">
-            {/* {formattedTypedText(
-              typeTextplaceHolder.slice(
-                slidingWindowStart,
-                slidingWindowStart + SLIDINGWINDOWSIZE,
-              ),
-            )} */}
-            {formattedTypedText}
-          </p>
+          <span className="text-5xl text-gray-600">{typedText}</span>
+          {textToType.length > 0 && (
+            <span className="my-0 rounded-lg ring-offset-1 ring ring-emerald-500 p-1 m-1 text-6xl font-bold text-emerald-400">
+              {textToType.charAt(0) === " " ? "•" : textToType.charAt(0)}
+            </span>
+          )}
+          <span className="text-5xl text-gray-500">
+            {textToType.slice(1, SLIDINGWINDOWSIZE)}
+          </span>
         </div>
       </div>
     </>
