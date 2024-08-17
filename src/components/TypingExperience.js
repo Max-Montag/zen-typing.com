@@ -31,13 +31,11 @@ const TypingExperience = () => {
       if (event.key === " " || textToType.length <= 1) {
         launchWordBubble(typedText.trim().replace(/[,!?;:.\-]/g, ""));
         setTypedText("");
-        setLastWord("");
-        setLastWordElem(null);
       }
       const newLastWord = currentWindow.slice(penultimateIndexOf(currentWindow, " ") + 1, currentWindow.lastIndexOf(" "));
       if(lastWord !== newLastWord) {
         setLastWord(newLastWord);
-        const uniqueKey = Math.random();
+        const uniqueKey = `${newLastWord}-${Date.now()}`;
         setLastWordElem(
           <span key={uniqueKey} className="text-5xl text-gray-500 text-focus-in">{newLastWord}</span>,
         );
