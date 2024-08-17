@@ -1,6 +1,6 @@
 .text-focus-in {
-  -webkit-animation: text-focus-in 0.2s cubic-bezier(0.55, 0.085, 0.68, 0.53) both
-    alternate;
+  -webkit-animation: text-focus-in 0.2s cubic-bezier(0.55, 0.085, 0.68, 0.53)
+    both alternate;
   animation: text-focus-in 0.2s cubic-bezier(0.55, 0.085, 0.68, 0.53) both
     alternate;
 }

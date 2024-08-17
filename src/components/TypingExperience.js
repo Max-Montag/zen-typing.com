@@ -14,7 +14,7 @@ function penultimateIndexOf(str, char) {
 
 const TypingExperience = () => {
   const [textToType, setTextToType] = useState(
-    "Finde den Atem, lasse die Gedanken los und finde Ruhe, das ist alles was wichtig ist ist ist ist das was wichtig ist.",
+    "Finde den Atem, lasse die Gedanken los und finde Ruhe, das ist alles was wichtig ist das was wichtig ist.",
   );
 
   const [typedText, setTypedText] = useState("");
@@ -32,12 +32,34 @@ const TypingExperience = () => {
         launchWordBubble(typedText.trim().replace(/[,!?;:.\-]/g, ""));
         setTypedText("");
       }
-      const newLastWord = currentWindow.slice(penultimateIndexOf(currentWindow, " ") + 1, currentWindow.lastIndexOf(" "));
-      if(lastWord !== newLastWord) {
+
+      // TODO: are those checks for " " actually necessary?
+      const newLastWord = (
+        textToType.includes(" ")
+          ? textToType.charAt(SLIDINGWINDOWSIZE) === " " ||
+            textToType.split(" ").length - 1 === 1
+            ?  "" 
+            : currentWindow.slice(
+                penultimateIndexOf(currentWindow, " ") + 1,
+                currentWindow.lastIndexOf(" "),
+              )
+          : ""
+      ).trim();
+
+      if (lastWord !== newLastWord && newLastWord !== "") {
         setLastWord(newLastWord);
+        if(newLastWord === "") {
+          setLastWordElem(null);
+          return;
+        }
         const uniqueKey = `${newLastWord}-${Date.now()}`;
         setLastWordElem(
-          <span key={uniqueKey} className="text-5xl text-gray-500 text-focus-in">{newLastWord}</span>,
+          <span
+            key={uniqueKey}
+            className="text-5xl text-gray-500 text-focus-in"
+          >
+            {newLastWord}
+          </span>,
         );
       }
     }
@@ -84,7 +106,7 @@ const TypingExperience = () => {
 
   return (
     <>
-      <div className="min-h-screen bg-zinc-200 flex flex-row items-center justify-center">
+      <div className="min-h-screen bg-zinc-200 flex flex-row items-center justify-start ml-96">
         <div>
           <div className="absolute">{wordBubbles}</div>
           <span className="text-5xl text-gray-600">{typedText}</span>
@@ -94,16 +116,17 @@ const TypingExperience = () => {
             </span>
           )}
           <span className="text-5xl text-gray-500">
-            {currentWindow.slice(1, penultimateIndexOf(currentWindow, " "))}{" "}
+          {(textToType.length > SLIDINGWINDOWSIZE) ? (
+  currentWindow.slice(
+    1,
+    penultimateIndexOf(currentWindow, " ") === -1
+      ? currentWindow.length
+      : penultimateIndexOf(currentWindow, " ")
+  ) + " " 
+) : currentWindow}
             {/**TODO: Weird bahavior for last word in sliding window"*/}
           </span>
-          {/* <span className="text-5xl text-gray-400 text-focus-in">
-            {currentWindow.slice(
-              penultimateIndexOf(currentWindow, " ") + 1,
-              currentWindow.lastIndexOf(" "),
-            )}
-          </span> */}
-          {lastWordElem}
+          {(textToType.length > SLIDINGWINDOWSIZE) && lastWordElem}
         </div>
       </div>
     </>
