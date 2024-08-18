@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./styles/bubble.css";
 import "./styles/typing.css";
 
-const SLIDINGWINDOWSIZE = 50;
+const SLIDINGWINDOWSIZE = 40;
 const BUBBLEDISTANCE = 1500;
 
 function penultimateIndexOf(str, char) {
@@ -43,11 +43,9 @@ const TypingExperience = () => {
       ).trim();
       if (lastWord !== newLastWord) {
         setLastWord(newLastWord);
-        const uniqueKey = `${newLastWord}-${Date.now()}`;
         setLastWordElem(
           <span
-            key={uniqueKey}
-            className="text-5xl text-gray-500 text-focus-in"
+            className="text-lg md:text-2xl lg:text-3xl xl:text-5xl text-gray-500 text-focus-in"
           >
             {newLastWord}
           </span>,
@@ -73,7 +71,7 @@ const TypingExperience = () => {
 
     const newBubble = (
       <div
-        key={wordBubbles.length}
+        key={Date.now()}
         className="absolute -z-1 opacity-70 flex items-center justify-center moving-bubble"
         style={{
           animation: `moveBubble 3.5s cubic-bezier(0.01, 0.2, 0.9, 0.1) forwards`,
@@ -96,17 +94,17 @@ const TypingExperience = () => {
   };
 
   return (
-    <>
-      <div className="min-h-screen bg-zinc-200 flex flex-row items-center justify-start ml-96">
+    <div className="min-h-screen bg-zinc-200 flex flex-row items-center">
+      <div  className="flex flex-row items-center justify-start ml-4 md:ml-[5%] lg:ml-[10%] xl:ml-[15%]">
         <div>
           <div className="absolute">{wordBubbles}</div>
-          <span className="text-5xl text-gray-600">{typedText}</span>
+          <span className="text-lg md:text-2xl lg:text-3xl xl:text-5xl text-gray-600">{typedText}</span>
           {textToType.length > 0 && (
-            <span className="my-0 rounded-lg ring-offset-1 ring ring-emerald-500 p-1 m-1 text-6xl font-bold text-emerald-400">
+            <span className="my-0 rounded-lg ring-offset-1 ring ring-emerald-500 p-1 m-1 text-xl md:text-3xl lg:text-4xl xl:text-6xl font-bold text-emerald-400">
               {textToType.charAt(0) === " " ? "•" : textToType.charAt(0)}
             </span>
           )}
-          <span className="text-5xl text-gray-500">
+          <span className="text-lg md:text-2xl lg:text-3xl xl:text-5xl text-gray-500">
             {textToType.length > SLIDINGWINDOWSIZE
               ? currentWindow.slice(
                   1,
@@ -119,7 +117,7 @@ const TypingExperience = () => {
           {textToType.length > SLIDINGWINDOWSIZE && lastWordElem}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
