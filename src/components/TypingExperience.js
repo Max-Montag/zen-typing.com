@@ -15,7 +15,7 @@ function penultimateIndexOf(str, char) {
 
 const TypingExperience = () => {
   const [textToType, setTextToType] = useState(
-    "Finde den Atem, lasse die Gedanken los. Atme tief ein und aus. Spüre die Luft in deinen Lungen."
+    "Finde den Atem, lasse die Gedanken los. Atme tief ein und aus. Spüre die Luft in deinen Lungen.",
   );
 
   const [typedText, setTypedText] = useState("");
@@ -26,11 +26,10 @@ const TypingExperience = () => {
   const currentWindow = textToType.slice(0, SLIDINGWINDOWSIZE);
 
   const handleKeyDown = (event) => {
-
     // TODO 1: Use random sentences from the sentencesData array
     // TODO 2: Add a space after each sentence
-    // TODO 3: refactor this function 
-    // TODO 4: why does the word appearing not work anymore? 
+    // TODO 3: refactor this function
+
 
     if (textToType[0] === event.key) {
       setTypedText(typedText + event.key);
@@ -52,7 +51,8 @@ const TypingExperience = () => {
         setLastWord(newLastWord);
         setLastWordElem(
           <span
-            className="text-lg md:text-2xl lg:text-3xl xl:text-5xl text-red-500 text-focus-in"
+            key={"word" + Date.now()}
+            className="text-lg md:text-2xl lg:text-3xl xl:text-5xl text-gray-500 text-focus-in"
           >
             {newLastWord}
           </span>,
@@ -78,7 +78,7 @@ const TypingExperience = () => {
 
     const newBubble = (
       <div
-        key={Date.now()}
+        key={"bubble" + Date.now()}
         className="absolute -z-1 opacity-70 flex items-center justify-center moving-bubble"
         style={{
           animation: `moveBubble 3.5s cubic-bezier(0.01, 0.2, 0.9, 0.1) forwards`,
@@ -102,10 +102,12 @@ const TypingExperience = () => {
 
   return (
     <div className="min-h-screen bg-zinc-200 flex flex-row items-center">
-      <div  className="flex flex-row items-center justify-start ml-4 md:ml-[5%] lg:ml-[10%] xl:ml-[15%]">
+      <div className="flex flex-row items-center justify-start ml-4 md:ml-[5%] lg:ml-[10%] xl:ml-[15%]">
         <div>
           <div className="absolute">{wordBubbles}</div>
-          <span className="text-lg md:text-2xl lg:text-3xl xl:text-5xl text-gray-600">{typedText}</span>
+          <span className="text-lg md:text-2xl lg:text-3xl xl:text-5xl text-gray-600">
+            {typedText}
+          </span>
           {textToType.length > 0 && (
             <span className="my-0 rounded-lg ring-offset-1 ring ring-emerald-500 p-1 m-1 text-xl md:text-3xl lg:text-4xl xl:text-6xl font-bold text-emerald-400">
               {textToType.charAt(0) === " " ? "•" : textToType.charAt(0)}

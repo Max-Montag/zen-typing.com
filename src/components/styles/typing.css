@@ -1,7 +1,7 @@
 .text-focus-in {
-  -webkit-animation: text-focus-in 0.2s cubic-bezier(0.55, 0.085, 0.68, 0.53)
+  -webkit-animation: text-focus-in 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53)
     both alternate;
-  animation: text-focus-in 0.2s cubic-bezier(0.55, 0.085, 0.68, 0.53) both
+  animation: text-focus-in 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53) both
     alternate;
 }
 
@@ -29,4 +29,3 @@
     opacity: 1;
   }
 }
-
