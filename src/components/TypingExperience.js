@@ -15,10 +15,7 @@ function penultimateIndexOf(str, char) {
 }
 
 const TypingExperience = () => {
-  const [upcomingText, setUpcomingText] = useState(
-    "Finde den Atem, lasse die Gedanken los. Atme tief ein und aus. Spüre die Luft in deinen Lungen.",
-  );
-
+  const [upcomingText, setUpcomingText] = useState(sentencesData[Math.floor(Math.random() * sentencesData.length)]);
   const [typedText, setTypedText] = useState("");
   const [wordBubbles, setWordBubbles] = useState([]);
   const [lastWord, setLastWord] = useState("");
