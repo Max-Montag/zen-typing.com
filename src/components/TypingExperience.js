@@ -4,6 +4,7 @@ import "./styles/typing.css";
 import sentencesData from "./../assets/data/sentences.json";
 
 const SLIDINGWINDOWSIZE = 40;
+const BUFFERSIZE = 20;  
 const BUBBLEDISTANCE = 1500;
 
 function penultimateIndexOf(str, char) {
@@ -30,6 +31,14 @@ const TypingExperience = () => {
     // TODO 2: Add a space after each sentence
     // TODO 3: refactor this function
 
+    if(textToType.length <= SLIDINGWINDOWSIZE + BUFFERSIZE) {
+      const randomIndex = Math.floor(Math.random() * sentencesData.length);
+      const nextSentence = sentencesData[randomIndex];
+      console.log("before update", textToType);
+      setTextToType(prevText => prevText + " " + nextSentence);
+      console.log("after update", textToType);
+      
+    }
 
     if (textToType[0] === event.key) {
       setTypedText(typedText + event.key);
