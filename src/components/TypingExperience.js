@@ -30,6 +30,7 @@ const TypingExperience = () => {
     // TODO 1: Use random sentences from the sentencesData array
     // TODO 2: Add a space after each sentence
     // TODO 3: refactor this function 
+    // TODO 4: why does the word appearing not work anymore? 
 
     if (textToType[0] === event.key) {
       setTypedText(typedText + event.key);
@@ -51,7 +52,7 @@ const TypingExperience = () => {
         setLastWord(newLastWord);
         setLastWordElem(
           <span
-            className="text-lg md:text-2xl lg:text-3xl xl:text-5xl text-gray-500 text-focus-in"
+            className="text-lg md:text-2xl lg:text-3xl xl:text-5xl text-red-500 text-focus-in"
           >
             {newLastWord}
           </span>,
