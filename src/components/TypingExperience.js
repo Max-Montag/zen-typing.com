@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./styles/bubble.css";
 import "./styles/typing.css";
+import sentencesData from "./../assets/data/sentences.json";
 
 const SLIDINGWINDOWSIZE = 40;
 const BUBBLEDISTANCE = 1500;
@@ -14,7 +15,7 @@ function penultimateIndexOf(str, char) {
 
 const TypingExperience = () => {
   const [textToType, setTextToType] = useState(
-    "Finde den Atem, lasse die Gedanken los und finde Ruhe, das ist alles was wichtig ist das was wichtig ist.",
+    "Finde den Atem, lasse die Gedanken los. Atme tief ein und aus. Spüre die Luft in deinen Lungen."
   );
 
   const [typedText, setTypedText] = useState("");
@@ -25,6 +26,11 @@ const TypingExperience = () => {
   const currentWindow = textToType.slice(0, SLIDINGWINDOWSIZE);
 
   const handleKeyDown = (event) => {
+
+    // TODO 1: Use random sentences from the sentencesData array
+    // TODO 2: Add a space after each sentence
+    // TODO 3: refactor this function 
+
     if (textToType[0] === event.key) {
       setTypedText(typedText + event.key);
       setTextToType(textToType.slice(1));
