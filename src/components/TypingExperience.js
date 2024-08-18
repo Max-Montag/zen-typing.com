@@ -4,7 +4,7 @@ import "./styles/typing.css";
 import sentencesData from "./../assets/data/sentences.json";
 
 const SLIDINGWINDOWSIZE = 40;
-const BUFFERSIZE = 20;  
+const BUFFERSIZE = 20;
 const BUBBLEDISTANCE = 1500;
 
 function penultimateIndexOf(str, char) {
@@ -15,7 +15,7 @@ function penultimateIndexOf(str, char) {
 }
 
 const TypingExperience = () => {
-  const [textToType, setTextToType] = useState(
+  const [upcomingText, setUpcomingText] = useState(
     "Finde den Atem, lasse die Gedanken los. Atme tief ein und aus. Spüre die Luft in deinen Lungen.",
   );
 
@@ -24,32 +24,25 @@ const TypingExperience = () => {
   const [lastWord, setLastWord] = useState("");
   const [lastWordElem, setLastWordElem] = useState(null);
 
-  const currentWindow = textToType.slice(0, SLIDINGWINDOWSIZE);
+  const currentWindow = upcomingText.slice(0, SLIDINGWINDOWSIZE);
 
   const handleKeyDown = (event) => {
-    // TODO 1: Use random sentences from the sentencesData array
-    // TODO 2: Add a space after each sentence
-    // TODO 3: refactor this function
-
-    if(textToType.length <= SLIDINGWINDOWSIZE + BUFFERSIZE) {
-      const randomIndex = Math.floor(Math.random() * sentencesData.length);
-      const nextSentence = sentencesData[randomIndex];
-      console.log("before update", textToType);
-      setTextToType(prevText => prevText + " " + nextSentence);
-      console.log("after update", textToType);
-      
-    }
-
-    if (textToType[0] === event.key) {
+    if (upcomingText[0] === event.key) {
       setTypedText(typedText + event.key);
-      setTextToType(textToType.slice(1));
-      if (event.key === " " || textToType.length <= 1) {
+      upcomingText.length <= SLIDINGWINDOWSIZE + BUFFERSIZE
+        ? setUpcomingText(
+            upcomingText.slice(1) +
+              " " +
+              sentencesData[Math.floor(Math.random() * sentencesData.length)],
+          )
+        : setUpcomingText(upcomingText.slice(1));
+      if (event.key === " " || upcomingText.length <= 1) {
         launchWordBubble(typedText.trim().replace(/[,!?;:.\-]/g, ""));
         setTypedText("");
       }
 
       const newLastWord = (
-        textToType.charAt(SLIDINGWINDOWSIZE) === " "
+        upcomingText.charAt(SLIDINGWINDOWSIZE) === " "
           ? ""
           : currentWindow.slice(
               penultimateIndexOf(currentWindow, " ") + 1,
@@ -117,13 +110,13 @@ const TypingExperience = () => {
           <span className="text-lg md:text-2xl lg:text-3xl xl:text-5xl text-gray-600">
             {typedText}
           </span>
-          {textToType.length > 0 && (
+          {upcomingText.length > 0 && (
             <span className="my-0 rounded-lg ring-offset-1 ring ring-emerald-500 p-1 m-1 text-xl md:text-3xl lg:text-4xl xl:text-6xl font-bold text-emerald-400">
-              {textToType.charAt(0) === " " ? "•" : textToType.charAt(0)}
+              {upcomingText.charAt(0) === " " ? "•" : upcomingText.charAt(0)}
             </span>
           )}
           <span className="text-lg md:text-2xl lg:text-3xl xl:text-5xl text-gray-500">
-            {textToType.length > SLIDINGWINDOWSIZE
+            {upcomingText.length > SLIDINGWINDOWSIZE
               ? currentWindow.slice(
                   1,
                   penultimateIndexOf(currentWindow, " ") === -1
@@ -132,7 +125,7 @@ const TypingExperience = () => {
                 ) + " "
               : currentWindow.slice(1)}
           </span>
-          {textToType.length > SLIDINGWINDOWSIZE && lastWordElem}
+          {upcomingText.length > SLIDINGWINDOWSIZE && lastWordElem}
         </div>
       </div>
     </div>
