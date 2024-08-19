@@ -7,7 +7,7 @@ import ResultsCard from "./ResultsCard";
 const SLIDINGWINDOWSIZE = 40;
 const BUFFERSIZE = 20;
 const BUBBLEDISTANCE = 1500;
-const TIME = 3;
+const TIME = 10;
 
 function penultimateIndexOf(str, char) {
   let lastIndex = str.lastIndexOf(char);
@@ -30,40 +30,29 @@ const TypingExperience = () => {
   const [lastWordElem, setLastWordElem] = useState(null);
   const [timeLeft, setTimeLeft] = useState(TIME);
   const [resultsCardOpen, setResultsCardOpen] = useState(false);
-  // const stateRef = useRef({ typedChars, typedWords, errors });
-  // const stateRef = useRef({ upcomingText })
-  const currentWindow = upcomingText.slice(0, SLIDINGWINDOWSIZE);
+
+  const stateRef = useRef({ upcomingText, typedText, timerActive})
 
   const closeResultsCard = () => { setResultsCardOpen(false); }
 
   const handleKeyDown = (event) => {
 
-    // TODO SHIFT etc. are beeing treated as an error
-
-    console.log("-------------")
-    console.log("event.key: " + event.key)
-    console.log("typedText: " + typedText)
-    console.log("upcomingText: " + upcomingText)
-    console.log("currentWindow: " + currentWindow)
-    console.log("lastWord: " + lastWord)
-    console.log("typedChars: " + typedChars)
-    console.log("typedWords: " + typedWords)
-    console.log("errors: " + errors)
-    console.log("timerActive: " + timerActive)
-    console.log("-------------")
+    const { upcomingText, typedText, timerActive } = stateRef.current;
 
     if (upcomingText[0] === event.key) {
       if (!timerActive) {
         setTimerActive(true);
         setStartTime(Date.now());
-        setTypedChars(0);
+        setTypedChars(1);
         setTypedWords(0);
         setErrors(0);
       } else if (Date.now() > startTime + TIME * 1000) {
         return;
+      } else {
+        setTypedChars(typedChars + 1);
       }
-      setTypedChars(typedChars + 1);
       setTypedText(typedText + event.key);
+
       if (upcomingText.length <= SLIDINGWINDOWSIZE + BUFFERSIZE) {
         setUpcomingText(
           upcomingText.slice(1) +
@@ -72,20 +61,18 @@ const TypingExperience = () => {
       } else {
         setUpcomingText(prevText => prevText.slice(1));
       }
-      if (event.key === " " ) { // removed || upcomingText.length <= 1
+      if (event.key === " " || upcomingText.length <= 1 ) {
         setTypedWords(typedWords + 1);
         launchWordBubble(typedText.trim().replace(/[,!?;:.\-]/g, ""));
         setTypedText(""); 
-        // TODO this line causes weird error if you exactly end on an even word you cannot restart
-        // senence is not updated after finishing
       }
 
       const newLastWord = (
         upcomingText.charAt(SLIDINGWINDOWSIZE) === " "
           ? ""
-          : currentWindow.slice(
-              penultimateIndexOf(currentWindow, " ") + 1,
-              currentWindow.lastIndexOf(" "),
+          : upcomingText.slice(0, SLIDINGWINDOWSIZE).slice(
+              penultimateIndexOf(upcomingText.slice(0, SLIDINGWINDOWSIZE), " ") + 1,
+              upcomingText.slice(0, SLIDINGWINDOWSIZE).lastIndexOf(" "),
             )
       ).trim();
       if (lastWord !== newLastWord) {
@@ -104,11 +91,9 @@ const TypingExperience = () => {
     }
   };
 
-  // TODO weird error if you exactly end on an even word you cannot restart
-
-  // useEffect(() => {
-  //   stateRef.current = { typedChars, typedWords, errors };
-  // }, [typedChars, typedWords, errors]);
+  useEffect(() => {
+    stateRef.current = { upcomingText, typedText, timerActive };
+  }, [upcomingText, typedText, timerActive]);
   
   useEffect(() => {
     let interval = null;
@@ -134,7 +119,6 @@ const TypingExperience = () => {
   }, [typedText]);
 
   const completeTypingSession = () => {
-    console.log("completeTypingSession")
     setResultsCardOpen(true);
     setTimerActive(false);
     setTypedText("");
@@ -198,13 +182,13 @@ const TypingExperience = () => {
               )}
               <span className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl text-gray-500">
                 {upcomingText.length > SLIDINGWINDOWSIZE
-                  ? currentWindow.slice(
+                  ? upcomingText.slice(0, SLIDINGWINDOWSIZE).slice(
                       1,
-                      penultimateIndexOf(currentWindow, " ") === -1
-                        ? currentWindow.length
-                        : penultimateIndexOf(currentWindow, " "),
+                      penultimateIndexOf(upcomingText.slice(0, SLIDINGWINDOWSIZE), " ") === -1
+                        ? upcomingText.slice(0, SLIDINGWINDOWSIZE).length
+                        : penultimateIndexOf(upcomingText.slice(0, SLIDINGWINDOWSIZE), " "),
                     ) + " "
-                  : currentWindow.slice(1)}
+                  : upcomingText.slice(0, SLIDINGWINDOWSIZE).slice(1)}
               </span>
               {upcomingText.length > SLIDINGWINDOWSIZE && lastWordElem}
             </div>
