@@ -6,7 +6,7 @@ import sentencesData from "./../assets/data/sentences.json";
 const SLIDINGWINDOWSIZE = 40;
 const BUFFERSIZE = 20;
 const BUBBLEDISTANCE = 1500;
-const TIME = 10;
+const TIME = 20;
 
 function penultimateIndexOf(str, char) {
   let lastIndex = str.lastIndexOf(char);
@@ -16,46 +16,47 @@ function penultimateIndexOf(str, char) {
 }
 
 const TypingExperience = () => {
+  const newSentence = () => {return sentencesData[Math.floor(Math.random() * sentencesData.length)]}
   const [timerActive, setTimerActive] = useState(false);
   const [startTime, setStartTime] = useState(0);
   const [typedChars, setTypedChars] = useState(0);
   const [typedWords, setTypedWords] = useState(0);
   const [errors, setErrors] = useState(0);
-  const [upcomingText, setUpcomingText] = useState(sentencesData[Math.floor(Math.random() * sentencesData.length)]);
+  const [upcomingText, setUpcomingText] = useState(newSentence() + " " + newSentence());
   const [typedText, setTypedText] = useState("");
   const [wordBubbles, setWordBubbles] = useState([]);
   const [lastWord, setLastWord] = useState("");
   const [lastWordElem, setLastWordElem] = useState(null);
+  const [timeLeft, setTimeLeft] = useState(TIME);
 
   const currentWindow = upcomingText.slice(0, SLIDINGWINDOWSIZE);
-  const timeLeft = TIME - (Date.now() - startTime) / 1000;
 
   const handleKeyDown = (event) => {
     if (upcomingText[0] === event.key) {
       if (!timerActive) {
         setTimerActive(true);
         setStartTime(Date.now());
-      } else if (timeLeft <= 0) {
-        setTimerActive(false);
-        setStartTime(0);
-        setUpcomingText(sentencesData[Math.floor(Math.random() * sentencesData.length)]);
-        setTypedText("");
-        setWordBubbles([]);
-        setLastWord("");
-        setLastWordElem(null);
-        showResults(typedChars, typedWords, errors);
-        setTypedChars(0);
-        setTypedWords(0);
-        setErrors(0);
-        return;
-      }
+      } 
+      // else if (timeLeft <= 0) {
+      //   setTimerActive(false);
+      //   setStartTime(0);
+      //   setUpcomingText(sentencesData[Math.floor(Math.random() * sentencesData.length)]);
+      //   setTypedText("");
+      //   setWordBubbles([]);
+      //   setLastWord("");
+      //   setLastWordElem(null);
+      //   showResults(typedChars, typedWords, errors);
+      //   setTypedChars(0);
+      //   setTypedWords(0);
+      //   setErrors(0);
+      //   return;
+      // }
       setTypedChars(typedChars + 1);
       setTypedText(typedText + event.key);
       upcomingText.length <= SLIDINGWINDOWSIZE + BUFFERSIZE
         ? setUpcomingText(
             upcomingText.slice(1) +
-              " " +
-              sentencesData[Math.floor(Math.random() * sentencesData.length)],
+              " " + newSentence()
           )
         : setUpcomingText(upcomingText.slice(1));
       if (event.key === " " || upcomingText.length <= 1) {
@@ -86,6 +87,38 @@ const TypingExperience = () => {
     } else {
       setErrors(errors + 1);
     }
+  };
+
+  useEffect(() => {
+    let interval = null;
+    if (timerActive) {
+      interval = setInterval(() => {
+        const newTimeLeft = TIME - ((Date.now() - startTime) / 1000);
+        if (newTimeLeft <= 0) {
+          clearInterval(interval);
+          completeTypingSession();
+        } else {
+          setTimeLeft(newTimeLeft);
+        }
+      }, 100);
+    } else {
+      clearInterval(interval);
+    }
+    return () => clearInterval(interval);
+  }, [timerActive, startTime]);
+
+  const completeTypingSession = () => {
+    setTimerActive(false);
+    setTimeLeft(TIME);
+    setUpcomingText(sentencesData[Math.floor(Math.random() * sentencesData.length)]);
+    setTypedText("");
+    setWordBubbles([]);
+    setLastWord("");
+    setLastWordElem(null);
+    showResults(typedChars, typedWords, errors);
+    setTypedChars(0);
+    setTypedWords(0);
+    setErrors(0);
   };
 
   useEffect(() => {
@@ -136,9 +169,10 @@ const TypingExperience = () => {
   }
 
   return (
+    <div className="min-h-screen bg-zinc-100">
     <div className="bg-zinc-200 flex flex-col justify-start gap-16 mt-20 pt-4 pb-8">
       <div className="flex flex-row justify-center">
-        <h1 className="text-6xl">{Math.max(timeLeft, 0).toFixed(2)}</h1>
+        <h1 className="text-6xl font-semibold text-gray-700">{Math.max(timeLeft, 0).toFixed(1)}</h1>
       </div>
       <div className="flex flex-row items-center ml-4 md:ml-[5%] lg:ml-[10%] xl:ml-[15%]">
         <div className="flex flex-row items-center justify-start">
@@ -166,6 +200,7 @@ const TypingExperience = () => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };
