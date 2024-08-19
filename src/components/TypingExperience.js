@@ -37,20 +37,6 @@ const TypingExperience = () => {
         setTimerActive(true);
         setStartTime(Date.now());
       } 
-      // else if (timeLeft <= 0) {
-      //   setTimerActive(false);
-      //   setStartTime(0);
-      //   setUpcomingText(sentencesData[Math.floor(Math.random() * sentencesData.length)]);
-      //   setTypedText("");
-      //   setWordBubbles([]);
-      //   setLastWord("");
-      //   setLastWordElem(null);
-      //   showResults(typedChars, typedWords, errors);
-      //   setTypedChars(0);
-      //   setTypedWords(0);
-      //   setErrors(0);
-      //   return;
-      // }
       setTypedChars(typedChars + 1);
       setTypedText(typedText + event.key);
       upcomingText.length <= SLIDINGWINDOWSIZE + BUFFERSIZE
@@ -170,37 +156,37 @@ const TypingExperience = () => {
 
   return (
     <div className="min-h-screen bg-zinc-100">
-    <div className="bg-zinc-200 flex flex-col justify-start gap-16 mt-20 pt-4 pb-8">
-      <div className="flex flex-row justify-center">
-        <h1 className="text-6xl font-semibold text-gray-700">{Math.max(timeLeft, 0).toFixed(1)}</h1>
-      </div>
-      <div className="flex flex-row items-center ml-4 md:ml-[5%] lg:ml-[10%] xl:ml-[15%]">
-        <div className="flex flex-row items-center justify-start">
-          <div>
-            <div className="absolute">{wordBubbles}</div>
-            <span className="text-lg md:text-2xl lg:text-3xl xl:text-5xl text-gray-600">
-              {typedText}
-            </span>
-            {upcomingText.length > 0 && (
-              <span className="my-0 rounded-lg ring-offset-1 ring ring-emerald-500 p-1 m-1 text-xl md:text-3xl lg:text-4xl xl:text-6xl font-bold text-emerald-400">
-                {upcomingText.charAt(0) === " " ? "•" : upcomingText.charAt(0)}
+      <div className="bg-zinc-200 flex flex-col justify-start gap-16 mt-20 pt-4 pb-8">
+        <div className="flex flex-row justify-center">
+          <h1 className="text-6xl font-semibold text-gray-700">{Math.max(timeLeft, 0).toFixed(1)}</h1>
+        </div>
+        <div className="flex flex-row items-center ml-4 md:ml-[5%] lg:ml-[10%] xl:ml-[15%]">
+          <div className="flex flex-row items-center justify-start">
+            <div>
+              <div className="absolute">{wordBubbles}</div>
+              <span className="text-lg md:text-2xl lg:text-3xl xl:text-5xl text-gray-600">
+                {typedText}
               </span>
-            )}
-            <span className="text-lg md:text-2xl lg:text-3xl xl:text-5xl text-gray-500">
-              {upcomingText.length > SLIDINGWINDOWSIZE
-                ? currentWindow.slice(
-                    1,
-                    penultimateIndexOf(currentWindow, " ") === -1
-                      ? currentWindow.length
-                      : penultimateIndexOf(currentWindow, " "),
-                  ) + " "
-                : currentWindow.slice(1)}
-            </span>
-            {upcomingText.length > SLIDINGWINDOWSIZE && lastWordElem}
+              {upcomingText.length > 0 && (
+                <span className="my-0 rounded-lg ring-offset-1 ring ring-emerald-500 p-1 m-1 text-xl md:text-3xl lg:text-4xl xl:text-6xl font-bold text-emerald-400">
+                  {upcomingText.charAt(0) === " " ? "•" : upcomingText.charAt(0)}
+                </span>
+              )}
+              <span className="text-lg md:text-2xl lg:text-3xl xl:text-5xl text-gray-500">
+                {upcomingText.length > SLIDINGWINDOWSIZE
+                  ? currentWindow.slice(
+                      1,
+                      penultimateIndexOf(currentWindow, " ") === -1
+                        ? currentWindow.length
+                        : penultimateIndexOf(currentWindow, " "),
+                    ) + " "
+                  : currentWindow.slice(1)}
+              </span>
+              {upcomingText.length > SLIDINGWINDOWSIZE && lastWordElem}
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </div>
   );
 };
