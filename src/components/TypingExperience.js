@@ -6,6 +6,7 @@ import sentencesData from "./../assets/data/sentences.json";
 const SLIDINGWINDOWSIZE = 40;
 const BUFFERSIZE = 20;
 const BUBBLEDISTANCE = 1500;
+const TIME = 10;
 
 function penultimateIndexOf(str, char) {
   let lastIndex = str.lastIndexOf(char);
@@ -15,6 +16,11 @@ function penultimateIndexOf(str, char) {
 }
 
 const TypingExperience = () => {
+  const [timerActive, setTimerActive] = useState(false);
+  const [startTime, setStartTime] = useState(0);
+  const [typedChars, setTypedChars] = useState(0);
+  const [typedWords, setTypedWords] = useState(0);
+  const [errors, setErrors] = useState(0);
   const [upcomingText, setUpcomingText] = useState(sentencesData[Math.floor(Math.random() * sentencesData.length)]);
   const [typedText, setTypedText] = useState("");
   const [wordBubbles, setWordBubbles] = useState([]);
@@ -25,6 +31,24 @@ const TypingExperience = () => {
 
   const handleKeyDown = (event) => {
     if (upcomingText[0] === event.key) {
+      setTypedChars(typedChars + 1);
+      if (!timerActive) {
+        setTimerActive(true);
+        setStartTime(Date.now());
+      } else if (Date.now() - startTime >= TIME * 1000) {
+        setTimerActive(false);
+        setStartTime(0);
+        setUpcomingText(sentencesData[Math.floor(Math.random() * sentencesData.length)]);
+        setTypedText("");
+        setWordBubbles([]);
+        setLastWord("");
+        setLastWordElem(null);
+        showResults(typedChars, typedWords, errors);
+        setTypedChars(0);
+        setTypedWords(0);
+        setErrors(0);
+        return;
+      }
       setTypedText(typedText + event.key);
       upcomingText.length <= SLIDINGWINDOWSIZE + BUFFERSIZE
         ? setUpcomingText(
@@ -34,6 +58,7 @@ const TypingExperience = () => {
           )
         : setUpcomingText(upcomingText.slice(1));
       if (event.key === " " || upcomingText.length <= 1) {
+        setTypedWords(typedWords + 1);
         launchWordBubble(typedText.trim().replace(/[,!?;:.\-]/g, ""));
         setTypedText("");
       }
@@ -57,6 +82,8 @@ const TypingExperience = () => {
           </span>,
         );
       }
+    } else {
+      setErrors(errors + 1);
     }
   };
 
@@ -98,6 +125,14 @@ const TypingExperience = () => {
   const removeBubble = (index) => {
     setWordBubbles((prevBubbles) => prevBubbles.filter((_, i) => i !== index));
   };
+
+  const showResults = (chars, words, errors) => {
+    console.log("--------------- Results ---------------");
+    console.log("Characters typed: ", chars);
+    console.log("Words typed: ", words);
+    console.log("Errors: ", errors);
+    console.log("---------------------------------------");
+  }
 
   return (
     <div className="min-h-screen bg-zinc-200 flex flex-row items-center">
