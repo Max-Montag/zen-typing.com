@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import "./styles/bubble.css";
 import "./styles/typing.css";
 import sentencesData from "./../assets/data/sentences.json";
+import ResultsCard from "./ResultsCard";
 
 const SLIDINGWINDOWSIZE = 40;
 const BUFFERSIZE = 20;
@@ -28,15 +29,34 @@ const TypingExperience = () => {
   const [lastWord, setLastWord] = useState("");
   const [lastWordElem, setLastWordElem] = useState(null);
   const [timeLeft, setTimeLeft] = useState(TIME);
-  const stateRef = useRef({ typedChars, typedWords, errors });
-
+  const [resultsCardOpen, setResultsCardOpen] = useState(false);
+  // const stateRef = useRef({ typedChars, typedWords, errors });
   const currentWindow = upcomingText.slice(0, SLIDINGWINDOWSIZE);
 
+  const closeResultsCard = () => { setResultsCardOpen(false); }
+
   const handleKeyDown = (event) => {
+
+    // TODO SHIFT etc. are beeing treated as an error
+
+    console.log("-------------")
+    console.log("event.key: " + event.key)
+    console.log("typedText: " + typedText)
+    console.log("upcomingText: " + upcomingText)
+    console.log("currentWindow: " + currentWindow)
+    console.log("lastWord: " + lastWord)
+    console.log("typedChars: " + typedChars)
+    console.log("typedWords: " + typedWords)
+    console.log("errors: " + errors)
+    console.log("-------------")
+
     if (upcomingText[0] === event.key) {
       if (!timerActive) {
         setTimerActive(true);
         setStartTime(Date.now());
+        setTypedChars(0);
+        setTypedWords(0);
+        setErrors(0);
       } else if (Date.now() > startTime + TIME * 1000) {
         return;
       }
@@ -48,7 +68,7 @@ const TypingExperience = () => {
               " " + newSentence()
           )
         : setUpcomingText(upcomingText.slice(1));
-      if (event.key === " " || upcomingText.length <= 1) {
+      if (event.key === " " ) { // removed || upcomingText.length <= 1
         setTypedWords(typedWords + 1);
         launchWordBubble(typedText.trim().replace(/[,!?;:.\-]/g, ""));
         setTypedText("");
@@ -78,9 +98,11 @@ const TypingExperience = () => {
     }
   };
 
-  useEffect(() => {
-    stateRef.current = { typedChars, typedWords, errors };
-  }, [typedChars, typedWords, errors]);
+  // TODO weird error if you exactly end on an even word you cannot restart
+
+  // useEffect(() => {
+  //   stateRef.current = { typedChars, typedWords, errors };
+  // }, [typedChars, typedWords, errors]);
   
   useEffect(() => {
     let interval = null;
@@ -106,27 +128,18 @@ const TypingExperience = () => {
   }, [typedText]);
 
   const completeTypingSession = () => {
-    const { typedChars, typedWords, errors } = stateRef.current;
+    setResultsCardOpen(true);
     setTimerActive(false);
-    setTimeLeft(TIME);
-    setUpcomingText(sentencesData[Math.floor(Math.random() * sentencesData.length)]);
     setTypedText("");
-    setWordBubbles([]);
     setLastWord("");
+    setWordBubbles([]);
     setLastWordElem(null);
-    showResults(typedChars, typedWords, errors);
-    setTypedChars(0);
-    setTypedWords(0);
-    setErrors(0);
+    setUpcomingText(sentencesData[Math.floor(Math.random() * sentencesData.length)]);
   };
 
-  const showResults = (chars, words, errors) => {
-    console.log("--------------- Results ---------------");
-    console.log("Correct characters typed: ", chars);
-    console.log("Words typed: ", words);
-    console.log("Errors: ", errors);
-    console.log("---------------------------------------");
-  }
+  const resetTime = () => {
+    setTimeLeft(TIME);
+  };
 
   const launchWordBubble = (word) => {
     const randomX = Math.random() * -BUBBLEDISTANCE;
@@ -192,6 +205,7 @@ const TypingExperience = () => {
           </div>
         </div>
       </div>
+      <ResultsCard isOpen={resultsCardOpen} closePopup={closeResultsCard} resetTime={resetTime} typedChars={typedChars} typedWords={typedWords} errors={errors} />
     </div>
   );
 };
