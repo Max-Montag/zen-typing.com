@@ -7,7 +7,7 @@ import ResultsCard from "./ResultsCard";
 const SLIDINGWINDOWSIZE = 40;
 const BUFFERSIZE = 20;
 const BUBBLEDISTANCE = 1500;
-const TIME = 10;
+const TIME = 3;
 
 function penultimateIndexOf(str, char) {
   let lastIndex = str.lastIndexOf(char);
@@ -31,6 +31,7 @@ const TypingExperience = () => {
   const [timeLeft, setTimeLeft] = useState(TIME);
   const [resultsCardOpen, setResultsCardOpen] = useState(false);
   // const stateRef = useRef({ typedChars, typedWords, errors });
+  // const stateRef = useRef({ upcomingText })
   const currentWindow = upcomingText.slice(0, SLIDINGWINDOWSIZE);
 
   const closeResultsCard = () => { setResultsCardOpen(false); }
@@ -48,6 +49,7 @@ const TypingExperience = () => {
     console.log("typedChars: " + typedChars)
     console.log("typedWords: " + typedWords)
     console.log("errors: " + errors)
+    console.log("timerActive: " + timerActive)
     console.log("-------------")
 
     if (upcomingText[0] === event.key) {
@@ -62,16 +64,20 @@ const TypingExperience = () => {
       }
       setTypedChars(typedChars + 1);
       setTypedText(typedText + event.key);
-      upcomingText.length <= SLIDINGWINDOWSIZE + BUFFERSIZE
-        ? setUpcomingText(
-            upcomingText.slice(1) +
-              " " + newSentence()
-          )
-        : setUpcomingText(upcomingText.slice(1));
+      if (upcomingText.length <= SLIDINGWINDOWSIZE + BUFFERSIZE) {
+        setUpcomingText(
+          upcomingText.slice(1) +
+            " " + newSentence()
+        )
+      } else {
+        setUpcomingText(prevText => prevText.slice(1));
+      }
       if (event.key === " " ) { // removed || upcomingText.length <= 1
         setTypedWords(typedWords + 1);
         launchWordBubble(typedText.trim().replace(/[,!?;:.\-]/g, ""));
-        setTypedText("");
+        setTypedText(""); 
+        // TODO this line causes weird error if you exactly end on an even word you cannot restart
+        // senence is not updated after finishing
       }
 
       const newLastWord = (
@@ -128,13 +134,14 @@ const TypingExperience = () => {
   }, [typedText]);
 
   const completeTypingSession = () => {
+    console.log("completeTypingSession")
     setResultsCardOpen(true);
     setTimerActive(false);
     setTypedText("");
     setLastWord("");
     setWordBubbles([]);
     setLastWordElem(null);
-    setUpcomingText(sentencesData[Math.floor(Math.random() * sentencesData.length)]);
+    setUpcomingText(newSentence() + " " + newSentence());
   };
 
   const resetTime = () => {
@@ -164,7 +171,6 @@ const TypingExperience = () => {
         <p className="text-gray-400 text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl">{word}</p>
       </div>
     );
-
     setWordBubbles((prevBubbles) => [...prevBubbles, newBubble]);
   };
 
