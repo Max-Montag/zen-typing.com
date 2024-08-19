@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./styles/bubble.css";
 import "./styles/typing.css";
 import sentencesData from "./../assets/data/sentences.json";
@@ -6,7 +6,7 @@ import sentencesData from "./../assets/data/sentences.json";
 const SLIDINGWINDOWSIZE = 40;
 const BUFFERSIZE = 20;
 const BUBBLEDISTANCE = 1500;
-const TIME = 20;
+const TIME = 10;
 
 function penultimateIndexOf(str, char) {
   let lastIndex = str.lastIndexOf(char);
@@ -28,6 +28,7 @@ const TypingExperience = () => {
   const [lastWord, setLastWord] = useState("");
   const [lastWordElem, setLastWordElem] = useState(null);
   const [timeLeft, setTimeLeft] = useState(TIME);
+  const stateRef = useRef({ typedChars, typedWords, errors });
 
   const currentWindow = upcomingText.slice(0, SLIDINGWINDOWSIZE);
 
@@ -36,7 +37,9 @@ const TypingExperience = () => {
       if (!timerActive) {
         setTimerActive(true);
         setStartTime(Date.now());
-      } 
+      } else if (Date.now() > startTime + TIME * 1000) {
+        return;
+      }
       setTypedChars(typedChars + 1);
       setTypedText(typedText + event.key);
       upcomingText.length <= SLIDINGWINDOWSIZE + BUFFERSIZE
@@ -64,7 +67,7 @@ const TypingExperience = () => {
         setLastWordElem(
           <span
             key={"word" + Date.now()}
-            className="text-lg md:text-2xl lg:text-3xl xl:text-5xl text-gray-500 text-focus-in"
+            className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl text-gray-500 text-focus-in"
           >
             {newLastWord}
           </span>,
@@ -76,15 +79,16 @@ const TypingExperience = () => {
   };
 
   useEffect(() => {
+    stateRef.current = { typedChars, typedWords, errors };
+  }, [typedChars, typedWords, errors]);
+  
+  useEffect(() => {
     let interval = null;
     if (timerActive) {
       interval = setInterval(() => {
-        const newTimeLeft = TIME - ((Date.now() - startTime) / 1000);
-        if (newTimeLeft <= 0) {
-          clearInterval(interval);
+        setTimeLeft(TIME - ((Date.now() - startTime) / 1000));
+        if (Date.now() > startTime + TIME * 1000) {
           completeTypingSession();
-        } else {
-          setTimeLeft(newTimeLeft);
         }
       }, 100);
     } else {
@@ -93,7 +97,16 @@ const TypingExperience = () => {
     return () => clearInterval(interval);
   }, [timerActive, startTime]);
 
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [typedText]);
+
   const completeTypingSession = () => {
+    const { typedChars, typedWords, errors } = stateRef.current;
     setTimerActive(false);
     setTimeLeft(TIME);
     setUpcomingText(sentencesData[Math.floor(Math.random() * sentencesData.length)]);
@@ -107,13 +120,13 @@ const TypingExperience = () => {
     setErrors(0);
   };
 
-  useEffect(() => {
-    document.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [typedText]);
+  const showResults = (chars, words, errors) => {
+    console.log("--------------- Results ---------------");
+    console.log("Correct characters typed: ", chars);
+    console.log("Words typed: ", words);
+    console.log("Errors: ", errors);
+    console.log("---------------------------------------");
+  }
 
   const launchWordBubble = (word) => {
     const randomX = Math.random() * -BUBBLEDISTANCE;
@@ -135,7 +148,7 @@ const TypingExperience = () => {
         }}
         onAnimationEnd={() => removeBubble(wordBubbles.length)}
       >
-        <p className="text-gray-400 text-5xl">{word}</p>
+        <p className="text-gray-400 text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl">{word}</p>
       </div>
     );
 
@@ -146,33 +159,25 @@ const TypingExperience = () => {
     setWordBubbles((prevBubbles) => prevBubbles.filter((_, i) => i !== index));
   };
 
-  const showResults = (chars, words, errors) => {
-    console.log("--------------- Results ---------------");
-    console.log("Characters typed: ", chars);
-    console.log("Words typed: ", words);
-    console.log("Errors: ", errors);
-    console.log("---------------------------------------");
-  }
-
   return (
-    <div className="min-h-screen bg-zinc-100">
-      <div className="bg-zinc-200 flex flex-col justify-start gap-16 mt-20 pt-4 pb-8">
+    <div className="min-h-screen bg-zinc-50 flex flex-col justify-center -mt-16">
+      <div className="bg-zinc-100 flex flex-col gap-32 pt-4 pb-8">
         <div className="flex flex-row justify-center">
-          <h1 className="text-6xl font-semibold text-gray-700">{Math.max(timeLeft, 0).toFixed(1)}</h1>
+          <h1 className="text-start text-8xl font-semibold text-zinc-500 min-w-32">{Math.max(timeLeft, 0).toFixed(0)} s</h1>
         </div>
         <div className="flex flex-row items-center ml-4 md:ml-[5%] lg:ml-[10%] xl:ml-[15%]">
           <div className="flex flex-row items-center justify-start">
             <div>
               <div className="absolute">{wordBubbles}</div>
-              <span className="text-lg md:text-2xl lg:text-3xl xl:text-5xl text-gray-600">
+              <span className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl text-gray-600">
                 {typedText}
               </span>
               {upcomingText.length > 0 && (
-                <span className="my-0 rounded-lg ring-offset-1 ring ring-emerald-500 p-1 m-1 text-xl md:text-3xl lg:text-4xl xl:text-6xl font-bold text-emerald-400">
+                <span className="my-0 rounded-lg ring-offset-1 ring ring-emerald-500 p-1 m-1 text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold text-emerald-400">
                   {upcomingText.charAt(0) === " " ? "•" : upcomingText.charAt(0)}
                 </span>
               )}
-              <span className="text-lg md:text-2xl lg:text-3xl xl:text-5xl text-gray-500">
+              <span className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl text-gray-500">
                 {upcomingText.length > SLIDINGWINDOWSIZE
                   ? currentWindow.slice(
                       1,
