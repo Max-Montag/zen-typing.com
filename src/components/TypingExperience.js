@@ -1,13 +1,21 @@
 import React, { useEffect, useState, useRef } from "react";
+import Howler from 'react-howler';
 import "./styles/bubble.css";
 import "./styles/typing.css";
 import sentencesData from "./../assets/data/sentences.json";
 import ResultsCard from "./ResultsCard";
 
+import sound1 from './../assets/sounds/audio1.mp3';
+import sound2 from './../assets/sounds/audio2.mp3';
+import sound3 from './../assets/sounds/audio3.mp3';
+import sound4 from './../assets/sounds/audio4.mp3';
+import sound5 from './../assets/sounds/audio5.mp3';
+import sound6 from './../assets/sounds/audio6.mp3';
+
 const SLIDINGWINDOWSIZE = 40; //40
 const BUFFERSIZE = 20;
 const BUBBLEDISTANCE = 1500;
-const TIME = 10;
+const TIME = 60;
 
 function penultimateIndexOf(str, char) {
   let lastIndex = str.lastIndexOf(char);
@@ -19,28 +27,37 @@ function penultimateIndexOf(str, char) {
 // TODO: errors are not counted correctly!!
 
 const TypingExperience = () => {
-  const newSentence = () => {return sentencesData[Math.floor(Math.random() * sentencesData.length)]}
+  const newSentence = () => {
+    return sentencesData[Math.floor(Math.random() * sentencesData.length)];
+  };
   const [timerActive, setTimerActive] = useState(false);
   const [startTime, setStartTime] = useState(0);
   const [typedChars, setTypedChars] = useState(0);
   const [typedWords, setTypedWords] = useState(0);
   const [errors, setErrors] = useState(0);
-  const [upcomingText, setUpcomingText] = useState(newSentence() + " " + newSentence());
   const [typedText, setTypedText] = useState("");
   const [wordBubbles, setWordBubbles] = useState([]);
   const [lastWord, setLastWord] = useState("");
   const [lastWordElem, setLastWordElem] = useState(null);
   const [timeLeft, setTimeLeft] = useState(TIME);
   const [resultsCardOpen, setResultsCardOpen] = useState(false);
+  const [upcomingText, setUpcomingText] = useState(
+    newSentence() + " " + newSentence(),
+  );
+  const sounds = [sound1, sound2, sound3, sound4, sound5, sound6];
 
-  const stateRef = useRef({ upcomingText, typedText, timerActive})
 
-  const closeResultsCard = () => { setResultsCardOpen(false); }
+  const stateRef = useRef({ upcomingText, typedText, timerActive });
+
+  const closeResultsCard = () => {
+    setResultsCardOpen(false);
+  };
 
   const handleKeyDown = (event) => {
     const { upcomingText, typedText, timerActive } = stateRef.current;
-    if(timerActive && Date.now() > startTime + TIME * 1000)
-      return;
+
+    // todo this line does not catch typing 1 wrong char in the resultboard an counting it as an error
+    if (timerActive && Date.now() > startTime + TIME * 1000) return;
 
     if (upcomingText[0] === event.key) {
       if (!timerActive) {
@@ -55,26 +72,28 @@ const TypingExperience = () => {
       setTypedText(typedText + event.key);
 
       if (upcomingText.length <= SLIDINGWINDOWSIZE + BUFFERSIZE) {
-        setUpcomingText(
-          upcomingText.slice(1) +
-            " " + newSentence()
-        )
+        setUpcomingText(upcomingText.slice(1) + " " + newSentence());
       } else {
-        setUpcomingText(prevText => prevText.slice(1));
+        setUpcomingText((prevText) => prevText.slice(1));
       }
-      if (event.key === " " || upcomingText.length <= 1 ) {
+      if (event.key === " " || upcomingText.length <= 1) {
         setTypedWords(typedWords + 1);
         launchWordBubble(typedText.trim().replace(/[,!?;:.\-]/g, ""));
-        setTypedText(""); 
+        setTypedText("");
       }
 
       const newLastWord = (
         upcomingText.charAt(SLIDINGWINDOWSIZE) === " "
           ? ""
-          : upcomingText.slice(0, SLIDINGWINDOWSIZE).slice(
-              penultimateIndexOf(upcomingText.slice(0, SLIDINGWINDOWSIZE), " ") + 1,
-              upcomingText.slice(0, SLIDINGWINDOWSIZE).lastIndexOf(" "),
-            )
+          : upcomingText
+              .slice(0, SLIDINGWINDOWSIZE)
+              .slice(
+                penultimateIndexOf(
+                  upcomingText.slice(0, SLIDINGWINDOWSIZE),
+                  " ",
+                ) + 1,
+                upcomingText.slice(0, SLIDINGWINDOWSIZE).lastIndexOf(" "),
+              )
       ).trim();
       if (lastWord !== newLastWord) {
         setLastWord(newLastWord);
@@ -95,12 +114,12 @@ const TypingExperience = () => {
   useEffect(() => {
     stateRef.current = { upcomingText, typedText, timerActive };
   }, [upcomingText, typedText, timerActive]);
-  
+
   useEffect(() => {
     let interval = null;
     if (timerActive) {
       interval = setInterval(() => {
-        setTimeLeft(TIME - ((Date.now() - startTime) / 1000));
+        setTimeLeft(TIME - (Date.now() - startTime) / 1000);
         if (Date.now() > startTime + TIME * 1000) {
           completeTypingSession();
         }
@@ -120,6 +139,7 @@ const TypingExperience = () => {
   }, [typedText]);
 
   const completeTypingSession = () => {
+    setTimerActive(false);
     setResultsCardOpen(true);
     setTypedText("");
     setLastWord("");
@@ -130,7 +150,6 @@ const TypingExperience = () => {
 
   const resetTime = () => {
     setTimeLeft(TIME);
-    setTimerActive(false);
   };
 
   const launchWordBubble = (word) => {
@@ -139,6 +158,8 @@ const TypingExperience = () => {
       Math.sqrt(BUBBLEDISTANCE ** 2 - randomX ** 2) *
       (Math.random() < 0.5 ? 1 : -1);
     const randomRotate = `${Math.random() * 90 - 45}deg`;
+
+    const randomSound = sounds[Math.floor(Math.random() * sounds.length)];
 
     const newBubble = (
       <div
@@ -153,7 +174,10 @@ const TypingExperience = () => {
         }}
         onAnimationEnd={() => removeBubble(wordBubbles.length)}
       >
-        <p className="text-gray-400 text-2xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl">{word}</p>
+        <p className="text-gray-400 text-2xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl">
+          {word}
+        </p>
+        <Howler src={randomSound} playing={true} />
       </div>
     );
     setWordBubbles((prevBubbles) => [...prevBubbles, newBubble]);
@@ -165,32 +189,43 @@ const TypingExperience = () => {
 
   return (
     <div className="min-h-screen bg-zinc-50 flex flex-col justify-center -mt-16 typing-container">
-            
       <div className="bg-zinc-100 flex flex-col gap-32 pt-4 pb-8">
         <div className="z-10 absolute top-0 right-0 h-full w-8 md:w-[15%] lg:w-[20%] xl:w-[25%] bg-gradient-to-r from-transparent to-zinc-100 pointer-events-none"></div>
         <div className="flex flex-row justify-center">
-          <h1 className="text-start text-8xl font-semibold text-zinc-500 min-w-32">{Math.max(timeLeft, 0).toFixed(0)} s</h1>
+          <h1 className="text-center text-8xl font-semibold text-zinc-500">
+            {Math.max(timeLeft, 0).toFixed(0)} s
+          </h1>
         </div>
         <div className="flex flex-row items-center ml-4 md:ml-[5%] lg:ml-[10%] xl:ml-[15%]">
           <div className="flex flex-row items-center justify-start">
-            <div className="max-w-full">
+            <div>
               <div className="absolute">{wordBubbles}</div>
               <span className="text-2xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl text-gray-600">
                 {typedText}
               </span>
               {upcomingText.length > 0 && (
                 <span className="my-0 rounded-lg ring-offset-1 ring ring-emerald-500 p-1 m-1 text-3xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold text-emerald-400">
-                  {upcomingText.charAt(0) === " " ? "•" : upcomingText.charAt(0)}
+                  {upcomingText.charAt(0) === " "
+                    ? "•"
+                    : upcomingText.charAt(0)}
                 </span>
               )}
               <span className="text-2xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl text-gray-500">
                 {upcomingText.length > SLIDINGWINDOWSIZE
-                  ? upcomingText.slice(0, SLIDINGWINDOWSIZE).slice(
-                      1,
-                      penultimateIndexOf(upcomingText.slice(0, SLIDINGWINDOWSIZE), " ") === -1
-                        ? upcomingText.slice(0, SLIDINGWINDOWSIZE).length
-                        : penultimateIndexOf(upcomingText.slice(0, SLIDINGWINDOWSIZE), " "),
-                    ) + " "
+                  ? upcomingText
+                      .slice(0, SLIDINGWINDOWSIZE)
+                      .slice(
+                        1,
+                        penultimateIndexOf(
+                          upcomingText.slice(0, SLIDINGWINDOWSIZE),
+                          " ",
+                        ) === -1
+                          ? upcomingText.slice(0, SLIDINGWINDOWSIZE).length
+                          : penultimateIndexOf(
+                              upcomingText.slice(0, SLIDINGWINDOWSIZE),
+                              " ",
+                            ),
+                      ) + " "
                   : upcomingText.slice(0, SLIDINGWINDOWSIZE).slice(1)}
               </span>
               {upcomingText.length > SLIDINGWINDOWSIZE && lastWordElem}
@@ -198,7 +233,14 @@ const TypingExperience = () => {
           </div>
         </div>
       </div>
-      <ResultsCard isOpen={resultsCardOpen} closePopup={closeResultsCard} resetTime={resetTime} typedChars={typedChars} typedWords={typedWords} errors={errors} />
+      <ResultsCard
+        isOpen={resultsCardOpen}
+        closePopup={closeResultsCard}
+        resetTime={resetTime}
+        typedChars={typedChars}
+        typedWords={typedWords}
+        errors={errors}
+      />
     </div>
   );
 };
