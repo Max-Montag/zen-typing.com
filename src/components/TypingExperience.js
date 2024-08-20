@@ -121,7 +121,6 @@ const TypingExperience = () => {
 
   const completeTypingSession = () => {
     setResultsCardOpen(true);
-    setTimerActive(false);
     setTypedText("");
     setLastWord("");
     setWordBubbles([]);
@@ -131,6 +130,7 @@ const TypingExperience = () => {
 
   const resetTime = () => {
     setTimeLeft(TIME);
+    setTimerActive(false);
   };
 
   const launchWordBubble = (word) => {
