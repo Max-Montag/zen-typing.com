@@ -36,7 +36,7 @@ const TypingExperience = () => {
   const [typedWords, setTypedWords] = useState(0);
   const [errors, setErrors] = useState(0);
   const [typedText, setTypedText] = useState("");
-  const [wordBubbles, setWordBubbles] = useState([]);
+  const [wordBubbles, setWordBubbles] = useState({});
   const [prevDirection, setPrevDirection] = useState("top");
   const [lastWord, setLastWord] = useState("");
   const [lastWordElem, setLastWordElem] = useState(null);
@@ -154,7 +154,7 @@ const TypingExperience = () => {
     setResultsCardOpen(true);
     setTypedText("");
     setLastWord("");
-    setWordBubbles([]);
+    setWordBubbles({});
     setLastWordElem(null);
     setUpcomingText(newSentence() + " " + newSentence());
   };
@@ -173,9 +173,11 @@ const TypingExperience = () => {
 
     const randomSound = chooseRandomSound();
 
+    const key = "bubble" + Date.now();
+
     const newBubble = (
       <div
-        key={"bubble" + Date.now()}
+        key={key}
         className="absolute -z-1 opacity-70 flex items-center justify-center moving-bubble"
         style={{
           animation: `moveBubble 3.5s cubic-bezier(0.01, 0.2, 0.9, 0.1) forwards`,
@@ -184,7 +186,7 @@ const TypingExperience = () => {
           "--randomY": `${randomY}px`,
           "--randomRotate": randomRotate,
         }}
-        onAnimationEnd={() => removeBubble(wordBubbles.length)}
+        onAnimationEnd={() => removeBubble(key)}
       >
         <p className="text-gray-400 text-2xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl">
           {word}
@@ -192,11 +194,15 @@ const TypingExperience = () => {
         <Howler src={randomSound} playing={true} />
       </div>
     );
-    setWordBubbles((prevBubbles) => [...prevBubbles, newBubble]);
+    setWordBubbles((prevBubbles) => {prevBubbles[key] = newBubble; return prevBubbles});
+    console.log(wordBubbles);
   };
 
-  const removeBubble = (index) => {
-    return; //setWordBubbles((prevBubbles) => prevBubbles.filter((_, i) => i !== index));
+  const removeBubble = (key) => {
+    setWordBubbles((prevBubbles) => {
+      delete prevBubbles[key];
+      return prevBubbles;
+    });
   };
 
   return (
@@ -211,7 +217,7 @@ const TypingExperience = () => {
         <div className="flex flex-row items-center ml-4 md:ml-[5%] lg:ml-[10%] xl:ml-[15%]">
           <div className="flex flex-row items-center justify-start">
             <div>
-              <div className="absolute">{wordBubbles}</div>
+              <div className="absolute">{Object.values(wordBubbles)}</div>
               <span className="text-2xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl text-gray-600">
                 {typedText}
               </span>
