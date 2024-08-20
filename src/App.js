@@ -1,5 +1,5 @@
 import "./App.css";
-import TypingExperience from "./components/TypingExperience";
+import TypingExperience from "./views/TypingExperience";
 
 function App() {
   return (

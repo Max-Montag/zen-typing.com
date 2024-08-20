@@ -2,8 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import Howler from 'react-howler';
 import "./styles/bubble.css";
 import "./styles/typing.css";
-import sentencesData from "./../assets/data/sentences.json";
-import ResultsCard from "./ResultsCard";
+import sentencesData from "../assets/data/sentences.json";
+import ResultsCard from "./components/ResultsCard";
 
 import sound1 from './../assets/sounds/audio1.mp3';
 import sound2 from './../assets/sounds/audio2.mp3';
@@ -66,6 +66,8 @@ const TypingExperience = () => {
 
   const handleKeyDown = (event) => {
     const { upcomingText, typedText, timerActive } = stateRef.current;
+
+    // TODO SOUND BEI SILBEN
 
     // todo this line does not catch typing 1 wrong char in the resultboard an counting it as an error
     if (timerActive && Date.now() > startTime + TIME * 1000) return;
