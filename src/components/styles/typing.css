@@ -12,6 +12,10 @@
   max-width: 100vw;
 }
 
+.shadow-inner-lg {
+  box-shadow: inset 4px 2px 4px 4px rgb(0 0 0 / 0.05);
+}
+
 @-webkit-keyframes text-focus-in {
   0% {
     -webkit-filter: blur(12px);

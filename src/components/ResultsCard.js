@@ -45,7 +45,7 @@ const ResultsCard = ({
         </button>
         <div className="text-center flex flex-col gap-4">
           <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-semibold text-emerald-700 mb-4">
-            Ergebnisse
+            Deine Ergebnisse
           </h2>
           <p className="text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl text-gray-700">
             Wörter: {typedWords}

@@ -37,6 +37,7 @@ const TypingExperience = () => {
   const [errors, setErrors] = useState(0);
   const [typedText, setTypedText] = useState("");
   const [wordBubbles, setWordBubbles] = useState([]);
+  const [prevDirection, setPrevDirection] = useState("top");
   const [lastWord, setLastWord] = useState("");
   const [lastWordElem, setLastWordElem] = useState(null);
   const [timeLeft, setTimeLeft] = useState(TIME);
@@ -166,7 +167,8 @@ const TypingExperience = () => {
     const randomX = Math.random() * -BUBBLEDISTANCE;
     const randomY =
       Math.sqrt(BUBBLEDISTANCE ** 2 - randomX ** 2) *
-      (Math.random() < 0.5 ? 1 : -1);
+      (prevDirection === "top" ? -1 : 1);
+    setPrevDirection(prevDirection === "top" ? "bottom" : "top");
     const randomRotate = `${Math.random() * 90 - 45}deg`;
 
     const randomSound = chooseRandomSound();
@@ -194,12 +196,12 @@ const TypingExperience = () => {
   };
 
   const removeBubble = (index) => {
-    setWordBubbles((prevBubbles) => prevBubbles.filter((_, i) => i !== index));
+    return; //setWordBubbles((prevBubbles) => prevBubbles.filter((_, i) => i !== index));
   };
 
   return (
     <div className="min-h-screen bg-zinc-50 flex flex-col justify-center -mt-16 typing-container">
-      <div className="bg-zinc-100 flex flex-col gap-32 pt-4 pb-8">
+      <div className="bg-zinc-100 shadow-inner-lg flex flex-col gap-32 pt-4 pb-8">
         <div className="z-10 absolute top-0 right-0 h-full w-8 md:w-[15%] lg:w-[20%] xl:w-[25%] bg-gradient-to-r from-transparent to-zinc-100 pointer-events-none"></div>
         <div className="flex flex-row justify-center">
           <h1 className="text-center text-8xl font-semibold text-zinc-500">
