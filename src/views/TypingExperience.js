@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import Howler from 'react-howler';
+import { Howl } from 'howler';
 import "./styles/bubble.css";
 import "./styles/typing.css";
 import sentencesData from "../assets/data/sentences.json";
@@ -67,12 +68,10 @@ const TypingExperience = () => {
   const handleKeyDown = (event) => {
     const { upcomingText, typedText, timerActive } = stateRef.current;
 
-    // TODO SOUND BEI SILBEN
-
-    // todo this line does not catch typing 1 wrong char in the resultboard an counting it as an error
+    // TODO this line does not catch typing 1 wrong char in the resultboard an counting it as an error
     if (timerActive && Date.now() > startTime + TIME * 1000) return;
 
-    if (upcomingText[0] === event.key) {
+    if (upcomingText[0] === event.key || (upcomingText[0] === "$" && upcomingText[1] === event.key)) {
       if (!timerActive) {
         setTimerActive(true);
         setStartTime(Date.now());
@@ -84,10 +83,19 @@ const TypingExperience = () => {
       }
       setTypedText(typedText + event.key);
 
-      if (upcomingText.length <= SLIDINGWINDOWSIZE + BUFFERSIZE) {
-        setUpcomingText(upcomingText.slice(1) + " " + newSentence());
+      if (upcomingText[1] === "$") {
+        const sound = chooseRandomSound();
+        const howl = new Howl({
+          src: [sound],
+          autoplay: true
+        });
+        howl.play();
+      }
+
+      if (upcomingText.replace(/\$/g, "").length <= SLIDINGWINDOWSIZE + BUFFERSIZE) {
+        (upcomingText[1] !== "$") ? setUpcomingText(upcomingText.slice(1) + " " + newSentence()) : setUpcomingText(upcomingText.slice(2) + " " + newSentence());
       } else {
-        setUpcomingText((prevText) => prevText.slice(1));
+        (upcomingText[1] !== "$") ? setUpcomingText(upcomingText.slice(1)) : setUpcomingText(upcomingText.slice(2));
       }
       if (event.key === " " || upcomingText.length <= 1) {
         setTypedWords(typedWords + 1);
@@ -107,7 +115,7 @@ const TypingExperience = () => {
                 ) + 1,
                 upcomingText.slice(0, SLIDINGWINDOWSIZE).lastIndexOf(" "),
               )
-      ).trim();
+      ).trim().replace(/\$/g, "");
       if (lastWord !== newLastWord) {
         setLastWord(newLastWord);
         setLastWordElem(
@@ -197,7 +205,6 @@ const TypingExperience = () => {
       </div>
     );
     setWordBubbles((prevBubbles) => {prevBubbles[key] = newBubble; return prevBubbles});
-    console.log(wordBubbles);
   };
 
   const removeBubble = (key) => {
@@ -206,6 +213,8 @@ const TypingExperience = () => {
       return prevBubbles;
     });
   };
+
+  // TODO optimize this
 
   return (
     <div className="min-h-screen bg-zinc-50 flex flex-col justify-center -mt-16 typing-container">
@@ -223,32 +232,32 @@ const TypingExperience = () => {
               <span className="text-2xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl text-gray-600">
                 {typedText}
               </span>
-              {upcomingText.length > 0 && (
+              {upcomingText.replace(/\$/g, "").length > 0 && (
                 <span className="my-0 rounded-lg ring-offset-1 ring ring-emerald-500 p-1 m-1 text-3xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold text-emerald-400">
-                  {upcomingText.charAt(0) === " "
+                  {upcomingText.replace(/\$/g, "").charAt(0) === " "
                     ? "•"
-                    : upcomingText.charAt(0)}
+                    : upcomingText.replace(/\$/g, "").charAt(0)}
                 </span>
               )}
               <span className="text-2xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl text-gray-500">
-                {upcomingText.length > SLIDINGWINDOWSIZE
-                  ? upcomingText
+                {upcomingText.replace(/\$/g, "").length > SLIDINGWINDOWSIZE
+                  ? upcomingText.replace(/\$/g, "")
                       .slice(0, SLIDINGWINDOWSIZE)
                       .slice(
                         1,
                         penultimateIndexOf(
-                          upcomingText.slice(0, SLIDINGWINDOWSIZE),
+                          upcomingText.replace(/\$/g, "").slice(0, SLIDINGWINDOWSIZE),
                           " ",
                         ) === -1
-                          ? upcomingText.slice(0, SLIDINGWINDOWSIZE).length
+                          ? upcomingText.replace(/\$/g, "").slice(0, SLIDINGWINDOWSIZE).length
                           : penultimateIndexOf(
-                              upcomingText.slice(0, SLIDINGWINDOWSIZE),
+                              upcomingText.replace(/\$/g, "").slice(0, SLIDINGWINDOWSIZE),
                               " ",
                             ),
                       ) + " "
-                  : upcomingText.slice(0, SLIDINGWINDOWSIZE).slice(1)}
+                  : upcomingText.replace(/\$/g, "").slice(0, SLIDINGWINDOWSIZE).slice(1)}
               </span>
-              {upcomingText.length > SLIDINGWINDOWSIZE && lastWordElem}
+              {upcomingText.replace(/\$/g, "").length > SLIDINGWINDOWSIZE && lastWordElem}
             </div>
           </div>
         </div>
@@ -261,6 +270,7 @@ const TypingExperience = () => {
         typedWords={typedWords}
         errors={errors}
       />
+      {/* {sylableSounds} */}
     </div>
   );
 };
