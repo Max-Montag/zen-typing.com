@@ -45,9 +45,19 @@ const TypingExperience = () => {
     newSentence() + " " + newSentence(),
   );
   const sounds = [sound1, sound2, sound3, sound4, sound5, sound6];
-
+  const [lastPlayedSound, setLastPlayedSound] = useState(null);
 
   const stateRef = useRef({ upcomingText, typedText, timerActive });
+
+  const chooseRandomSound = () => {
+    let randomInt = null;
+    do {
+      randomInt = Math.floor(Math.random() * sounds.length);
+    } while (lastPlayedSound !== null && randomInt === lastPlayedSound);
+
+    setLastPlayedSound(randomInt);
+    return sounds[randomInt];
+  };
 
   const closeResultsCard = () => {
     setResultsCardOpen(false);
@@ -159,7 +169,7 @@ const TypingExperience = () => {
       (Math.random() < 0.5 ? 1 : -1);
     const randomRotate = `${Math.random() * 90 - 45}deg`;
 
-    const randomSound = sounds[Math.floor(Math.random() * sounds.length)];
+    const randomSound = chooseRandomSound();
 
     const newBubble = (
       <div
