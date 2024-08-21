@@ -1,20 +1,12 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import Howler from "react-howler";
 import { Howl } from "howler";
 import { IoSettingsSharp } from "react-icons/io5";
 import "./styles/bubble.css";
 import "./styles/typing.css";
-import sentencesData from "../assets/data/sentences.json";
+import { SettingsContext } from "./SettingsContext";
 import ResultsCard from "./components/ResultsCard";
 import SettingsPanel from "./components/SettingsPanel";
-
-import sound1 from "./../assets/sounds/audio1.mp3";
-import sound2 from "./../assets/sounds/audio2.mp3";
-import sound3 from "./../assets/sounds/audio3.mp3";
-import sound4 from "./../assets/sounds/audio4.mp3";
-import sound5 from "./../assets/sounds/audio5.mp3";
-import sound6 from "./../assets/sounds/audio6.mp3";
-import rainSound from "./../assets/sounds/rain.mp3";
 
 const SLIDINGWINDOWSIZE = 40;
 const BUFFERSIZE = 20;
@@ -31,9 +23,14 @@ function penultimateIndexOf(str, char) {
 // TODO: errors are not counted correctly!!
 
 const TypingExperience = () => {
+  const { selectedSentencesFile, soundEffectsVolume, sounds } =
+    useContext(SettingsContext);
+
   const newSentence = () => {
+    const sentencesData = require(`../assets/data/${selectedSentencesFile}`);
     return sentencesData[Math.floor(Math.random() * sentencesData.length)];
   };
+
   const [timerActive, setTimerActive] = useState(false);
   const [startTime, setStartTime] = useState(0);
   const [typedChars, setTypedChars] = useState(0);
@@ -50,25 +47,11 @@ const TypingExperience = () => {
   const [upcomingText, setUpcomingText] = useState(
     newSentence() + " " + newSentence(),
   );
-  const sounds = [sound1, sound2, sound3, sound4, sound5, sound6];
   const [lastPlayedSound, setLastPlayedSound] = useState(null);
 
   const stateRef = useRef({ upcomingText, typedText, timerActive });
 
   // TODO: The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. <URL>
-  useEffect(() => {
-    const rainHowl = new Howl({
-      src: [rainSound],
-      loop: true,
-      volume: 0.2,
-    });
-
-    rainHowl.play();
-
-    return () => {
-      rainHowl.stop();
-    };
-  }, []);
 
   useEffect(() => {
     stateRef.current = { upcomingText, typedText, timerActive };
@@ -146,6 +129,7 @@ const TypingExperience = () => {
         const howl = new Howl({
           src: [sound],
           autoplay: true,
+          volume: soundEffectsVolume,
         });
         howl.play();
       }
@@ -203,9 +187,7 @@ const TypingExperience = () => {
     }
   };
 
-  const abortTypingSession = () => {
-    setTimerActive(false);
-    setTimeLeft(TIME);
+  const finishTypingSession = () => {
     setTypedText("");
     setLastWord("");
     setWordBubbles({});
@@ -213,15 +195,17 @@ const TypingExperience = () => {
     setUpcomingText(newSentence() + " " + newSentence());
   };
 
+  const abortTypingSession = () => {
+    setTimerActive(false);
+    setTimeLeft(TIME);
+    finishTypingSession();
+  };
+
   const completeTypingSession = () => {
     setTimerActive(false);
     setSettingsPanelOpen(false);
     setResultsCardOpen(true);
-    setTypedText("");
-    setLastWord("");
-    setWordBubbles({});
-    setLastWordElem(null);
-    setUpcomingText(newSentence() + " " + newSentence());
+    finishTypingSession();
   };
 
   const resetTime = () => {
@@ -277,8 +261,11 @@ const TypingExperience = () => {
   return (
     <div className="min-h-screen bg-zinc-50 flex flex-col justify-center -mt-16 typing-container">
       <div className="fixed bottom-8 right-8">
-        <button className="text-zinc-600 lg:text-zinc-900" onClick={handleSettingsClick}>
-          <IoSettingsSharp className="w-16 h-16 md:w-32 md:h-32"/>
+        <button
+          className="text-zinc-600 lg:text-zinc-900"
+          onClick={handleSettingsClick}
+        >
+          <IoSettingsSharp className="w-16 h-16 md:w-32 md:h-32" />
         </button>
       </div>
       <div className="bg-zinc-100 shadow-inner-lg flex flex-col gap-32 pt-4 pb-8">
@@ -288,7 +275,7 @@ const TypingExperience = () => {
             {Math.max(timeLeft, 0).toFixed(0)} s
           </h1>
         </div>
-        <div className="flex flex-row items-center ml-4 md:ml-[5%] lg:ml-[10%] xl:ml-[15%]">
+        <div className="flex flex-row items-center ml-4 md:ml-[5%] lg:ml/[10%] xl:ml/[15%]">
           <div className="flex flex-row items-center justify-start">
             <div>
               <div className="absolute">{Object.values(wordBubbles)}</div>

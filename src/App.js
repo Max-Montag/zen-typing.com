@@ -1,11 +1,12 @@
-import "./App.css";
+import React from "react";
+import { SettingsProvider } from "./views/SettingsContext";
 import TypingExperience from "./views/TypingExperience";
 
 function App() {
   return (
-    <div className="App min-h-screen">
+    <SettingsProvider>
       <TypingExperience />
-    </div>
+    </SettingsProvider>
   );
 }
 

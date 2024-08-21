@@ -39,9 +39,9 @@ const ResultsCard = ({
       <div className="relative w-full mx-4 md:w-1/2 min-h-1/2 p-8 flex flex-col justify-center items-center bg-gradient-to-br from-emerald-50 to-emerald-200 rounded-xl shadow-xl transform scale-95 transition-transform duration-300 ease-in-out">
         <button
           onClick={handleClose}
-          className="absolute top-6 right-6 text-emerald-700 hover:text-emerald-200 transition-colors duration-300 ease-in-out"
+          className="absolute top-3 right-3 text-emerald-700 hover:text-emerald-200 transition-colors duration-300 ease-in-out"
         >
-          <LiaTimesSolid className="w-8 h-8" />
+          <LiaTimesSolid className="w-5 h-5" />
         </button>
         <div className="text-center flex flex-col gap-4">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-semibold text-emerald-700 mb-4">
