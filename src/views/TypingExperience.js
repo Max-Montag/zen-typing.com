@@ -14,7 +14,7 @@ import sound5 from "./../assets/sounds/audio5.mp3";
 import sound6 from "./../assets/sounds/audio6.mp3";
 import rainSound from "./../assets/sounds/rain.mp3";
 
-const SLIDINGWINDOWSIZE = 40; //40
+const SLIDINGWINDOWSIZE = 40;
 const BUFFERSIZE = 20;
 const BUBBLEDISTANCE = 1500;
 const TIME = 60;
