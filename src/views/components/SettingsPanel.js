@@ -47,9 +47,9 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
           <LiaTimesSolid className="w-5 h-5" />
         </button>
 
-        <div className="w-full flex flex-col gap-4 px-12">
+        <div className="w-full flex flex-col gap-8 mt-6 px-8">
           <div className="flex flex-row justify-between gap-6">
-            <label className="max-w-1/2 text-xl font-semibold text-emerald-700">
+            <label className="max-w-2/3 text-xl truncate font-semibold text-emerald-700">
               Lautstärke der Hintergrundmusik
             </label>
             <input
@@ -59,11 +59,11 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
               step="0.01"
               value={bgMusicVolume}
               onChange={(e) => setBgMusicVolume(parseFloat(e.target.value))}
-              className="w-1/2 max-w-1/2 mx-4"
+              className="w-1/3 max-w-1/3 mx-4"
             />
           </div>
           <div className="flex flex-row justify-between gap-6">
-            <label className="max-w-1/2 text-xl font-semibold text-emerald-700">
+            <label className="max-w-2/4 truncate text-xl font-semibold text-emerald-700">
               Effektlautstärke
             </label>
             <input
@@ -75,17 +75,17 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
               onChange={(e) =>
                 setSoundEffectsVolume(parseFloat(e.target.value))
               }
-              className="w-1/2 max-w-1/2 mx-4"
+              className="w-1/3 max-w-1/3 mx-4"
             />
           </div>
           <div className="flex flex-row justify-between gap-6">
-            <label className="max-w-1/2 text-xl font-semibold text-emerald-700">
+            <label className="max-w-2/3 truncate text-xl font-semibold text-emerald-700">
               Wortschatz
             </label>
             <select
               value={selectedSentencesFile}
               onChange={(e) => setSelectedSentencesFile(e.target.value)}
-              className="w-1/2 max-w-1/2 mx-4 bg-emerald-100 border text-center border-emerald-700 rounded p-2"
+              className="w-1/3 max-w-1/3 mx-4 bg-emerald-100 border text-center border-emerald-700 rounded p-2"
             >
               {availableSentencesFiles.map((file, index) => (
                 <option key={index} value={file}>
