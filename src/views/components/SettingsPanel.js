@@ -1,17 +1,13 @@
 import React, { useEffect } from "react";
 import { LiaTimesSolid } from "react-icons/lia";
 
-const ResultsCard = ({
+const SettingsPanel = ({
   isOpen,
-  closePopup,
-  resetTime,
-  typedChars,
-  typedWords,
-  errors,
+  closePopup
 }) => {
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (event.key === "Enter") {
+      if (event.key === "Escape") {
         handleClose();
       }
     };
@@ -28,7 +24,6 @@ const ResultsCard = ({
   }, [isOpen]);
 
   const handleClose = () => {
-    resetTime();
     closePopup();
   };
 
@@ -44,18 +39,7 @@ const ResultsCard = ({
           <LiaTimesSolid className="w-8 h-8" />
         </button>
         <div className="text-center flex flex-col gap-4">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-semibold text-emerald-700 mb-4">
-            Deine Ergebnisse
-          </h2>
-          <p className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl text-gray-700">
-            Wörter: {typedWords}
-          </p>
-          <p className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl text-gray-700">
-            Zeichen: {typedChars}
-          </p>
-          <p className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl text-gray-700">
-            Falsche Zeichen: {errors}
-          </p>
+
         </div>
         <button
           onClick={handleClose}
@@ -68,4 +52,4 @@ const ResultsCard = ({
   );
 };
 
-export default ResultsCard;
+export default SettingsPanel;

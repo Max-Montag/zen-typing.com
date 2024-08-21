@@ -1,10 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
 import Howler from "react-howler";
 import { Howl } from "howler";
+import { IoSettingsSharp } from "react-icons/io5";
 import "./styles/bubble.css";
 import "./styles/typing.css";
 import sentencesData from "../assets/data/sentences.json";
 import ResultsCard from "./components/ResultsCard";
+import SettingsPanel from "./components/SettingsPanel";
 
 import sound1 from "./../assets/sounds/audio1.mp3";
 import sound2 from "./../assets/sounds/audio2.mp3";
@@ -44,6 +46,7 @@ const TypingExperience = () => {
   const [lastWordElem, setLastWordElem] = useState(null);
   const [timeLeft, setTimeLeft] = useState(TIME);
   const [resultsCardOpen, setResultsCardOpen] = useState(false);
+  const [SettingsPanelOpen, setSettingsPanelOpen] = useState(false);
   const [upcomingText, setUpcomingText] = useState(
     newSentence() + " " + newSentence(),
   );
@@ -94,6 +97,14 @@ const TypingExperience = () => {
     };
   }, [typedText]);
 
+  const closeResultsCard = () => {
+    setResultsCardOpen(false);
+  };
+
+  const closeSettingsPanel = () => {
+    setSettingsPanelOpen(false);
+  };
+
   const chooseRandomSound = () => {
     let randomInt = null;
     do {
@@ -104,8 +115,9 @@ const TypingExperience = () => {
     return sounds[randomInt];
   };
 
-  const closeResultsCard = () => {
-    setResultsCardOpen(false);
+  const handleSettingsClick = () => {
+    setSettingsPanelOpen(true);
+    abortTypingSession();
   };
 
   const handleKeyDown = (event) => {
@@ -191,8 +203,19 @@ const TypingExperience = () => {
     }
   };
 
+  const abortTypingSession = () => {
+    setTimerActive(false);
+    setTimeLeft(TIME);
+    setTypedText("");
+    setLastWord("");
+    setWordBubbles({});
+    setLastWordElem(null);
+    setUpcomingText(newSentence() + " " + newSentence());
+  };
+
   const completeTypingSession = () => {
     setTimerActive(false);
+    setSettingsPanelOpen(false);
     setResultsCardOpen(true);
     setTypedText("");
     setLastWord("");
@@ -253,6 +276,11 @@ const TypingExperience = () => {
 
   return (
     <div className="min-h-screen bg-zinc-50 flex flex-col justify-center -mt-16 typing-container">
+      <div className="fixed bottom-8 right-8">
+        <button className="text-zinc-600 lg:text-zinc-900" onClick={handleSettingsClick}>
+          <IoSettingsSharp className="w-16 h-16 md:w-32 md:h-32"/>
+        </button>
+      </div>
       <div className="bg-zinc-100 shadow-inner-lg flex flex-col gap-32 pt-4 pb-8">
         <div className="z-10 absolute top-0 right-0 h-full w-8 md:w-[15%] lg:w-[20%] xl:w-[25%] bg-gradient-to-r from-transparent to-zinc-100 pointer-events-none"></div>
         <div className="flex flex-row justify-center">
@@ -315,6 +343,10 @@ const TypingExperience = () => {
         typedChars={typedChars}
         typedWords={typedWords}
         errors={errors}
+      />
+      <SettingsPanel
+        isOpen={SettingsPanelOpen}
+        closePopup={closeSettingsPanel}
       />
     </div>
   );
