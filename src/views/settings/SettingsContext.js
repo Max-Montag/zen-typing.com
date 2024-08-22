@@ -8,9 +8,8 @@ export const SettingsProvider = ({ children }) => {
   const [timerDisabled, setTimerDisabled] = useState(false);
   const [bgMusicVolume, setBgMusicVolume] = useState(0.05);
   const [soundEffectsVolume, setSoundEffectsVolume] = useState(0.5);
-  const [selectedSentencesFile, setSelectedSentencesFile] = useState(
-    "Affirmationen.json",
-  );
+  const [selectedSentencesFile, setSelectedSentencesFile] =
+    useState("Affirmationen.json");
   const [selectedBgSound, setSelectedBgSound] = useState("Regen.mp3");
   const [availableBgSounds, setAvailableBgSounds] = useState([]);
   const [availableSentencesFiles, setAvailableSentencesFiles] = useState([]);

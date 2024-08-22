@@ -18,7 +18,9 @@ const NiceToggle = ({ enabled, setEnabled }) => {
           >
             <span
               className={`${
-                enabled ? "translate-x-[36px] bg-emerald-100" : "translate-x-[4px] bg-emerald-700"
+                enabled
+                  ? "translate-x-[36px] bg-emerald-100"
+                  : "translate-x-[4px] bg-emerald-700"
               } translate-y-1 inline-block w-6 h-6 transform bg-secondary rounded-full transition-transform`}
             />
           </span>

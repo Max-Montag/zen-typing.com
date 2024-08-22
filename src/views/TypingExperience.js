@@ -23,8 +23,13 @@ function penultimateIndexOf(str, char) {
 // TODO: errors are not counted correctly!!
 
 const TypingExperience = () => {
-  const { timerValue, selectedSentencesFile, soundEffectsVolume, sounds, timerDisabled } =
-    useContext(SettingsContext);
+  const {
+    timerValue,
+    selectedSentencesFile,
+    soundEffectsVolume,
+    sounds,
+    timerDisabled,
+  } = useContext(SettingsContext);
 
   const newSentence = () => {
     const sentencesData = require(`../assets/data/${selectedSentencesFile}`);
@@ -50,6 +55,8 @@ const TypingExperience = () => {
   const [lastPlayedSound, setLastPlayedSound] = useState(null);
 
   const stateRef = useRef({ upcomingText, typedText, timerActive });
+  const inputRef = useRef(null);
+  const centerRef = useRef(null);
 
   // TODO: The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. <URL>
 
@@ -72,14 +79,6 @@ const TypingExperience = () => {
     return () => clearInterval(interval);
   }, [timerActive, startTime]);
 
-  useEffect(() => {
-    document.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [typedText]);
-
   const closeResultsCard = () => {
     setResultsCardOpen(false);
   };
@@ -88,6 +87,7 @@ const TypingExperience = () => {
     setSettingsPanelOpen(false);
     setUpcomingText(newSentence() + " " + newSentence());
     setTimeLeft(timerValue);
+    handleCentralClick();
   };
 
   const chooseRandomSound = () => {
@@ -100,20 +100,43 @@ const TypingExperience = () => {
     return sounds[randomInt];
   };
 
+  const scrollToCenter = () => {
+    centerRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   const handleSettingsClick = () => {
     setSettingsPanelOpen(true);
     abortTypingSession();
   };
 
-  const handleKeyDown = (event) => {
+  const handleCentralClick = () => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+      scrollToCenter();
+      setTimeout(() => {
+        scrollToCenter();
+      }, 100);
+    }
+  };
+
+  const handleInputChange = (event) => {
+    proccesChar(event.target.value.slice(-1));
+  };
+
+  const proccesChar = (key) => {
     const { upcomingText, typedText, timerActive } = stateRef.current;
 
     // TODO this line does not catch typing 1 wrong char in the resultboard an counting it as an error
-    if (timerActive && Date.now() > startTime + timerValue * 1000 && !timerDisabled) return;
+    if (
+      timerActive &&
+      Date.now() > startTime + timerValue * 1000 &&
+      !timerDisabled
+    )
+      return;
 
     if (
-      upcomingText[0] === event.key ||
-      (upcomingText[0] === "$" && upcomingText[1] === event.key)
+      upcomingText[0] === key ||
+      (upcomingText[0] === "$" && upcomingText[1] === key)
     ) {
       if (!timerActive) {
         setTimerActive(true);
@@ -124,7 +147,7 @@ const TypingExperience = () => {
       } else {
         setTypedChars(typedChars + 1);
       }
-      setTypedText(typedText + event.key);
+      setTypedText(typedText + key);
 
       if (upcomingText[1] === "$") {
         const sound = chooseRandomSound();
@@ -148,7 +171,7 @@ const TypingExperience = () => {
           ? setUpcomingText(upcomingText.slice(1))
           : setUpcomingText(upcomingText.slice(2));
       }
-      if (event.key === " " || upcomingText.length <= 1) {
+      if (key === " " || upcomingText.length <= 1) {
         setTypedWords(typedWords + 1);
         launchWordBubble(typedText.trim().replace(/[,!?;:.\-]/g, ""));
         setTypedText("");
@@ -195,6 +218,7 @@ const TypingExperience = () => {
     setWordBubbles({});
     setLastWordElem(null);
     setUpcomingText(newSentence() + " " + newSentence());
+    inputRef.current.value = "";
   };
 
   const abortTypingSession = () => {
@@ -221,11 +245,8 @@ const TypingExperience = () => {
       (prevDirection === "top" ? -1 : 1);
     setPrevDirection(prevDirection === "top" ? "bottom" : "top");
     const randomRotate = `${Math.random() * 90 - 45}deg`;
-
     const randomSound = chooseRandomSound();
-
     const key = "bubble" + Date.now();
-
     const newBubble = (
       <div
         key={key}
@@ -258,8 +279,6 @@ const TypingExperience = () => {
     });
   };
 
-  // TODO optimize this
-
   return (
     <div className="min-h-screen bg-zinc-50 flex flex-col justify-center -mt-16 typing-container">
       <div className="fixed bottom-8 right-8">
@@ -274,14 +293,18 @@ const TypingExperience = () => {
           )}
         </button>
       </div>
-      <div className="bg-zinc-100 shadow-inner-lg flex flex-col gap-32 py-16">
+      <div
+        className="bg-zinc-100 shadow-inner-lg flex flex-col gap-12 sm:gap-16 md:gap-32 py-16 hover:cursor-pointer"
+        onClick={handleCentralClick}
+        ref={centerRef}
+      >
         <div className="z-10 absolute top-0 right-0 h-full w-8 md:w-[15%] lg:w-[20%] xl:w-[25%] bg-gradient-to-r from-transparent to-zinc-100 pointer-events-none"></div>
         {!timerDisabled && (
-        <div className="flex flex-row justify-center">
-          <h1 className="text-center text-8xl font-semibold text-zinc-500">
-            {Math.max(timeLeft, 0).toFixed(0)} s
-          </h1>
-        </div>
+          <div className="flex flex-row justify-center">
+            <h1 className="text-center text-8xl font-semibold text-zinc-500">
+              {Math.max(timeLeft, 0).toFixed(0)} s
+            </h1>
+          </div>
         )}
         <div className="flex flex-row items-center ml-4 md:ml-[5%] lg:ml/[10%] xl:ml/[15%]">
           <div className="flex flex-row items-center justify-start">
@@ -343,6 +366,13 @@ const TypingExperience = () => {
       <SettingsPanel
         isOpen={SettingsPanelOpen}
         closePopup={closeSettingsPanel}
+      />
+      <input
+        ref={inputRef}
+        type="text"
+        onChange={handleInputChange}
+        className="w-0.5 max-w-0.5 h-0.5 max-h-0.5 text-zinc-50 bg-zinc-50 text-sm focus:outline-none hover:cursor-default"
+        autoFocus
       />
     </div>
   );

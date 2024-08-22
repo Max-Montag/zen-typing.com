@@ -22,8 +22,12 @@ input[type="range"]::-webkit-slider-thumb {
   transform: translateY(1px);
   height: 18px;
   width: 18px;
-  background: rgb(4,120,87);
-  background: linear-gradient(90deg, rgba(4,120,87,1) 0%, rgba(6,95,70,1) 100%);
+  background: rgb(4, 120, 87);
+  background: linear-gradient(
+    90deg,
+    rgba(4, 120, 87, 1) 0%,
+    rgba(6, 95, 70, 1) 100%
+  );
   border-radius: 10px;
   -webkit-appearance: none;
   appearance: none;
@@ -34,8 +38,12 @@ input[type="range"]::-moz-range-thumb {
   transform: translateY(1px);
   height: 18px;
   width: 18px;
-  background: rgb(4,120,87);
-  background: linear-gradient(90deg, rgba(4,120,87,1) 0%, rgba(6,95,70,1) 100%);
+  background: rgb(4, 120, 87);
+  background: linear-gradient(
+    90deg,
+    rgba(4, 120, 87, 1) 0%,
+    rgba(6, 95, 70, 1) 100%
+  );
   border-radius: 10px;
   cursor: pointer;
 }
