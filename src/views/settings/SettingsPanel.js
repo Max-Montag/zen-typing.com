@@ -78,10 +78,10 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
               type="range"
               min="0"
               max="0.1"
-              step="0.01"
+              step="0.001"
               value={bgMusicVolume}
               onChange={(e) => setBgMusicVolume(parseFloat(e.target.value))}
-              className="w-1/3 max-w-1/3 mx-4"
+              className="w-1/3 max-w-1/3 mx-4 shadow-sm"
             />
           </div>
           <div className="flex flex-row justify-between gap-6">
@@ -97,7 +97,7 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
               onChange={(e) =>
                 setSoundEffectsVolume(parseFloat(e.target.value))
               }
-              className="w-1/3 max-w-1/3 mx-4"
+              className="w-1/3 max-w-1/3 mx-4 shadow-sm"
             />
           </div>
           <div className="flex flex-row justify-between gap-6">

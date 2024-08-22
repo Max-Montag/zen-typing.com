@@ -4,6 +4,7 @@ import { Howl } from "howler";
 import { IoSettingsSharp, IoSettingsOutline } from "react-icons/io5";
 import "./styles/bubble.css";
 import "./styles/typing.css";
+import "./styles/rangeInput.css";
 import ResultsCard from "./ResultsCard";
 import SettingsPanel from "./settings/SettingsPanel";
 import { SettingsContext } from "./settings/SettingsContext";
