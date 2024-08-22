@@ -49,19 +49,23 @@ const ResultsCard = ({
             Deine Ergebnisse
           </h2>
           <div className="flex flex-row justify-between text-xl sm:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl text-gray-700">
-            <span>Wörter </span><span>{typedWords}</span>
+            <span>Wörter </span>
+            <span>{typedWords}</span>
           </div>
           {time !== 60 && (
+            <div className="flex flex-row justify-between text-xl sm:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl text-gray-700">
+              <span>Wörter pro Minute </span>
+              <span>{Math.round((typedWords / time) * 60)}</span>
+            </div>
+          )}
           <div className="flex flex-row justify-between text-xl sm:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl text-gray-700">
-            <span>Wörter pro Minute </span><span>{Math.round((typedWords / time) * 60)}</span>
+            <span>Zeichen </span>
+            <span>{typedChars}</span>
           </div>
-        )}
-        <div className="flex flex-row justify-between text-xl sm:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl text-gray-700">
-          <span>Zeichen </span><span>{typedChars}</span>
-        </div>
-        <div className="flex flex-row justify-between text-xl sm:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl text-gray-700">
-          <span>Fehler </span><span>{errors}</span>
-        </div>
+          <div className="flex flex-row justify-between text-xl sm:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl text-gray-700">
+            <span>Fehler </span>
+            <span>{errors}</span>
+          </div>
         </div>
         <button
           onClick={handleClose}

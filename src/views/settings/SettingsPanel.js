@@ -1,5 +1,6 @@
 import React, { useEffect, useContext } from "react";
-import { LiaTimesSolid } from "react-icons/lia";
+import { LiaTimesSolid  } from "react-icons/lia";
+import { IoVolumeMediumOutline } from "react-icons/io5";
 import { SettingsContext } from "./SettingsContext";
 
 const timerMappings = {
@@ -63,7 +64,7 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
         <div className="w-full flex flex-col gap-8 mt-10 px-8">
           <div className="flex flex-row justify-between gap-6">
             <label className="max-w-2/3 text-xl truncate font-semibold text-emerald-700">
-              Lautstärke der Hintergrundmusik
+              Hintergrundgeräusche <IoVolumeMediumOutline className="inline" />
             </label>
             <input
               type="range"
@@ -77,7 +78,7 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
           </div>
           <div className="flex flex-row justify-between gap-6">
             <label className="max-w-2/4 truncate text-xl font-semibold text-emerald-700">
-              Effektlautstärke
+              Tastenklänge <IoVolumeMediumOutline className="inline" />
             </label>
             <input
               type="range"
@@ -138,7 +139,7 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
                 </option>
               ))}
             </select>
-            </div>
+          </div>
         </div>
         <button
           onClick={handleClose}

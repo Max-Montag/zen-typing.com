@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
 import Howler from "react-howler";
 import { Howl } from "howler";
-import { IoSettingsSharp } from "react-icons/io5";
+import { IoSettingsSharp, IoSettingsOutline } from "react-icons/io5";
 import "./styles/bubble.css";
 import "./styles/typing.css";
 import ResultsCard from "./ResultsCard";
@@ -127,7 +127,6 @@ const TypingExperience = () => {
 
       if (upcomingText[1] === "$") {
         const sound = chooseRandomSound();
-        console.log(sound);
         const howl = new Howl({
           src: [sound],
           autoplay: true,
@@ -242,7 +241,7 @@ const TypingExperience = () => {
         <p className="text-gray-400 text-2xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl">
           {word}
         </p>
-        <Howler src={randomSound} playing={true} volume={soundEffectsVolume}/>
+        <Howler src={randomSound} playing={true} volume={soundEffectsVolume} />
       </div>
     );
     setWordBubbles((prevBubbles) => {
@@ -264,10 +263,14 @@ const TypingExperience = () => {
     <div className="min-h-screen bg-zinc-50 flex flex-col justify-center -mt-16 typing-container">
       <div className="fixed bottom-8 right-8">
         <button
-          className="text-zinc-600 lg:text-zinc-900"
+          className="text-zinc-600 lg:text-zinc-900 hover:text-zinc-400 transition-colors duration-300 ease-in-out"
           onClick={handleSettingsClick}
         >
-          <IoSettingsSharp className="w-16 h-16 md:w-32 md:h-32" />
+          {SettingsPanelOpen ? (
+            <IoSettingsOutline className="w-16 h-16 md:w-24 md:h-24 animate-spin-slow-reverse" />
+          ) : (
+            <IoSettingsSharp className="w-16 h-16 md:w-24 md:h-24 animate-finish-spin" />
+          )}
         </button>
       </div>
       <div className="bg-zinc-100 shadow-inner-lg flex flex-col gap-32 pt-4 pb-8">

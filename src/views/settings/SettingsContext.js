@@ -7,14 +7,13 @@ export const SettingsProvider = ({ children }) => {
   const [timerValue, setTimerValue] = useState(60);
   const [bgMusicVolume, setBgMusicVolume] = useState(0.05);
   const [soundEffectsVolume, setSoundEffectsVolume] = useState(0.5);
-  const [selectedSentencesFile, setSelectedSentencesFile] =
-    useState("geführte_Meditation.json");
+  const [selectedSentencesFile, setSelectedSentencesFile] = useState(
+    "geführte_Meditation.json",
+  );
   const [selectedBgSound, setSelectedBgSound] = useState("Regen.mp3");
   const [availableBgSounds, setAvailableBgSounds] = useState([]);
   const [availableSentencesFiles, setAvailableSentencesFiles] = useState([]);
   const [sounds, setSounds] = useState([]);
-
-  // const [rainHowl, setRainHowl] = useState(null);
   const [bgSoundHowl, setBgSoundHowl] = useState(null);
 
   useEffect(() => {
@@ -26,8 +25,16 @@ export const SettingsProvider = ({ children }) => {
     };
 
     const fetchSounds = async () => {
-      const contextFx = require.context("../../assets/sounds/fx", false, /\.(mp3|wav)$/);
-      const contextBg = require.context("../../assets/sounds/bg", false, /\.(mp3|wav)$/);
+      const contextFx = require.context(
+        "../../assets/sounds/fx",
+        false,
+        /\.(mp3|wav)$/,
+      );
+      const contextBg = require.context(
+        "../../assets/sounds/bg",
+        false,
+        /\.(mp3|wav)$/,
+      );
       const fxFiles = contextFx.keys().map((file) => contextFx(file));
       const bgFiles = contextBg.keys().map((file) => file.replace("./", ""));
       setSounds(fxFiles);
@@ -48,7 +55,7 @@ export const SettingsProvider = ({ children }) => {
     const bgSound = new Howl({
       src: require(`./../../assets/sounds/bg/${selectedBgSound}`),
       loop: true,
-      volume: bgMusicVolume ,
+      volume: bgMusicVolume,
     });
 
     setBgSoundHowl(bgSound);
