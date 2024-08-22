@@ -2,8 +2,19 @@ import React, { useEffect, useContext } from "react";
 import { LiaTimesSolid } from "react-icons/lia";
 import { SettingsContext } from "./../SettingsContext";
 
+const timerMappings = {
+  30: "30 Sekunden",
+  60: "1 Minute",
+  120: "2 Minuten",
+  180: "3 Minuten",
+  300: "5 Minuten",
+  600: "10 Minuten",
+};
+
 const SettingsPanel = ({ isOpen, closePopup }) => {
   const {
+    timerValue,
+    setTimerValue,
     bgMusicVolume,
     setBgMusicVolume,
     soundEffectsVolume,
@@ -11,6 +22,9 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
     selectedSentencesFile,
     setSelectedSentencesFile,
     availableSentencesFiles,
+    selectedBgSound,
+    setSelectedBgSound,
+    availableBgSounds,
   } = useContext(SettingsContext);
 
   useEffect(() => {
@@ -46,8 +60,7 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
         >
           <LiaTimesSolid className="w-5 h-5" />
         </button>
-
-        <div className="w-full flex flex-col gap-8 mt-6 px-8">
+        <div className="w-full flex flex-col gap-8 mt-10 px-8">
           <div className="flex flex-row justify-between gap-6">
             <label className="max-w-2/3 text-xl truncate font-semibold text-emerald-700">
               Lautstärke der Hintergrundmusik
@@ -55,7 +68,7 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
             <input
               type="range"
               min="0"
-              max="1"
+              max="0.1"
               step="0.01"
               value={bgMusicVolume}
               onChange={(e) => setBgMusicVolume(parseFloat(e.target.value))}
@@ -80,6 +93,22 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
           </div>
           <div className="flex flex-row justify-between gap-6">
             <label className="max-w-2/3 truncate text-xl font-semibold text-emerald-700">
+              Hintergrundgeräusche
+            </label>
+            <select
+              value={selectedBgSound}
+              onChange={(e) => setSelectedBgSound(e.target.value)}
+              className="w-1/3 max-w-1/3 mx-4 bg-emerald-100 border text-center border-emerald-700 rounded p-2"
+            >
+              {availableBgSounds.map((file, index) => (
+                <option key={index} value={file}>
+                  {file.replace("_", " ").replace(".mp3", "")}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="flex flex-row justify-between gap-6">
+            <label className="max-w-2/3 truncate text-xl font-semibold text-emerald-700">
               Wortschatz
             </label>
             <select
@@ -89,13 +118,28 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
             >
               {availableSentencesFiles.map((file, index) => (
                 <option key={index} value={file}>
-                  {file}
+                  {file.replace("_", " ").replace(".json", "")}
                 </option>
               ))}
             </select>
           </div>
+          <div className="flex flex-row justify-between gap-6">
+            <label className="max-w-2/3 truncate text-xl font-semibold text-emerald-700">
+              Timer
+            </label>
+            <select
+              value={timerValue}
+              onChange={(e) => setTimerValue(parseInt(e.target.value))}
+              className="w-1/3 max-w-1/3 mx-4 bg-emerald-100 border text-center border-emerald-700 rounded p-2"
+            >
+              {Object.keys(timerMappings).map((key) => (
+                <option key={key} value={key}>
+                  {timerMappings[key]}
+                </option>
+              ))}
+            </select>
+            </div>
         </div>
-
         <button
           onClick={handleClose}
           className="mt-12 mx-6 w-3/4 md:w-1/2 px-6 py-2 bg-emerald-700 bg-opacity-40 text-white ring-2 ring-zinc-100 rounded-full shadow-xl hover:bg-emerald-500 hover:bg-opacity-40 transition-colors duration-300 ease-in-out"

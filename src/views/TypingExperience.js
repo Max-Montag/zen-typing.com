@@ -11,7 +11,6 @@ import SettingsPanel from "./components/SettingsPanel";
 const SLIDINGWINDOWSIZE = 40;
 const BUFFERSIZE = 20;
 const BUBBLEDISTANCE = 1500;
-const TIME = 60;
 
 function penultimateIndexOf(str, char) {
   let lastIndex = str.lastIndexOf(char);
@@ -23,7 +22,7 @@ function penultimateIndexOf(str, char) {
 // TODO: errors are not counted correctly!!
 
 const TypingExperience = () => {
-  const { selectedSentencesFile, soundEffectsVolume, sounds } =
+  const { timerValue, selectedSentencesFile, soundEffectsVolume, sounds } =
     useContext(SettingsContext);
 
   const newSentence = () => {
@@ -41,7 +40,7 @@ const TypingExperience = () => {
   const [prevDirection, setPrevDirection] = useState("top");
   const [lastWord, setLastWord] = useState("");
   const [lastWordElem, setLastWordElem] = useState(null);
-  const [timeLeft, setTimeLeft] = useState(TIME);
+  const [timeLeft, setTimeLeft] = useState(timerValue);
   const [resultsCardOpen, setResultsCardOpen] = useState(false);
   const [SettingsPanelOpen, setSettingsPanelOpen] = useState(false);
   const [upcomingText, setUpcomingText] = useState(
@@ -61,8 +60,8 @@ const TypingExperience = () => {
     let interval = null;
     if (timerActive) {
       interval = setInterval(() => {
-        setTimeLeft(TIME - (Date.now() - startTime) / 1000);
-        if (Date.now() > startTime + TIME * 1000) {
+        setTimeLeft(timerValue - (Date.now() - startTime) / 1000);
+        if (Date.now() > startTime + timerValue * 1000) {
           completeTypingSession();
         }
       }, 100);
@@ -86,6 +85,8 @@ const TypingExperience = () => {
 
   const closeSettingsPanel = () => {
     setSettingsPanelOpen(false);
+    setUpcomingText(newSentence() + " " + newSentence());
+    setTimeLeft(timerValue);
   };
 
   const chooseRandomSound = () => {
@@ -107,7 +108,7 @@ const TypingExperience = () => {
     const { upcomingText, typedText, timerActive } = stateRef.current;
 
     // TODO this line does not catch typing 1 wrong char in the resultboard an counting it as an error
-    if (timerActive && Date.now() > startTime + TIME * 1000) return;
+    if (timerActive && Date.now() > startTime + timerValue * 1000) return;
 
     if (
       upcomingText[0] === event.key ||
@@ -126,6 +127,7 @@ const TypingExperience = () => {
 
       if (upcomingText[1] === "$") {
         const sound = chooseRandomSound();
+        console.log(sound);
         const howl = new Howl({
           src: [sound],
           autoplay: true,
@@ -197,7 +199,7 @@ const TypingExperience = () => {
 
   const abortTypingSession = () => {
     setTimerActive(false);
-    setTimeLeft(TIME);
+    setTimeLeft(timerValue);
     finishTypingSession();
   };
 
@@ -209,7 +211,7 @@ const TypingExperience = () => {
   };
 
   const resetTime = () => {
-    setTimeLeft(TIME);
+    setTimeLeft(timerValue);
   };
 
   const launchWordBubble = (word) => {
@@ -240,7 +242,7 @@ const TypingExperience = () => {
         <p className="text-gray-400 text-2xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl">
           {word}
         </p>
-        <Howler src={randomSound} playing={true} />
+        <Howler src={randomSound} playing={true} volume={soundEffectsVolume}/>
       </div>
     );
     setWordBubbles((prevBubbles) => {
@@ -329,6 +331,7 @@ const TypingExperience = () => {
         resetTime={resetTime}
         typedChars={typedChars}
         typedWords={typedWords}
+        time={timerValue}
         errors={errors}
       />
       <SettingsPanel

@@ -7,6 +7,7 @@ const ResultsCard = ({
   resetTime,
   typedChars,
   typedWords,
+  time,
   errors,
 }) => {
   useEffect(() => {
@@ -43,23 +44,28 @@ const ResultsCard = ({
         >
           <LiaTimesSolid className="w-5 h-5" />
         </button>
-        <div className="text-center flex flex-col gap-4">
+        <div className="text-center flex flex-col gap-6">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-semibold text-emerald-700 mb-4">
             Deine Ergebnisse
           </h2>
-          <p className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl text-gray-700">
-            Wörter: {typedWords}
-          </p>
-          <p className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl text-gray-700">
-            Zeichen: {typedChars}
-          </p>
-          <p className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl text-gray-700">
-            Falsche Zeichen: {errors}
-          </p>
+          <div className="flex flex-row justify-between text-xl sm:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl text-gray-700">
+            <span>Wörter </span><span>{typedWords}</span>
+          </div>
+          {time !== 60 && (
+          <div className="flex flex-row justify-between text-xl sm:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl text-gray-700">
+            <span>Wörter pro Minute </span><span>{Math.round((typedWords / time) * 60)}</span>
+          </div>
+        )}
+        <div className="flex flex-row justify-between text-xl sm:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl text-gray-700">
+          <span>Zeichen </span><span>{typedChars}</span>
+        </div>
+        <div className="flex flex-row justify-between text-xl sm:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl text-gray-700">
+          <span>Fehler </span><span>{errors}</span>
+        </div>
         </div>
         <button
           onClick={handleClose}
-          className="mt-6 mx-6 w-3/4 md:w-1/2 px-6 py-2 bg-emerald-700 bg-opacity-40 text-white ring-2 ring-zinc-100 rounded-full shadow-xl hover:bg-emerald-500 hover:bg-opacity-40 transition-colors duration-300 ease-in-out"
+          className="mt-8 mx-6 w-3/4 md:w-1/2 px-6 py-2 bg-emerald-700 bg-opacity-40 text-white ring-2 ring-zinc-100 rounded-full shadow-xl hover:bg-emerald-500 hover:bg-opacity-40 transition-colors duration-300 ease-in-out"
         >
           Schließen
         </button>

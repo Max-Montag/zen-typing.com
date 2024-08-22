@@ -1,24 +1,21 @@
 import React, { createContext, useState, useEffect } from "react";
 import { Howl } from "howler";
-import sound1 from "./../assets/sounds/fx/audio1.mp3";
-import sound2 from "./../assets/sounds/fx/audio2.mp3";
-import sound3 from "./../assets/sounds/fx/audio3.mp3";
-import sound4 from "./../assets/sounds/fx/audio4.mp3";
-import sound5 from "./../assets/sounds/fx/audio5.mp3";
-import sound6 from "./../assets/sounds/fx/audio6.mp3";
-import rainSound from "./../assets/sounds/bg/rain.mp3";
 
 export const SettingsContext = createContext();
 
 export const SettingsProvider = ({ children }) => {
-  const [bgMusicVolume, setBgMusicVolume] = useState(0.2);
-  const [soundEffectsVolume, setSoundEffectsVolume] = useState(1);
+  const [timerValue, setTimerValue] = useState(60);
+  const [bgMusicVolume, setBgMusicVolume] = useState(0.05);
+  const [soundEffectsVolume, setSoundEffectsVolume] = useState(0.5);
   const [selectedSentencesFile, setSelectedSentencesFile] =
-    useState("sentences.json");
+    useState("geführte_Meditation.json");
+  const [selectedBgSound, setSelectedBgSound] = useState("Regen.mp3");
+  const [availableBgSounds, setAvailableBgSounds] = useState([]);
   const [availableSentencesFiles, setAvailableSentencesFiles] = useState([]);
+  const [sounds, setSounds] = useState([]);
 
-  const sounds = [sound1, sound2, sound3, sound4, sound5, sound6];
-  const [rainHowl, setRainHowl] = useState(null);
+  // const [rainHowl, setRainHowl] = useState(null);
+  const [bgSoundHowl, setBgSoundHowl] = useState(null);
 
   useEffect(() => {
     const fetchSentencesFiles = async () => {
@@ -28,33 +25,45 @@ export const SettingsProvider = ({ children }) => {
       setSelectedSentencesFile(files[0]);
     };
 
+    const fetchSounds = async () => {
+      const contextFx = require.context("../assets/sounds/fx", false, /\.(mp3|wav)$/);
+      const contextBg = require.context("../assets/sounds/bg", false, /\.(mp3|wav)$/);
+      const fxFiles = contextFx.keys().map((file) => contextFx(file));
+      const bgFiles = contextBg.keys().map((file) => file.replace("./", ""));
+      setSounds(fxFiles);
+      setAvailableBgSounds(bgFiles);
+    };
+
     fetchSentencesFiles();
+    fetchSounds();
   }, []);
 
   useEffect(() => {
-    if (rainHowl) {
-      rainHowl.volume(bgMusicVolume);
+    if (bgSoundHowl) {
+      bgSoundHowl.volume(bgMusicVolume);
     }
   }, [bgMusicVolume]);
 
   useEffect(() => {
-    const rain = new Howl({
-      src: [rainSound],
+    const bgSound = new Howl({
+      src: require(`./../assets/sounds/bg/${selectedBgSound}`),
       loop: true,
-      volume: bgMusicVolume,
+      volume: bgMusicVolume ,
     });
 
-    setRainHowl(rain);
-    rain.play();
+    setBgSoundHowl(bgSound);
+    bgSound.play();
 
     return () => {
-      rain.stop();
+      bgSound.stop();
     };
-  }, []);
+  }, [selectedBgSound]);
 
   return (
     <SettingsContext.Provider
       value={{
+        timerValue,
+        setTimerValue,
         bgMusicVolume,
         setBgMusicVolume,
         soundEffectsVolume,
@@ -62,8 +71,11 @@ export const SettingsProvider = ({ children }) => {
         selectedSentencesFile,
         setSelectedSentencesFile,
         availableSentencesFiles,
+        selectedBgSound,
+        setSelectedBgSound,
+        availableBgSounds,
         sounds,
-        rainHowl,
+        bgSoundHowl,
       }}
     >
       {children}
