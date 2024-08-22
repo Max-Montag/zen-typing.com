@@ -1,6 +1,7 @@
 import React, { useEffect, useContext } from "react";
 import { LiaTimesSolid  } from "react-icons/lia";
-import { IoVolumeMediumOutline, IoVolumeMute } from "react-icons/io5";
+import { IoVolumeMediumOutline, IoVolumeMuteOutline } from "react-icons/io5";
+import NiceToggle from "./components/NiceToggle";
 import { SettingsContext } from "./SettingsContext";
 
 const timerMappings = {
@@ -10,11 +11,17 @@ const timerMappings = {
   180: "3 Minuten",
   300: "5 Minuten",
   600: "10 Minuten",
+  900: "15 Minuten",
+  1200: "20 Minuten",
+  1800: "30 Minuten",
+  3600: "1 Stunde",
 };
 
 const SettingsPanel = ({ isOpen, closePopup }) => {
   const {
     timerValue,
+    timerDisabled,
+    setTimerDisabled,
     setTimerValue,
     bgMusicVolume,
     setBgMusicVolume,
@@ -72,7 +79,7 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
         <div className="w-full flex flex-col gap-8 mt-10 px-8">
           <div className="flex flex-row justify-between gap-6">
             <label className="max-w-2/3 text-xl truncate font-semibold text-emerald-700">
-              Hintergrundgeräusche {(bgMusicVolume === 0) ? <IoVolumeMediumOutline className="inline hover:cursor-pointer" onClick={handleBgMute}/> : <IoVolumeMute className="inline hover:cursor-pointer" onClick={handleBgMute}/>}
+              Hintergrundgeräusche {(bgMusicVolume === 0) ? <IoVolumeMediumOutline className="inline hover:cursor-pointer" onClick={handleBgMute}/> : <IoVolumeMuteOutline className="inline hover:cursor-pointer" onClick={handleBgMute}/>}
             </label>
             <input
               type="range"
@@ -86,7 +93,7 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
           </div>
           <div className="flex flex-row justify-between gap-6">
             <label className="max-w-2/4 truncate text-xl font-semibold text-emerald-700">
-              Tastenklänge {(soundEffectsVolume === 0) ? <IoVolumeMediumOutline className="inline hover:cursor-pointer" onClick={handleFxMute}/> : <IoVolumeMute className="inline hover:cursor-pointer" onClick={handleFxMute}/>}
+              Tastenklänge {(soundEffectsVolume === 0) ? <IoVolumeMediumOutline className="inline hover:cursor-pointer" onClick={handleFxMute}/> : <IoVolumeMuteOutline className="inline hover:cursor-pointer" onClick={handleFxMute}/>}
             </label>
             <input
               type="range"
@@ -101,7 +108,7 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
             />
           </div>
           <div className="flex flex-row justify-between gap-6">
-            <label className="max-w-2/3 truncate text-xl font-semibold text-emerald-700">
+            <label className="max-w-2/3 truncate text-xl font-semibold text-emerald-700 ">
               Hintergrundgeräusche
             </label>
             <select
@@ -111,7 +118,7 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
             >
               {availableBgSounds.map((file, index) => (
                 <option key={index} value={file}>
-                  {file.replace("_", " ").replace(".mp3", "")}
+                  {file.replaceAll("_", " ").replace(".mp3", "")}
                 </option>
               ))}
             </select>
@@ -127,7 +134,7 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
             >
               {availableSentencesFiles.map((file, index) => (
                 <option key={index} value={file}>
-                  {file.replace("_", " ").replace(".json", "")}
+                  {file.replaceAll("_", " ").replace(".json", "")}
                 </option>
               ))}
             </select>
@@ -138,6 +145,7 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
             </label>
             <select
               value={timerValue}
+              disabled={timerDisabled}
               onChange={(e) => setTimerValue(parseInt(e.target.value))}
               className="w-1/3 max-w-1/3 mx-4 bg-emerald-100 text-start rounded-lg p-2"
             >
@@ -147,6 +155,14 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
                 </option>
               ))}
             </select>
+          </div>
+          <div className="flex flex-row justify-between">
+            <label className="max-w-2/3 truncate text-xl font-semibold text-emerald-700">
+              Timer deaktivieren
+            </label>
+            <div className="w-1/3 max-w-1/3 flex flex-row items-center justify-center">
+            <NiceToggle enabled={timerDisabled} setEnabled={setTimerDisabled} />
+            </div>
           </div>
         </div>
         <button

@@ -23,7 +23,7 @@ function penultimateIndexOf(str, char) {
 // TODO: errors are not counted correctly!!
 
 const TypingExperience = () => {
-  const { timerValue, selectedSentencesFile, soundEffectsVolume, sounds } =
+  const { timerValue, selectedSentencesFile, soundEffectsVolume, sounds, timerDisabled } =
     useContext(SettingsContext);
 
   const newSentence = () => {
@@ -59,7 +59,7 @@ const TypingExperience = () => {
 
   useEffect(() => {
     let interval = null;
-    if (timerActive) {
+    if (timerActive && !timerDisabled) {
       interval = setInterval(() => {
         setTimeLeft(timerValue - (Date.now() - startTime) / 1000);
         if (Date.now() > startTime + timerValue * 1000) {
@@ -109,7 +109,7 @@ const TypingExperience = () => {
     const { upcomingText, typedText, timerActive } = stateRef.current;
 
     // TODO this line does not catch typing 1 wrong char in the resultboard an counting it as an error
-    if (timerActive && Date.now() > startTime + timerValue * 1000) return;
+    if (timerActive && Date.now() > startTime + timerValue * 1000 && !timerDisabled) return;
 
     if (
       upcomingText[0] === event.key ||
@@ -274,13 +274,15 @@ const TypingExperience = () => {
           )}
         </button>
       </div>
-      <div className="bg-zinc-100 shadow-inner-lg flex flex-col gap-32 pt-8 pb-16">
+      <div className="bg-zinc-100 shadow-inner-lg flex flex-col gap-32 py-16">
         <div className="z-10 absolute top-0 right-0 h-full w-8 md:w-[15%] lg:w-[20%] xl:w-[25%] bg-gradient-to-r from-transparent to-zinc-100 pointer-events-none"></div>
+        {!timerDisabled && (
         <div className="flex flex-row justify-center">
           <h1 className="text-center text-8xl font-semibold text-zinc-500">
             {Math.max(timeLeft, 0).toFixed(0)} s
           </h1>
         </div>
+        )}
         <div className="flex flex-row items-center ml-4 md:ml-[5%] lg:ml/[10%] xl:ml/[15%]">
           <div className="flex flex-row items-center justify-start">
             <div>

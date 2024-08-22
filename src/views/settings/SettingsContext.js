@@ -5,10 +5,11 @@ export const SettingsContext = createContext();
 
 export const SettingsProvider = ({ children }) => {
   const [timerValue, setTimerValue] = useState(60);
+  const [timerDisabled, setTimerDisabled] = useState(false);
   const [bgMusicVolume, setBgMusicVolume] = useState(0.05);
   const [soundEffectsVolume, setSoundEffectsVolume] = useState(0.5);
   const [selectedSentencesFile, setSelectedSentencesFile] = useState(
-    "geführte_Meditation.json",
+    "Affirmationen.json",
   );
   const [selectedBgSound, setSelectedBgSound] = useState("Regen.mp3");
   const [availableBgSounds, setAvailableBgSounds] = useState([]);
@@ -71,6 +72,8 @@ export const SettingsProvider = ({ children }) => {
       value={{
         timerValue,
         setTimerValue,
+        timerDisabled,
+        setTimerDisabled,
         bgMusicVolume,
         setBgMusicVolume,
         soundEffectsVolume,
