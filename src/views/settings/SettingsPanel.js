@@ -107,7 +107,7 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
             <select
               value={selectedBgSound}
               onChange={(e) => setSelectedBgSound(e.target.value)}
-              className="w-1/3 max-w-1/3 mx-4 bg-emerald-100 border text-center border-emerald-700 rounded p-2"
+              className="w-1/3 max-w-1/3 mx-4 bg-emerald-100 text-start rounded-lg p-2"
             >
               {availableBgSounds.map((file, index) => (
                 <option key={index} value={file}>
@@ -123,7 +123,7 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
             <select
               value={selectedSentencesFile}
               onChange={(e) => setSelectedSentencesFile(e.target.value)}
-              className="w-1/3 max-w-1/3 mx-4 bg-emerald-100 border text-center border-emerald-700 rounded p-2"
+              className="w-1/3 max-w-1/3 mx-4 bg-emerald-100 text-start rounded-lg p-2"
             >
               {availableSentencesFiles.map((file, index) => (
                 <option key={index} value={file}>
@@ -139,7 +139,7 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
             <select
               value={timerValue}
               onChange={(e) => setTimerValue(parseInt(e.target.value))}
-              className="w-1/3 max-w-1/3 mx-4 bg-emerald-100 border text-center border-emerald-700 rounded p-2"
+              className="w-1/3 max-w-1/3 mx-4 bg-emerald-100 text-start rounded-lg p-2"
             >
               {Object.keys(timerMappings).map((key) => (
                 <option key={key} value={key}>
