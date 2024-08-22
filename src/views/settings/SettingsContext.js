@@ -19,15 +19,15 @@ export const SettingsProvider = ({ children }) => {
 
   useEffect(() => {
     const fetchSentencesFiles = async () => {
-      const context = require.context("../assets/data", false, /\.json$/);
+      const context = require.context("../../assets/data", false, /\.json$/);
       const files = context.keys().map((file) => file.replace("./", ""));
       setAvailableSentencesFiles(files);
       setSelectedSentencesFile(files[0]);
     };
 
     const fetchSounds = async () => {
-      const contextFx = require.context("../assets/sounds/fx", false, /\.(mp3|wav)$/);
-      const contextBg = require.context("../assets/sounds/bg", false, /\.(mp3|wav)$/);
+      const contextFx = require.context("../../assets/sounds/fx", false, /\.(mp3|wav)$/);
+      const contextBg = require.context("../../assets/sounds/bg", false, /\.(mp3|wav)$/);
       const fxFiles = contextFx.keys().map((file) => contextFx(file));
       const bgFiles = contextBg.keys().map((file) => file.replace("./", ""));
       setSounds(fxFiles);
@@ -46,7 +46,7 @@ export const SettingsProvider = ({ children }) => {
 
   useEffect(() => {
     const bgSound = new Howl({
-      src: require(`./../assets/sounds/bg/${selectedBgSound}`),
+      src: require(`./../../assets/sounds/bg/${selectedBgSound}`),
       loop: true,
       volume: bgMusicVolume ,
     });

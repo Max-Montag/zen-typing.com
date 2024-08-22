@@ -4,9 +4,9 @@ import { Howl } from "howler";
 import { IoSettingsSharp } from "react-icons/io5";
 import "./styles/bubble.css";
 import "./styles/typing.css";
-import { SettingsContext } from "./SettingsContext";
-import ResultsCard from "./components/ResultsCard";
-import SettingsPanel from "./components/SettingsPanel";
+import ResultsCard from "./ResultsCard";
+import SettingsPanel from "./settings/SettingsPanel";
+import { SettingsContext } from "./settings/SettingsContext";
 
 const SLIDINGWINDOWSIZE = 40;
 const BUFFERSIZE = 20;

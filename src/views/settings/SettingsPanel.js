@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from "react";
 import { LiaTimesSolid } from "react-icons/lia";
-import { SettingsContext } from "./../SettingsContext";
+import { SettingsContext } from "./SettingsContext";
 
 const timerMappings = {
   30: "30 Sekunden",
