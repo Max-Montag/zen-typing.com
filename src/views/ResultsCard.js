@@ -37,10 +37,10 @@ const ResultsCard = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 transition-opacity duration-300 ease-in-out">
-      <div className="relative w-full mx-4 md:w-1/2 min-h-1/2 p-8 flex flex-col justify-center items-center bg-gradient-to-br from-emerald-50 to-emerald-200 rounded-xl shadow-xl transform scale-95 transition-transform duration-300 ease-in-out">
+      <div className="relative w-full mx-4 md:w-1/2 min-h-1/2 p-8 flex flex-col justify-center items-center bg-gradient-to-br from-emerald-50 to-emerald-200 rounded-xl shadow-xl transform scale-95 transition-transform duration-100 ease-in-out">
         <button
           onClick={handleClose}
-          className="absolute top-3 right-3 text-emerald-700 hover:text-emerald-200 transition-colors duration-300 ease-in-out"
+          className="absolute top-3 right-3 text-emerald-700 hover:text-emerald-200 transition-colors duration-100 ease-in-out"
         >
           <LiaTimesSolid className="w-5 h-5" />
         </button>
@@ -69,7 +69,7 @@ const ResultsCard = ({
         </div>
         <button
           onClick={handleClose}
-          className="mt-8 mx-6 w-3/4 md:w-1/2 px-6 py-2 bg-emerald-700 bg-opacity-40 text-white ring-2 ring-zinc-100 rounded-full shadow-xl hover:bg-emerald-500 hover:bg-opacity-40 transition-colors duration-300 ease-in-out"
+          className="mt-8 mx-6 w-3/4 md:w-1/2 px-6 py-2 bg-emerald-700 bg-opacity-40 text-white ring-2 ring-zinc-100 rounded-full shadow-xl hover:bg-emerald-500 hover:bg-opacity-40 transition-colors duration-100 ease-in-out"
         >
           Schließen
         </button>

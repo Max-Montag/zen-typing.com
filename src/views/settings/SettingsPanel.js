@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from "react";
 import { LiaTimesSolid  } from "react-icons/lia";
-import { IoVolumeMediumOutline } from "react-icons/io5";
+import { IoVolumeMediumOutline, IoVolumeMute } from "react-icons/io5";
 import { SettingsContext } from "./SettingsContext";
 
 const timerMappings = {
@@ -50,21 +50,29 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
     closePopup();
   };
 
+  const handleBgMute = () => {
+    setBgMusicVolume(bgMusicVolume === 0 ? 0.05 : 0);
+  };
+
+  const handleFxMute = () => {
+    setSoundEffectsVolume(soundEffectsVolume === 0 ? 0.5 : 0);
+  };
+
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 transition-opacity duration-300 ease-in-out">
-      <div className="relative w-full mx-4 md:w-1/2 min-h-1/2 p-8 flex flex-col justify-center items-center bg-gradient-to-br from-emerald-50 to-emerald-200 rounded-xl shadow-xl transform scale-95 transition-transform duration-300 ease-in-out">
+      <div className="relative w-full mx-4 md:w-1/2 min-h-1/2 p-8 flex flex-col justify-center items-center bg-gradient-to-br from-emerald-50 to-emerald-200 rounded-xl shadow-xl transform scale-95 transition-transform duration-100 ease-in-out scale-up-br">
         <button
           onClick={handleClose}
-          className="absolute top-3 right-3 text-emerald-700 hover:text-emerald-200 transition-colors duration-300 ease-in-out"
+          className="absolute top-3 right-3 text-emerald-700 hover:text-emerald-200 transition-colors duration-100 ease-in-out"
         >
           <LiaTimesSolid className="w-5 h-5" />
         </button>
         <div className="w-full flex flex-col gap-8 mt-10 px-8">
           <div className="flex flex-row justify-between gap-6">
             <label className="max-w-2/3 text-xl truncate font-semibold text-emerald-700">
-              Hintergrundgeräusche <IoVolumeMediumOutline className="inline" />
+              Hintergrundgeräusche {(bgMusicVolume === 0) ? <IoVolumeMediumOutline className="inline hover:cursor-pointer" onClick={handleBgMute}/> : <IoVolumeMute className="inline hover:cursor-pointer" onClick={handleBgMute}/>}
             </label>
             <input
               type="range"
@@ -78,7 +86,7 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
           </div>
           <div className="flex flex-row justify-between gap-6">
             <label className="max-w-2/4 truncate text-xl font-semibold text-emerald-700">
-              Tastenklänge <IoVolumeMediumOutline className="inline" />
+              Tastenklänge {(soundEffectsVolume === 0) ? <IoVolumeMediumOutline className="inline hover:cursor-pointer" onClick={handleFxMute}/> : <IoVolumeMute className="inline hover:cursor-pointer" onClick={handleFxMute}/>}
             </label>
             <input
               type="range"
@@ -143,7 +151,7 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
         </div>
         <button
           onClick={handleClose}
-          className="mt-12 mx-6 w-3/4 md:w-1/2 px-6 py-2 bg-emerald-700 bg-opacity-40 text-white ring-2 ring-zinc-100 rounded-full shadow-xl hover:bg-emerald-500 hover:bg-opacity-40 transition-colors duration-300 ease-in-out"
+          className="mt-12 mx-6 w-3/4 md:w-1/2 px-6 py-2 bg-emerald-700 bg-opacity-40 text-white ring-2 ring-zinc-100 rounded-full shadow-xl hover:bg-emerald-500 hover:bg-opacity-40 transition-colors duration-100 ease-in-out"
         >
           Schließen
         </button>

@@ -273,7 +273,7 @@ const TypingExperience = () => {
           )}
         </button>
       </div>
-      <div className="bg-zinc-100 shadow-inner-lg flex flex-col gap-32 pt-4 pb-8">
+      <div className="bg-zinc-100 shadow-inner-lg flex flex-col gap-32 pt-8 pb-16">
         <div className="z-10 absolute top-0 right-0 h-full w-8 md:w-[15%] lg:w-[20%] xl:w-[25%] bg-gradient-to-r from-transparent to-zinc-100 pointer-events-none"></div>
         <div className="flex flex-row justify-center">
           <h1 className="text-center text-8xl font-semibold text-zinc-500">
