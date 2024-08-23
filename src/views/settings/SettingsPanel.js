@@ -3,6 +3,7 @@ import { LiaTimesSolid } from "react-icons/lia";
 import { IoVolumeMediumOutline, IoVolumeMuteOutline } from "react-icons/io5";
 import NiceToggle from "./components/NiceToggle";
 import { SettingsContext } from "./SettingsContext";
+import "./../styles/range-input.css";
 
 const timerMappings = {
   30: "30 Sekunden",
@@ -79,7 +80,6 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
         <div className="w-full flex flex-col gap-8 mt-10 px-8">
           <div className="flex flex-row justify-between">
             <label className="w-2/3 max-w-2/3 text-xl truncate font-semibold text-emerald-700">
-              Hintergrundgeräusche{" "}
               {bgMusicVolume === 0 ? (
                 <IoVolumeMediumOutline
                   className="inline hover:cursor-pointer"
@@ -91,6 +91,7 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
                   onClick={handleBgMute}
                 />
               )}
+              {" "}Hintergrundgeräusche
             </label>
             <input
               type="range"
@@ -104,7 +105,6 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
           </div>
           <div className="flex flex-row justify-between">
             <label className="w-2/3 max-w-2/3 truncate text-xl font-semibold text-emerald-700">
-              Tastenklänge{" "}
               {soundEffectsVolume === 0 ? (
                 <IoVolumeMediumOutline
                   className="inline hover:cursor-pointer"
@@ -116,6 +116,7 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
                   onClick={handleFxMute}
                 />
               )}
+              {" "}Tastenklänge
             </label>
             <input
               type="range"

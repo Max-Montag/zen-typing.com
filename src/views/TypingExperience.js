@@ -4,9 +4,9 @@ import { Howl } from "howler";
 import { IoSettingsSharp, IoSettingsOutline } from "react-icons/io5";
 import "./styles/bubble.css";
 import "./styles/typing.css";
-import "./styles/rangeInput.css";
 import ResultsCard from "./ResultsCard";
 import SettingsPanel from "./settings/SettingsPanel";
+import FancyMenu from "./FancyMenu";
 import { SettingsContext } from "./settings/SettingsContext";
 
 const SLIDINGWINDOWSIZE = 40;
@@ -281,6 +281,9 @@ const TypingExperience = () => {
 
   return (
     <div className="min-h-screen bg-zinc-50 flex flex-col justify-center -mt-16 typing-container">
+      <div className="fixed top-3 lg:top-6 left-3 lg:left-6">
+        <FancyMenu />
+      </div>
       <div className="fixed bottom-8 right-8">
         <button
           className="text-zinc-600 lg:text-zinc-900 hover:text-zinc-400 transition-colors duration-300 ease-in-out"
@@ -314,7 +317,7 @@ const TypingExperience = () => {
                 {typedText}
               </span>
               {upcomingText.replace(/\$/g, "").length > 0 && (
-                <span className="my-0 rounded-lg ring-offset-1 ring ring-emerald-500 p-1 m-1 text-3xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold text-emerald-400">
+                <span className="my-0 rounded-lg ring-offset-1 ring ring-emerald-300 p-1 m-1 text-3xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold text-emerald-300">
                   {upcomingText.replace(/\$/g, "").charAt(0) === " "
                     ? "•"
                     : upcomingText.replace(/\$/g, "").charAt(0)}
