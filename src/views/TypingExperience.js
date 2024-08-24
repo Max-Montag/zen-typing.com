@@ -51,6 +51,7 @@ const TypingExperience = () => {
   const ableToBegRef = useRef(false);
   const inputRef = useRef(null);
   const centerRef = useRef(null);
+  const centerRef2 = useRef(null);
 
   // TODO: The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. <URL>
 
@@ -103,12 +104,12 @@ const TypingExperience = () => {
 
   const closeResultsCard = () => {
     setResultsCardOpen(false);
-    prePareNextSession();
+    prepareNextSession();
   };
 
   const closeSettingsPanel = () => {
     setSettingsPanelOpen(false);
-    prePareNextSession();
+    prepareNextSession();
   };
 
   const handleSettingsClick = () => {
@@ -116,22 +117,14 @@ const TypingExperience = () => {
     abortTypingSession();
   };
 
-  const handleCentralClick = () => {
-    if (inputRef.current) {
+  const handleCentralClick = (event) => {
+    if (inputRef.current && (!event || event.target === centerRef.current || event.target === centerRef2.current)) {
       inputRef.current.focus();
-      scrollToCenter();
-      setTimeout(() => {
-        scrollToCenter();
-      }, 100);
     }
   };
 
   const handleInputChange = (event) => {
     proccesChar(event.target.value.slice(-1));
-  };
-
-  const scrollToCenter = () => {
-    centerRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   const proccesChar = (key) => {
@@ -223,10 +216,10 @@ const TypingExperience = () => {
     }
   };
 
-  const prePareNextSession = () => {
+  const prepareNextSession = () => {
     setUpcomingText(newSentence() + " " + newSentence());
     setTimeLeft(timerValue);
-    handleCentralClick();
+    handleCentralClick(null);
   };
 
   const wrapUpSession = () => {
@@ -298,7 +291,7 @@ const TypingExperience = () => {
 
   return (
     <div
-      className="min-h-screen bg-zinc-50 pt-48 -mt-16 typing-container hover:cursor-pointer"
+      className={`min-h-screen bg-zinc-50 typing-container hover:cursor-pointer ${timerDisabled ? "pt-56" : "pt-32"}`}
       onClick={handleCentralClick}
       ref={centerRef}
     >
@@ -315,23 +308,10 @@ const TypingExperience = () => {
           closePopup={closeMenu}
         />
       </div>
-      <div className="fixed bottom-8 right-8">
-        <button
-          className="text-zinc-600 lg:text-zinc-900 hover:text-zinc-400 transition-colors duration-300 ease-in-out"
-          onClick={handleSettingsClick}
-        >
-          {SettingsPanelOpen ? (
-            <IoSettingsOutline className="w-16 h-16 md:w-24 md:h-24 animate-spin-slow-reverse" />
-          ) : (
-            <IoSettingsSharp
-              className={`w-16 h-16 md:w-24 md:h-24 animate-finish-spin ${timerActive ? "opacity-20" : ""}`}
-            />
-          )}
-        </button>
-      </div>
       <div
         className="bg-zinc-100 shadow-inner-lg flex flex-col gap-12 sm:gap-16 md:gap-32 py-16 "
         onClick={handleCentralClick}
+        ref={centerRef2}
       >
         <div className="z-10 absolute top-0 right-0 h-full w-8 md:w-[15%] lg:w-[20%] xl:w-[25%] bg-gradient-to-r from-transparent to-zinc-100 pointer-events-none"></div>
         {!timerDisabled && (
@@ -348,8 +328,15 @@ const TypingExperience = () => {
               <span className="text-2xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl text-gray-600">
                 {typedText}
               </span>
+              <input
+                ref={inputRef}
+                type="text"
+                onChange={handleInputChange}
+                className="w-0.5 max-w-0.5 h-0.5 max-h-0.5 text-zinc-50 bg-zinc-50 text-sm focus:outline-none hover:cursor-default"
+                autoFocus
+              />
               {upcomingText.replace(/\$/g, "").length > 0 && (
-                <span className="my-0 rounded-lg ring-offset-1 ring ring-emerald-300 p-1 m-1 text-3xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold text-emerald-300">
+                <span className="my-0 rounded-lg ring ring-emerald-300 p-1 m-1 text-3xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold text-emerald-300">
                   {upcomingText.replace(/\$/g, "").charAt(0) === " "
                     ? "•"
                     : upcomingText.replace(/\$/g, "").charAt(0)}
@@ -389,6 +376,20 @@ const TypingExperience = () => {
           </div>
         </div>
       </div>
+      <div className="fixed bottom-3 right-4">
+        <button
+          className="text-zinc-600 lg:text-zinc-800 hover:text-zinc-400 transition-colors duration-300 ease-in-out"
+          onClick={handleSettingsClick}
+        >
+          {SettingsPanelOpen ? (
+            <IoSettingsOutline className="w-16 h-16 md:w-24 md:h-24 animate-spin-slow-reverse" />
+          ) : (
+            <IoSettingsSharp
+              className={`w-16 h-16 md:w-24 md:h-24 animate-finish-spin ${timerActive ? "opacity-20" : ""}`}
+            />
+          )}
+        </button>
+      </div>
       <ResultsCard
         isOpen={resultsCardOpen}
         closePopup={closeResultsCard}
@@ -401,13 +402,6 @@ const TypingExperience = () => {
       <SettingsPanel
         isOpen={SettingsPanelOpen}
         closePopup={closeSettingsPanel}
-      />
-      <input
-        ref={inputRef}
-        type="text"
-        onChange={handleInputChange}
-        className="w-0.5 max-w-0.5 h-0.5 max-h-0.5 text-zinc-50 bg-zinc-50 text-sm focus:outline-none hover:cursor-default"
-        autoFocus
       />
     </div>
   );

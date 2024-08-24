@@ -87,7 +87,7 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
   return (
     <div className="fixed px-2 inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 transition-opacity duration-300 ease-in-out">
       <div
-        className="relative w-full mx-4 md:w-1/2 min-h-1/2 pt-2 md:px-8 md:px-8 flex flex-col justify-center items-center bg-gradient-to-br from-emerald-50 to-emerald-200 rounded-xl shadow-xl transform scale-95 transition-transform duration-100 ease-in-out scale-up-br"
+        className="relative w-full mx-4 md:w-1/2 min-h-1/2 pt-2 flex flex-col justify-center items-center bg-gradient-to-br from-emerald-50 to-emerald-200 rounded-xl shadow-xl transform scale-95 transition-transform duration-100 ease-in-out scale-up-br"
         ref={settingsRef}
       >
         <button
@@ -96,7 +96,7 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
         >
           <LiaTimesSolid className="w-5 h-5" />
         </button>
-        <div className="w-full flex flex-col gap-8 mt-10 px-8">
+        <div className="w-full flex flex-col gap-8 mt-10 px-4 md:px-6">
           <div className="flex flex-row justify-between">
             <label className="w-2/3 max-w-2/3 text-xl truncate font-semibold text-emerald-700">
               {bgMusicVolume === 0 ? (
