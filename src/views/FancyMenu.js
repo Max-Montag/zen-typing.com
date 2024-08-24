@@ -9,33 +9,27 @@ const FancyMenu = ({ableToBegRef, isOpen, closePopup}) => {
   const [peekingCoffee, setPeekingCoffee] = useState(false);
   const menuRef = useRef(null);
 
-  // const toggleMenu = () => {
-  //   if (isOpen) {
-  //     closePopup();
-  //   }
-  // };
-
-  // TODO animation is triggered even if the game is running
   useEffect(() => {
     setTimeout(() => {
-      const intervalId = setInterval(() => {
-        const ableToBeg = ableToBegRef.current;
-        console.log("ableToBeg");
-        console.log(ableToBeg);
-        if (ableToBeg) {
-          peekBuyMeACoffee();
-          clearInterval(intervalId);
-        }
-      }, 1000);
-      peekBuyMeACoffee();
-    }, 2000);
+      if(ableToBegRef.current === true) {
+        peekBuyMeACoffee();
+      } else {
+        const intervalId = setInterval(() => {
+          const ableToBeg = ableToBegRef.current;
+          if (ableToBeg === true) {
+            peekBuyMeACoffee();
+            clearInterval(intervalId);
+          }
+        }, 2000);
+      }
+    }, 60000);
   }, []);
 
   const peekBuyMeACoffee = () => {
     setPeekingCoffee(true);
     setTimeout(() => {
       setPeekingCoffee(false);
-    }, 6000); // TODO 60000
+    }, 4000);
   };
 
   useEffect(() => {

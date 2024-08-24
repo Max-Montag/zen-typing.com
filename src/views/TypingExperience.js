@@ -58,10 +58,8 @@ const TypingExperience = () => {
   }, [upcomingText, typedText, timerActive]);
 
   useEffect(() => {
-      console.log("before", ableToBegRef.current);
-      ableToBegRef.current = (!timerActive && !resultsCardOpen && !SettingsPanelOpen) ? true : false;
-      console.log("after", ableToBegRef.current);
-  }, [timerActive, resultsCardOpen, SettingsPanelOpen]);
+    ableToBegRef.current = (!timerActive && !SettingsPanelOpen && !resultsCardOpen && !menuOpen);
+  }, [timerActive, SettingsPanelOpen, resultsCardOpen, menuOpen]);
 
   useEffect(() => {
     let interval = null;
