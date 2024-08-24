@@ -90,8 +90,8 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
                   className="inline hover:cursor-pointer"
                   onClick={handleBgMute}
                 />
-              )}
-              {" "}Hintergrundgeräusche
+              )}{" "}
+              Hintergrundgeräusche
             </label>
             <input
               type="range"
@@ -115,8 +115,8 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
                   className="inline hover:cursor-pointer"
                   onClick={handleFxMute}
                 />
-              )}
-              {" "}Tastenklänge
+              )}{" "}
+              Tastenklänge
             </label>
             <input
               type="range"

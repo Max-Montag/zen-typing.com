@@ -280,7 +280,7 @@ const TypingExperience = () => {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-50 flex flex-col justify-center -mt-16 typing-container">
+    <div className="min-h-screen bg-zinc-50 pt-48 -mt-16 typing-container">
       <div className="fixed top-3 lg:top-6 left-3 lg:left-6">
         <FancyMenu />
       </div>
