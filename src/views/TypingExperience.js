@@ -281,8 +281,14 @@ const TypingExperience = () => {
 
   return (
     <div className="min-h-screen bg-zinc-50 pt-48 -mt-16 typing-container">
-      <div className="fixed top-3 lg:top-6 left-3 lg:left-6">
-        <FancyMenu />
+      <div
+        className={`fixed top-3 lg:top-6 left-3 lg:left-6 ${timerActive ? "opacity-20" : ""}`}
+      >
+        <FancyMenu
+          timerActive={timerActive}
+          resultsOpen={resultsCardOpen}
+          settingsOpen={SettingsPanelOpen}
+        />
       </div>
       <div className="fixed bottom-8 right-8">
         <button
@@ -292,7 +298,9 @@ const TypingExperience = () => {
           {SettingsPanelOpen ? (
             <IoSettingsOutline className="w-16 h-16 md:w-24 md:h-24 animate-spin-slow-reverse" />
           ) : (
-            <IoSettingsSharp className="w-16 h-16 md:w-24 md:h-24 animate-finish-spin" />
+            <IoSettingsSharp
+              className={`w-16 h-16 md:w-24 md:h-24 animate-finish-spin ${timerActive ? "opacity-20" : ""}`}
+            />
           )}
         </button>
       </div>

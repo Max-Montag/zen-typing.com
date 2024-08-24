@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useRef } from "react";
 import { LiaTimesSolid } from "react-icons/lia";
 import { IoVolumeMediumOutline, IoVolumeMuteOutline } from "react-icons/io5";
 import NiceToggle from "./components/NiceToggle";
@@ -36,6 +36,8 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
     availableBgSounds,
   } = useContext(SettingsContext);
 
+  const settingsRef = useRef(null);
+
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === "Escape") {
@@ -66,11 +68,27 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
     setSoundEffectsVolume(soundEffectsVolume === 0 ? 0.5 : 0);
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (settingsRef.current && !settingsRef.current.contains(event.target)) {
+        handleClose();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   if (!isOpen) return null;
 
   return (
     <div className="fixed px-2 inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 transition-opacity duration-300 ease-in-out">
-      <div className="relative w-full mx-4 md:w-1/2 min-h-1/2 pt-2 md:px-8 md:px-8 flex flex-col justify-center items-center bg-gradient-to-br from-emerald-50 to-emerald-200 rounded-xl shadow-xl transform scale-95 transition-transform duration-100 ease-in-out scale-up-br">
+      <div
+        className="relative w-full mx-4 md:w-1/2 min-h-1/2 pt-2 md:px-8 md:px-8 flex flex-col justify-center items-center bg-gradient-to-br from-emerald-50 to-emerald-200 rounded-xl shadow-xl transform scale-95 transition-transform duration-100 ease-in-out scale-up-br"
+        ref={settingsRef}
+      >
         <button
           onClick={handleClose}
           className="absolute top-3 right-3 text-emerald-700 hover:text-emerald-200 transition-colors duration-100 ease-in-out"
@@ -131,7 +149,7 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
             />
           </div>
           <div className="flex flex-row justify-between gap-6">
-            <label className="w-2/3  max-w-2/3 truncate text-xl font-semibold text-emerald-700 ">
+            <label className="w-2/3 max-w-2/3 truncate text-xl font-semibold text-emerald-700 ">
               Hintergrundgeräusche
             </label>
             <select

@@ -5,7 +5,7 @@ import { SiBuymeacoffee } from "react-icons/si";
 import { IoRocket } from "react-icons/io5";
 import "./styles/fancy-menu.css";
 
-const FancyMenu = () => {
+const FancyMenu = (timerActive, resultsOpen, settingsOpen) => {
   const [isOpen, setIsOpen] = useState(false);
   const [peekingCoffee, setPeekingCoffee] = useState(false);
   const menuRef = useRef(null);
@@ -14,9 +14,17 @@ const FancyMenu = () => {
     setIsOpen(!isOpen);
   };
 
-  useEffect
-  (() => {
-    peekBuyMeACoffee();
+  // TODO animation is triggered even if the game is running
+  useEffect(() => {
+    setTimeout(() => {
+      const intervalId = setInterval(() => {
+        if (!timerActive && !resultsOpen && !settingsOpen) {
+          peekBuyMeACoffee();
+          clearInterval(intervalId);
+        }
+      }, 1000);
+      peekBuyMeACoffee();
+    }, 6000);
   }, []);
 
   const peekBuyMeACoffee = () => {
@@ -39,7 +47,6 @@ const FancyMenu = () => {
     };
   }, []);
 
-
   return (
     <div
       ref={menuRef}
@@ -56,11 +63,13 @@ const FancyMenu = () => {
         </div>
       </div>
       <div
-    className={`absolute top-inherit left-inherit transform -translate-x-1/2 -translate-y-1/2 transition-all duration-200 ease-out hover:scale-105 hover:cursor-pointer ${
-      (isOpen)
-        ? "translate-x-[176px] translate-y-0"
-        : "translate-x-0 translate-y-0 opacity-0"
-    }`+` ${peekingCoffee && !isOpen ? " animate-peek" : ""}`} 
+        className={
+          `absolute top-inherit left-inherit transform -translate-x-1/2 -translate-y-1/2 transition-all duration-200 ease-out hover:scale-105 hover:cursor-pointer ${
+            isOpen
+              ? "translate-x-[176px] translate-y-0"
+              : "translate-x-0 translate-y-0 opacity-0"
+          }` + ` ${peekingCoffee && !isOpen ? " animate-peek" : ""}`
+        }
       >
         <div className="flex justify-center items-center w-20 h-20 bg-gradient-to-r from-zinc-100 to-emerald-200 ring-zinc-600 ring-2 rounded-full shadow-2xl">
           <div className="flex justify-center items-center w-16 h-16 bg-gradient-to-r from-emerald-200 to-zinc-100 rounded-full">
