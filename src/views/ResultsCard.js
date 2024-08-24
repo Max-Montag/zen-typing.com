@@ -37,7 +37,7 @@ const ResultsCard = ({
 
   return (
     <div className="fixed px-2 inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 transition-opacity duration-300 ease-in-out">
-      <div className="relative w-full mx-4 md:w-1/2 min-h-1/2 py-4 md:py-8 px-5 md:px-8 flex flex-col justify-center items-center bg-gradient-to-br from-emerald-50 to-emerald-200 rounded-xl shadow-xl transform scale-95 transition-transform duration-100 ease-in-out">
+      <div className="relative w-full mx-4 md:w-1/2 min-h-1/2 py-4 md:py-8 px-5 md:px-8 lg:px-16 flex flex-col justify-center items-center bg-gradient-to-br from-emerald-50 to-emerald-200 rounded-xl shadow-xl transform scale-95 transition-transform duration-100 ease-in-out">
         <button
           onClick={handleClose}
           className="absolute top-3 right-3 text-emerald-700 hover:text-emerald-200 transition-colors duration-100 ease-in-out"

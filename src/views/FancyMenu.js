@@ -5,39 +5,43 @@ import { SiBuymeacoffee } from "react-icons/si";
 import { IoRocket } from "react-icons/io5";
 import "./styles/fancy-menu.css";
 
-const FancyMenu = (timerActive, resultsOpen, settingsOpen) => {
-  const [isOpen, setIsOpen] = useState(false);
+const FancyMenu = ({ableToBegRef, isOpen, closePopup}) => {
   const [peekingCoffee, setPeekingCoffee] = useState(false);
   const menuRef = useRef(null);
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+  // const toggleMenu = () => {
+  //   if (isOpen) {
+  //     closePopup();
+  //   }
+  // };
 
   // TODO animation is triggered even if the game is running
   useEffect(() => {
     setTimeout(() => {
       const intervalId = setInterval(() => {
-        if (!timerActive && !resultsOpen && !settingsOpen) {
+        const ableToBeg = ableToBegRef.current;
+        console.log("ableToBeg");
+        console.log(ableToBeg);
+        if (ableToBeg) {
           peekBuyMeACoffee();
           clearInterval(intervalId);
         }
       }, 1000);
       peekBuyMeACoffee();
-    }, 6000);
+    }, 2000);
   }, []);
 
   const peekBuyMeACoffee = () => {
     setPeekingCoffee(true);
     setTimeout(() => {
       setPeekingCoffee(false);
-    }, 6000);
+    }, 6000); // TODO 60000
   };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
-        setIsOpen(false);
+        closePopup();
       }
     };
 
@@ -51,7 +55,7 @@ const FancyMenu = (timerActive, resultsOpen, settingsOpen) => {
     <div
       ref={menuRef}
       className="z-10 flex justify-center items-center w-20 h-20 bg-gradient-to-r from-zinc-100 to-emerald-200 ring-zinc-600 ring-2 rounded-full"
-      onClick={toggleMenu}
+      // onClick={toggleMenu}
     >
       <div
         className={`flex justify-center items-center w-16 h-16 bg-gradient-to-r from-emerald-200 to-zinc-100 rounded-full ease-out hover:scale-105 hover:cursor-pointer ${
@@ -68,13 +72,13 @@ const FancyMenu = (timerActive, resultsOpen, settingsOpen) => {
             isOpen
               ? "translate-x-[176px] translate-y-0"
               : "translate-x-0 translate-y-0 opacity-0"
-          }` + ` ${peekingCoffee && !isOpen ? " animate-peek" : ""}`
+          }` + ` ${peekingCoffee && !isOpen ? " animate-peek-move" : ""}`
         }
       >
         <div className="flex justify-center items-center w-20 h-20 bg-gradient-to-r from-zinc-100 to-emerald-200 ring-zinc-600 ring-2 rounded-full shadow-2xl">
           <div className="flex justify-center items-center w-16 h-16 bg-gradient-to-r from-emerald-200 to-zinc-100 rounded-full">
             <div className="flex justify-center items-center w-12 h-12 bg-gradient-to-r from-zinc-100 to-emerald-200 rounded-full">
-              <SiBuymeacoffee className="text-zinc-600 w-8 h-8" />
+              <SiBuymeacoffee className={`text-zinc-600 w-8 h-8 ${peekingCoffee && !isOpen ? " animate-peek-rotation" : ""}`} />
             </div>
           </div>
         </div>

@@ -71,6 +71,7 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (settingsRef.current && !settingsRef.current.contains(event.target)) {
+        console.log("handleClickOutside");
         handleClose();
       }
     };

@@ -30,12 +30,6 @@ const TypingExperience = () => {
     sounds,
     timerDisabled,
   } = useContext(SettingsContext);
-
-  const newSentence = () => {
-    const sentencesData = require(`../assets/data/${selectedSentencesFile}`);
-    return sentencesData[Math.floor(Math.random() * sentencesData.length)];
-  };
-
   const [timerActive, setTimerActive] = useState(false);
   const [startTime, setStartTime] = useState(0);
   const [typedChars, setTypedChars] = useState(0);
@@ -47,14 +41,13 @@ const TypingExperience = () => {
   const [lastWord, setLastWord] = useState("");
   const [lastWordElem, setLastWordElem] = useState(null);
   const [timeLeft, setTimeLeft] = useState(timerValue);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [resultsCardOpen, setResultsCardOpen] = useState(false);
   const [SettingsPanelOpen, setSettingsPanelOpen] = useState(false);
-  const [upcomingText, setUpcomingText] = useState(
-    newSentence() + " " + newSentence(),
-  );
   const [lastPlayedSound, setLastPlayedSound] = useState(null);
-
+  const [upcomingText, setUpcomingText] = useState("");
   const stateRef = useRef({ upcomingText, typedText, timerActive });
+  const ableToBegRef = useRef(false);
   const inputRef = useRef(null);
   const centerRef = useRef(null);
 
@@ -63,6 +56,12 @@ const TypingExperience = () => {
   useEffect(() => {
     stateRef.current = { upcomingText, typedText, timerActive };
   }, [upcomingText, typedText, timerActive]);
+
+  useEffect(() => {
+      console.log("before", ableToBegRef.current);
+      ableToBegRef.current = (!timerActive && !resultsCardOpen && !SettingsPanelOpen) ? true : false;
+      console.log("after", ableToBegRef.current);
+  }, [timerActive, resultsCardOpen, SettingsPanelOpen]);
 
   useEffect(() => {
     let interval = null;
@@ -79,15 +78,13 @@ const TypingExperience = () => {
     return () => clearInterval(interval);
   }, [timerActive, startTime]);
 
-  const closeResultsCard = () => {
-    setResultsCardOpen(false);
-  };
-
-  const closeSettingsPanel = () => {
-    setSettingsPanelOpen(false);
+  useEffect(() => {
     setUpcomingText(newSentence() + " " + newSentence());
-    setTimeLeft(timerValue);
-    handleCentralClick();
+  }, []);
+
+  const newSentence = () => {
+    const sentencesData = require(`../assets/data/${selectedSentencesFile}`);
+    return sentencesData[Math.floor(Math.random() * sentencesData.length)];
   };
 
   const chooseRandomSound = () => {
@@ -100,8 +97,18 @@ const TypingExperience = () => {
     return sounds[randomInt];
   };
 
-  const scrollToCenter = () => {
-    centerRef.current?.scrollIntoView({ behavior: "smooth" });
+  const closeMenu = () => {
+    setMenuOpen(false);
+  };
+
+  const closeResultsCard = () => {
+    setResultsCardOpen(false);
+    prePareNextSession();
+  };
+
+  const closeSettingsPanel = () => {
+    setSettingsPanelOpen(false);
+    prePareNextSession();
   };
 
   const handleSettingsClick = () => {
@@ -121,6 +128,10 @@ const TypingExperience = () => {
 
   const handleInputChange = (event) => {
     proccesChar(event.target.value.slice(-1));
+  };
+
+  const scrollToCenter = () => {
+    centerRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   const proccesChar = (key) => {
@@ -212,7 +223,14 @@ const TypingExperience = () => {
     }
   };
 
-  const finishTypingSession = () => {
+  const prePareNextSession = () => {
+    setUpcomingText(newSentence() + " " + newSentence());
+    setTimeLeft(timerValue);
+    handleCentralClick();
+
+  };
+
+  const wrapUpSession = () => {
     setTypedText("");
     setLastWord("");
     setWordBubbles({});
@@ -224,14 +242,14 @@ const TypingExperience = () => {
   const abortTypingSession = () => {
     setTimerActive(false);
     setTimeLeft(timerValue);
-    finishTypingSession();
+    wrapUpSession();
   };
 
   const completeTypingSession = () => {
     setTimerActive(false);
     setSettingsPanelOpen(false);
     setResultsCardOpen(true);
-    finishTypingSession();
+    wrapUpSession();
   };
 
   const resetTime = () => {
@@ -280,14 +298,16 @@ const TypingExperience = () => {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-50 pt-48 -mt-16 typing-container">
+    <div className="min-h-screen bg-zinc-50 pt-48 -mt-16 typing-container hover:cursor-pointer"         onClick={handleCentralClick}
+    ref={centerRef}>
       <div
-        className={`fixed top-3 lg:top-6 left-3 lg:left-6 ${timerActive ? "opacity-20" : ""}`}
+        className={`fixed top-3 lg:top-6 left-3 lg:left-6 ${timerActive && !menuOpen? "opacity-20" : ""}`}
+        onClick={() => setMenuOpen(!menuOpen)}
       >
         <FancyMenu
-          timerActive={timerActive}
-          resultsOpen={resultsCardOpen}
-          settingsOpen={SettingsPanelOpen}
+          ableToBegRef={ableToBegRef}
+          isOpen={menuOpen}
+          closePopup={closeMenu}
         />
       </div>
       <div className="fixed bottom-8 right-8">
@@ -305,9 +325,7 @@ const TypingExperience = () => {
         </button>
       </div>
       <div
-        className="bg-zinc-100 shadow-inner-lg flex flex-col gap-12 sm:gap-16 md:gap-32 py-16 hover:cursor-pointer"
-        onClick={handleCentralClick}
-        ref={centerRef}
+        className="bg-zinc-100 shadow-inner-lg flex flex-col gap-12 sm:gap-16 md:gap-32 py-16 " onClick={handleCentralClick}
       >
         <div className="z-10 absolute top-0 right-0 h-full w-8 md:w-[15%] lg:w-[20%] xl:w-[25%] bg-gradient-to-r from-transparent to-zinc-100 pointer-events-none"></div>
         {!timerDisabled && (
