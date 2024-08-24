@@ -3,15 +3,15 @@ import { GiMeditation } from "react-icons/gi";
 import { FaLaptopCode } from "react-icons/fa";
 import { SiBuymeacoffee } from "react-icons/si";
 import { IoRocket } from "react-icons/io5";
-import "./styles/fancy-menu.css";
+import "./styles/header-menu.css";
 
-const FancyMenu = ({ableToBegRef, isOpen, closePopup}) => {
+const HeaderMenu = ({ ableToBegRef, isOpen, closePopup }) => {
   const [peekingCoffee, setPeekingCoffee] = useState(false);
   const menuRef = useRef(null);
 
   useEffect(() => {
     setTimeout(() => {
-      if(ableToBegRef.current === true) {
+      if (ableToBegRef.current === true) {
         peekBuyMeACoffee();
       } else {
         const intervalId = setInterval(() => {
@@ -72,7 +72,9 @@ const FancyMenu = ({ableToBegRef, isOpen, closePopup}) => {
         <div className="flex justify-center items-center w-20 h-20 bg-gradient-to-r from-zinc-100 to-emerald-200 ring-zinc-600 ring-2 rounded-full shadow-2xl">
           <div className="flex justify-center items-center w-16 h-16 bg-gradient-to-r from-emerald-200 to-zinc-100 rounded-full">
             <div className="flex justify-center items-center w-12 h-12 bg-gradient-to-r from-zinc-100 to-emerald-200 rounded-full">
-              <SiBuymeacoffee className={`text-zinc-600 w-8 h-8 ${peekingCoffee && !isOpen ? " animate-peek-rotation" : ""}`} />
+              <SiBuymeacoffee
+                className={`text-zinc-600 w-8 h-8 ${peekingCoffee && !isOpen ? " animate-peek-rotation" : ""}`}
+              />
             </div>
           </div>
         </div>
@@ -111,4 +113,4 @@ const FancyMenu = ({ableToBegRef, isOpen, closePopup}) => {
   );
 };
 
-export default FancyMenu;
+export default HeaderMenu;

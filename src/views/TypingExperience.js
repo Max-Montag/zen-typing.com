@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
+import { Helmet } from "react-helmet";
 import Howler from "react-howler";
 import { Howl } from "howler";
 import { IoSettingsSharp, IoSettingsOutline } from "react-icons/io5";
@@ -6,7 +7,7 @@ import "./styles/bubble.css";
 import "./styles/typing.css";
 import ResultsCard from "./ResultsCard";
 import SettingsPanel from "./settings/SettingsPanel";
-import FancyMenu from "./FancyMenu";
+import HeaderMenu from "./HeaderMenu";
 import { SettingsContext } from "./settings/SettingsContext";
 
 const SLIDINGWINDOWSIZE = 40;
@@ -58,7 +59,8 @@ const TypingExperience = () => {
   }, [upcomingText, typedText, timerActive]);
 
   useEffect(() => {
-    ableToBegRef.current = (!timerActive && !SettingsPanelOpen && !resultsCardOpen && !menuOpen);
+    ableToBegRef.current =
+      !timerActive && !SettingsPanelOpen && !resultsCardOpen && !menuOpen;
   }, [timerActive, SettingsPanelOpen, resultsCardOpen, menuOpen]);
 
   useEffect(() => {
@@ -225,7 +227,6 @@ const TypingExperience = () => {
     setUpcomingText(newSentence() + " " + newSentence());
     setTimeLeft(timerValue);
     handleCentralClick();
-
   };
 
   const wrapUpSession = () => {
@@ -296,13 +297,19 @@ const TypingExperience = () => {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-50 pt-48 -mt-16 typing-container hover:cursor-pointer"         onClick={handleCentralClick}
-    ref={centerRef}>
+    <div
+      className="min-h-screen bg-zinc-50 pt-48 -mt-16 typing-container hover:cursor-pointer"
+      onClick={handleCentralClick}
+      ref={centerRef}
+    >
+      <Helmet>
+        <title>Zen Typing Experience</title>
+      </Helmet>
       <div
-        className={`fixed top-3 lg:top-6 left-3 lg:left-6 ${timerActive && !menuOpen? "opacity-20" : ""}`}
+        className={`fixed top-3 lg:top-6 left-3 lg:left-6 ${timerActive && !menuOpen ? "opacity-20" : ""}`}
         onClick={() => setMenuOpen(!menuOpen)}
       >
-        <FancyMenu
+        <HeaderMenu
           ableToBegRef={ableToBegRef}
           isOpen={menuOpen}
           closePopup={closeMenu}
@@ -323,7 +330,8 @@ const TypingExperience = () => {
         </button>
       </div>
       <div
-        className="bg-zinc-100 shadow-inner-lg flex flex-col gap-12 sm:gap-16 md:gap-32 py-16 " onClick={handleCentralClick}
+        className="bg-zinc-100 shadow-inner-lg flex flex-col gap-12 sm:gap-16 md:gap-32 py-16 "
+        onClick={handleCentralClick}
       >
         <div className="z-10 absolute top-0 right-0 h-full w-8 md:w-[15%] lg:w-[20%] xl:w-[25%] bg-gradient-to-r from-transparent to-zinc-100 pointer-events-none"></div>
         {!timerDisabled && (
