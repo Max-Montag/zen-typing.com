@@ -3,23 +3,16 @@ import { Helmet } from "react-helmet";
 import Howler from "react-howler";
 import { Howl } from "howler";
 import { IoSettingsSharp, IoSettingsOutline } from "react-icons/io5";
-import "./styles/bubble.css";
-import "./styles/typing.css";
 import ResultsCard from "./ResultsCard";
 import SettingsPanel from "./settings/SettingsPanel";
 import HeaderMenu from "./components/HeaderMenu";
 import { SettingsContext } from "./settings/SettingsContext";
+import { penultimateIndexOf } from "./../utils/utility";
+import "./styles/typing.css";
 
 const SLIDINGWINDOWSIZE = 40;
 const BUFFERSIZE = 20;
 const BUBBLEDISTANCE = 1500;
-
-function penultimateIndexOf(str, char) {
-  let lastIndex = str.lastIndexOf(char);
-  if (lastIndex === -1) return -1;
-  let penultimateIndex = str.lastIndexOf(char, lastIndex - 1);
-  return penultimateIndex;
-}
 
 // TODO: errors are not counted correctly!!
 

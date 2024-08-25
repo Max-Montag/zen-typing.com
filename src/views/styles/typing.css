@@ -1,8 +1,16 @@
-.text-focus-in {
-  -webkit-animation: text-focus-in 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53)
-    both alternate;
-  animation: text-focus-in 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53) both
-    alternate;
+.typing-container {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100vw;
+}
+
+.moving-bubble {
+  animation-timing-function: linear;
+}
+
+.shadow-inner-lg {
+  box-shadow: inset 4px 2px 4px 4px rgb(0 0 0 / 0.05);
 }
 
 .scale-up-br {
@@ -39,15 +47,11 @@
   }
 }
 
-.typing-container {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100vw;
-}
-
-.shadow-inner-lg {
-  box-shadow: inset 4px 2px 4px 4px rgb(0 0 0 / 0.05);
+.text-focus-in {
+  -webkit-animation: text-focus-in 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53)
+    both alternate;
+  animation: text-focus-in 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53) both
+    alternate;
 }
 
 @-webkit-keyframes text-focus-in {
@@ -72,5 +76,37 @@
     -webkit-filter: blur(0px);
     filter: blur(0px);
     opacity: 1;
+  }
+}
+
+@-webkit-keyframes moveBubble {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0.1;
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.2;
+    filter: blur(10px);
+    transform: translate(var(--randomX), var(--randomY)) scale(0.1)
+      rotate(var(--randomRotate));
+  }
+}
+
+@keyframes moveBubble {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0.1;
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.2;
+    filter: blur(10px);
+    transform: translate(var(--randomX), var(--randomY)) scale(0.1)
+      rotate(var(--randomRotate));
   }
 }

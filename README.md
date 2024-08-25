@@ -1,70 +1,34 @@
-# Getting Started with Create React App
+# Zen-Typing
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Zen-Typing ist eine einzigartige Web-App, die das Erlebnis des Tippens in eine meditative Erfahrung verwandelt. Verbessere deine Tippgeschwindigkeit und -genauigkeit in einer ruhigen, werbefreien Umgebung.
 
-## Available Scripts
+## 🌟 Funktionen
 
-In the project directory, you can run:
+- **Flexible Zeitoptionen**: Von 30 Sekunden bis zu 1 Stunde oder ohne Timer tippen.
+- **Harmonische Klanglandschaft**: Jede korrekt getippte Silbe wird mit einem Handpan-Klang in D-Moll belohnt.
+- **Fokussiertes Design**: Minimalistische Oberfläche für maximale Konzentration.
+- **Beruhigende Hintergrundgeräusche**: Optional Regen oder weißes Rauschen zur Förderung der Konzentration.
+- **Werbefrei**: Eine ungestörte Tipp-Erfahrung ohne Ablenkungen.
 
-### `npm start`
+## 🛠️ Technologien
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- [React](https://reactjs.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Jest](https://jestjs.io/) für Tests
+- [Prettier](https://prettier.io/) für Code-Formatierung
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🤝 Beitragen
 
-### `npm test`
+Beiträge sind willkommen! Wenn du eine Idee für eine Verbesserung hast oder einen Fehler findest, erstelle bitte ein Issue oder einen Pull Request.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. Forke das Projekt
+2. Erstelle einen Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Committe deine Änderungen (`git commit -m 'Add some AmazingFeature'`)
+4. Pushe zu dem Branch (`git push origin feature/AmazingFeature`)
+5. Öffne einen Pull Request
 
-### `npm run build`
+## 🙏 Unterstützung
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Wenn du Zen-Typing nützlich findest und das Projekt unterstützen möchtest, kannst du mir gerne einen Kaffee spendieren:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+[![Buy Me A Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://buymeacoffee.com/maxmontag1j)
