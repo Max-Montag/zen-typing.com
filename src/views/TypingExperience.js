@@ -7,7 +7,7 @@ import "./styles/bubble.css";
 import "./styles/typing.css";
 import ResultsCard from "./ResultsCard";
 import SettingsPanel from "./settings/SettingsPanel";
-import HeaderMenu from "./HeaderMenu";
+import HeaderMenu from "./components/HeaderMenu";
 import { SettingsContext } from "./settings/SettingsContext";
 
 const SLIDINGWINDOWSIZE = 40;
@@ -118,7 +118,12 @@ const TypingExperience = () => {
   };
 
   const handleCentralClick = (event) => {
-    if (inputRef.current && (!event || event.target === centerRef.current || event.target === centerRef2.current)) {
+    if (
+      inputRef.current &&
+      (!event ||
+        event.target === centerRef.current ||
+        event.target === centerRef2.current)
+    ) {
       inputRef.current.focus();
     }
   };
