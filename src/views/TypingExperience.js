@@ -319,7 +319,7 @@ const TypingExperience = () => {
             </h1>
           </div>
         )}
-        <div className="flex flex-row items-center ml-4 md:ml-[5%] lg:ml/[10%] xl:ml/[15%]">
+        <div className="flex flex-row items-center ml-4 md:ml-[5%] lg:ml-[10%] xl:ml-[15%]">
           <div className="flex flex-row items-center justify-start">
             <div>
               <div className="absolute">{Object.values(wordBubbles)}</div>
