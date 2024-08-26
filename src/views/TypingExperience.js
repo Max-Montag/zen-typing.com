@@ -45,6 +45,7 @@ const TypingExperience = () => {
   const inputRef = useRef(null);
   const centerRef = useRef(null);
   const centerRef2 = useRef(null);
+  const centerRef3 = useRef(null);
 
   // TODO: The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. <URL>
 
@@ -115,7 +116,8 @@ const TypingExperience = () => {
       inputRef.current &&
       (!event ||
         event.target === centerRef.current ||
-        event.target === centerRef2.current)
+        event.target === centerRef2.current ||
+        event.target === centerRef3.current)
     ) {
       inputRef.current.focus();
     }
@@ -320,7 +322,7 @@ const TypingExperience = () => {
           </div>
         )}
         <div className="flex flex-row items-center ml-4 md:ml-[5%] lg:ml-[10%] xl:ml-[15%]">
-          <div className="flex flex-row items-center justify-start">
+          <div className="flex flex-row items-center justify-start" onClick={handleCentralClick} ref={centerRef3}>
             <div>
               <div className="absolute">{Object.values(wordBubbles)}</div>
               <span className="text-2xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl text-gray-600">
