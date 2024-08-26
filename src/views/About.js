@@ -90,8 +90,8 @@ const AboutPage = () => {
                 </h3>
                 <p>
                   Sobald du zu tippen beginnst, treten alle anderen Elemente der
-                  Seite in den Hintergrund. Dieses Design ermöglicht
-                  es dir, dich vollständig auf deine Worte zu konzentrieren.
+                  Seite in den Hintergrund. Dieses Design ermöglicht es dir,
+                  dich vollständig auf deine Worte zu konzentrieren.
                 </p>
               </div>
             </li>
