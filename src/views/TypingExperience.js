@@ -14,8 +14,6 @@ const SLIDINGWINDOWSIZE = 40;
 const BUFFERSIZE = 20;
 const BUBBLEDISTANCE = 1500;
 
-// TODO: errors are not counted correctly!!
-
 const TypingExperience = () => {
   const {
     timerValue,
@@ -25,6 +23,7 @@ const TypingExperience = () => {
     timerDisabled,
   } = useContext(SettingsContext);
   const [timerActive, setTimerActive] = useState(false);
+  const [sessionFinnished, setSessionFinnished] = useState(false);
   const [startTime, setStartTime] = useState(0);
   const [typedChars, setTypedChars] = useState(0);
   const [typedWords, setTypedWords] = useState(0);
@@ -60,11 +59,14 @@ const TypingExperience = () => {
     };
   }, []);
 
-  // TODO: The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. <URL>
-
   useEffect(() => {
-    stateRef.current = { upcomingText, typedText, timerActive };
-  }, [upcomingText, typedText, timerActive]);
+    stateRef.current = {
+      upcomingText,
+      typedText,
+      timerActive,
+      sessionFinnished,
+    };
+  }, [upcomingText, typedText, timerActive, sessionFinnished]);
 
   useEffect(() => {
     ableToBegRef.current =
@@ -133,15 +135,10 @@ const TypingExperience = () => {
   };
 
   const proccesChar = (key) => {
-    const { upcomingText, typedText, timerActive } = stateRef.current;
+    const { upcomingText, typedText, timerActive, sessionFinnished } =
+      stateRef.current;
 
-    // TODO this line does not catch typing 1 wrong char in the resultboard an counting it as an error
-    if (
-      timerActive &&
-      Date.now() > startTime + timerValue * 1000 &&
-      !timerDisabled
-    )
-      return;
+    if (sessionFinnished) return;
 
     if (
       upcomingText[0] === key ||
@@ -225,6 +222,7 @@ const TypingExperience = () => {
     setUpcomingText(newSentence() + " " + newSentence());
     setTimeLeft(timerValue);
     focusInput();
+    setSessionFinnished(false);
   };
 
   const wrapUpSession = () => {
@@ -243,6 +241,7 @@ const TypingExperience = () => {
   };
 
   const completeTypingSession = () => {
+    setSessionFinnished(true);
     setTimerActive(false);
     setSettingsPanelOpen(false);
     setResultsCardOpen(true);
