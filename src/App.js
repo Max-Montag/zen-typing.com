@@ -2,9 +2,9 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { SettingsProvider } from "./views/settings/SettingsContext";
 import TypingExperience from "./views/TypingExperience";
-import Footer from "./views/components/Footer";
 import Impressum from "./views/legal/Impressum";
 import About from "./views/About";
+import "./App.css";
 
 function App() {
   return (

@@ -1,24 +1,15 @@
 import React, { useEffect, useContext, useRef } from "react";
 import { LiaTimesSolid } from "react-icons/lia";
 import { IoVolumeMediumOutline, IoVolumeMuteOutline } from "react-icons/io5";
+import { useTranslation } from "react-i18next";
 import NiceToggle from "./components/NiceToggle";
 import { SettingsContext } from "./SettingsContext";
 import "./../styles/range-input.css";
 
-const timerMappings = {
-  30: "30 Sekunden",
-  60: "1 Minute",
-  120: "2 Minuten",
-  180: "3 Minuten",
-  300: "5 Minuten",
-  600: "10 Minuten",
-  900: "15 Minuten",
-  1200: "20 Minuten",
-  1800: "30 Minuten",
-  3600: "1 Stunde",
-};
+const timerValues = [30, 60, 120, 180, 300, 600, 900, 1200, 1800, 3600];
 
 const SettingsPanel = ({ isOpen, closePopup }) => {
+  const { t } = useTranslation();
   const {
     timerValue,
     timerDisabled,
@@ -110,7 +101,7 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
                   onClick={handleBgMute}
                 />
               )}{" "}
-              Hintergrundgeräusche
+              {t("settingsPanel.bgMusic")}
             </label>
             <input
               type="range"
@@ -135,7 +126,7 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
                   onClick={handleFxMute}
                 />
               )}{" "}
-              Tastenklänge
+              {t("settingsPanel.keySounds")}
             </label>
             <input
               type="range"
@@ -151,7 +142,7 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
           </div>
           <div className="flex flex-row justify-between gap-6">
             <label className="w-2/3 max-w-2/3 truncate text-xl font-semibold text-emerald-700 ">
-              Hintergrundgeräusche
+              {t("settingsPanel.bgSound")}
             </label>
             <select
               value={selectedBgSound}
@@ -167,7 +158,7 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
           </div>
           <div className="flex flex-row justify-between gap-6">
             <label className="w-2/3 max-w-2/3 truncate text-xl font-semibold text-emerald-700">
-              Wortschatz
+              {t("settingsPanel.vocabulary")}
             </label>
             <select
               value={selectedSentencesFile}
@@ -183,7 +174,7 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
           </div>
           <div className="flex flex-row justify-between gap-6">
             <label className="w-2/3 max-w-2/3 truncate text-xl font-semibold text-emerald-700">
-              Timer
+              {t("settingsPanel.timer")}
             </label>
             <select
               value={timerValue}
@@ -191,16 +182,16 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
               onChange={(e) => setTimerValue(parseInt(e.target.value))}
               className="w-1/3 max-w-1/3 mx-4 bg-emerald-100 text-start rounded-lg p-2"
             >
-              {Object.keys(timerMappings).map((key) => (
-                <option key={key} value={key}>
-                  {timerMappings[key]}
+              {timerValues.map((value) => (
+                <option key={value} value={value}>
+                  {t(`settingsPanel.${value}`)}
                 </option>
               ))}
             </select>
           </div>
           <div className="flex flex-row justify-between">
             <label className="w-2/3 max-w-2/3 truncate text-xl font-semibold text-emerald-700">
-              Timer deaktivieren
+              {t("settingsPanel.disableTimer")}
             </label>
             <div className="w-1/3 max-w-1/3 flex flex-row items-center justify-center">
               <NiceToggle
@@ -214,7 +205,7 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
           onClick={handleClose}
           className="my-8 mx-6 w-3/4 md:w-1/2 px-6 py-2 bg-emerald-700 bg-opacity-40 text-white ring-2 ring-zinc-100 rounded-full shadow-xl hover:bg-emerald-500 hover:bg-opacity-40 transition-colors duration-100 ease-in-out"
         >
-          Schließen
+          {t("settingsPanel.close")}
         </button>
       </div>
     </div>

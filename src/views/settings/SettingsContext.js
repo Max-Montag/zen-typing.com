@@ -1,16 +1,17 @@
 import React, { createContext, useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Howl } from "howler";
 
 export const SettingsContext = createContext();
 
 export const SettingsProvider = ({ children }) => {
+  const { i18n } = useTranslation();
   const [timerValue, setTimerValue] = useState(60);
   const [timerDisabled, setTimerDisabled] = useState(false);
   const [bgMusicVolume, setBgMusicVolume] = useState(0.05);
   const [soundEffectsVolume, setSoundEffectsVolume] = useState(0.5);
-  const [selectedSentencesFile, setSelectedSentencesFile] =
-    useState("Affirmationen.json");
-  const [selectedBgSound, setSelectedBgSound] = useState("Regen.mp3");
+  const [selectedSentencesFile, setSelectedSentencesFile] = useState(null);
+  const [selectedBgSound, setSelectedBgSound] = useState("rain.mp3");
   const [availableBgSounds, setAvailableBgSounds] = useState([]);
   const [availableSentencesFiles, setAvailableSentencesFiles] = useState([]);
   const [sounds, setSounds] = useState([]);
@@ -18,7 +19,11 @@ export const SettingsProvider = ({ children }) => {
 
   useEffect(() => {
     const fetchSentencesFiles = async () => {
-      const context = require.context("../../assets/data", false, /\.json$/);
+      const language = i18n.language;
+      const context =
+        language === "de"
+          ? require.context(`../../assets/data/de`, false, /\.json$/)
+          : require.context(`../../assets/data/en`, false, /\.json$/);
       const files = context.keys().map((file) => file.replace("./", ""));
       setAvailableSentencesFiles(files);
       setSelectedSentencesFile(files[0]);
@@ -43,7 +48,7 @@ export const SettingsProvider = ({ children }) => {
 
     fetchSentencesFiles();
     fetchSounds();
-  }, []);
+  }, [i18n.language]);
 
   useEffect(() => {
     const handleVisibilityChange = () => {

@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef, useContext } from "react";
 import { Helmet } from "react-helmet";
 import Howler from "react-howler";
 import { Howl } from "howler";
+import { useTranslation } from "react-i18next";
 import { IoSettingsSharp, IoSettingsOutline } from "react-icons/io5";
 import ResultsCard from "./ResultsCard";
 import SettingsPanel from "./settings/SettingsPanel";
@@ -16,6 +17,7 @@ const BUFFERSIZE = 20;
 const BUBBLEDISTANCE = 1500;
 
 const TypingExperience = () => {
+  const { i18n } = useTranslation();
   const {
     timerValue,
     selectedSentencesFile,
@@ -91,11 +93,16 @@ const TypingExperience = () => {
 
   useEffect(() => {
     setUpcomingText(newSentence() + " " + newSentence());
-  }, []);
+  }, [selectedSentencesFile]);
 
   const newSentence = () => {
-    const sentencesData = require(`../assets/data/${selectedSentencesFile}`);
-    return sentencesData[Math.floor(Math.random() * sentencesData.length)];
+    if (selectedSentencesFile) {
+      const language = i18n.language;
+      const sentencesData = require(
+        `../assets/data/${language}/${selectedSentencesFile}`,
+      );
+      return sentencesData[Math.floor(Math.random() * sentencesData.length)];
+    }
   };
 
   const chooseRandomSound = () => {
