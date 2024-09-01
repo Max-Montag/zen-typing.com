@@ -8,27 +8,35 @@ export const SettingsProvider = ({ children }) => {
   const [timerDisabled, setTimerDisabled] = useState(false);
   const [bgMusicVolume, setBgMusicVolume] = useState(0.05);
   const [soundEffectsVolume, setSoundEffectsVolume] = useState(0.5);
-  const [selectedSentencesFile, setSelectedSentencesFile] = useState("Affirmationen.json");
+  const [selectedSentencesFile, setSelectedSentencesFile] =
+    useState("Affirmationen.json");
   const [selectedBgSound, setSelectedBgSound] = useState("Regen.mp3");
   const [availableBgSounds, setAvailableBgSounds] = useState([]);
   const [availableSentencesFiles, setAvailableSentencesFiles] = useState([]);
   const [sounds, setSounds] = useState([]);
   const [bgSoundHowl, setBgSoundHowl] = useState(null);
 
-
   useEffect(() => {
     const fetchSentencesFiles = async () => {
       const context = require.context("../../assets/data", false, /\.json$/);
-      const files = context.keys().map(file => file.replace("./", ""));
+      const files = context.keys().map((file) => file.replace("./", ""));
       setAvailableSentencesFiles(files);
       setSelectedSentencesFile(files[0]);
     };
 
     const fetchSounds = async () => {
-      const contextFx = require.context("../../assets/sounds/fx", false, /\.(mp3|wav)$/);
-      const contextBg = require.context("../../assets/sounds/bg", false, /\.(mp3|wav)$/);
-      const fxFiles = contextFx.keys().map(file => contextFx(file));
-      const bgFiles = contextBg.keys().map(file => file.replace("./", ""));
+      const contextFx = require.context(
+        "../../assets/sounds/fx",
+        false,
+        /\.(mp3|wav)$/,
+      );
+      const contextBg = require.context(
+        "../../assets/sounds/bg",
+        false,
+        /\.(mp3|wav)$/,
+      );
+      const fxFiles = contextFx.keys().map((file) => contextFx(file));
+      const bgFiles = contextBg.keys().map((file) => file.replace("./", ""));
       setSounds(fxFiles);
       setAvailableBgSounds(bgFiles);
     };
@@ -41,12 +49,10 @@ export const SettingsProvider = ({ children }) => {
     const handleVisibilityChange = () => {
       if (document.visibilityState === "hidden") {
         if (bgSoundHowl) {
-          bgSoundHowl.volume(0);
           bgSoundHowl.stop();
         }
       } else {
         if (bgSoundHowl) {
-          bgSoundHowl.volume(bgMusicVolume);
           bgSoundHowl.play();
         }
       }
@@ -60,8 +66,13 @@ export const SettingsProvider = ({ children }) => {
         bgSoundHowl.stop();
       }
     };
-  }, [bgSoundHowl, bgMusicVolume]); 
+  }, [bgSoundHowl]);
 
+  useEffect(() => {
+    if (bgSoundHowl) {
+      bgSoundHowl.volume(bgMusicVolume);
+    }
+  }, [bgSoundHowl, bgMusicVolume]);
 
   useEffect(() => {
     if (bgSoundHowl) {
@@ -78,7 +89,7 @@ export const SettingsProvider = ({ children }) => {
     bgSound.play();
 
     return () => bgSound.stop();
-  }, [selectedBgSound, bgMusicVolume]);
+  }, [selectedBgSound]);
 
   return (
     <SettingsContext.Provider
