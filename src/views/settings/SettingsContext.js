@@ -17,6 +17,19 @@ export const SettingsProvider = ({ children }) => {
   const [sounds, setSounds] = useState([]);
   const [bgSoundHowl, setBgSoundHowl] = useState(null);
 
+  const soundVolumeMapping = {
+    "rain.mp3": 1,
+    "white_noise.mp3": 2,
+  };
+
+  const createBgSound = () => {
+    return new Howl({
+      src: require(`../../assets/sounds/bg/${selectedBgSound}`),
+      loop: true,
+      volume: bgMusicVolume * (soundVolumeMapping[selectedBgSound] || 1),
+    });
+  };
+
   useEffect(() => {
     const fetchSentencesFiles = async () => {
       const language = i18n.language;
@@ -75,24 +88,19 @@ export const SettingsProvider = ({ children }) => {
 
   useEffect(() => {
     if (bgSoundHowl) {
-      bgSoundHowl.volume(bgMusicVolume);
+      const specificVolume = soundVolumeMapping[selectedBgSound] || 1;
+      bgSoundHowl.volume(bgMusicVolume * specificVolume);
     }
-  }, [bgSoundHowl, bgMusicVolume]);
+  }, [bgSoundHowl, bgMusicVolume, selectedBgSound]);
 
   useEffect(() => {
     if (bgSoundHowl) {
       bgSoundHowl.stop();
     }
 
-    const bgSound = new Howl({
-      src: require(`../../assets/sounds/bg/${selectedBgSound}`),
-      loop: true,
-      volume: bgMusicVolume,
-    });
-
+    const bgSound = createBgSound();
     setBgSoundHowl(bgSound);
     bgSound.play();
-
     return () => bgSound.stop();
   }, [selectedBgSound]);
 

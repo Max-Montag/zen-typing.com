@@ -27,6 +27,10 @@
     "1800": "30 Minuten",
     "3600": "1 Stunde"
   },
+  "bgSounds": {
+    "rain": "Regen",
+    "white_noise": "Weißes Rauschen"
+  },
   "aboutPage": {
     "title": "Über zen-typing.com",
     "welcome": "Willkommen bei Zen-Typing.com",
