@@ -1,5 +1,6 @@
-[![logo](public/favicon.ico)](https://zen-typing.com) ## Zen-Typing
+## Zen-Typing
 
+[![logo](public/favicon.ico)](https://zen-typing.com) 
 Zen-Typing ist eine einzigartige Web-App, die das Erlebnis des Tippens in eine meditative Erfahrung verwandelt. Verbessere deine Tippgeschwindigkeit und -genauigkeit in einer ruhigen, werbefreien Umgebung.
 
 ## 🌟 Funktionen
