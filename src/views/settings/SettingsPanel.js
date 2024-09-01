@@ -4,6 +4,7 @@ import { IoVolumeMediumOutline, IoVolumeMuteOutline } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
 import NiceToggle from "./components/NiceToggle";
 import { SettingsContext } from "./SettingsContext";
+import i18n from "./../../i18n";
 import "./../styles/range-input.css";
 
 const timerValues = [30, 60, 120, 180, 300, 600, 900, 1200, 1800, 3600];
@@ -73,6 +74,10 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
     };
   }, []);
 
+  const handleLanguageChange = (e) => {
+    i18n.changeLanguage(e.target.value);
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -88,6 +93,21 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
           <LiaTimesSolid className="w-5 h-5" />
         </button>
         <div className="w-full flex flex-col gap-8 mt-10 px-4 md:px-6">
+          {/* Sprachauswahl hinzufügen */}
+          <div className="flex flex-row justify-between gap-6">
+            <label className="w-2/3 max-w-2/3 truncate text-xl font-semibold text-emerald-700">
+              {t('settingsPanel.language')}
+            </label>
+            <select
+              value={i18n.language}
+              onChange={handleLanguageChange}
+              className="w-1/3 max-w-1/3 mx-4 bg-emerald-100 text-start rounded-lg p-2"
+            >
+              <option value="en">English</option>
+              <option value="de">Deutsch</option>
+            </select>
+          </div>
+          {/* Weitere Einstellungsoptionen */}
           <div className="flex flex-row justify-between">
             <label className="w-2/3 max-w-2/3 text-xl truncate font-semibold text-emerald-700">
               {bgMusicVolume === 0 ? (
@@ -101,7 +121,7 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
                   onClick={handleBgMute}
                 />
               )}{" "}
-              {t("settingsPanel.bgMusic")}
+              {t('settingsPanel.bgMusic')}
             </label>
             <input
               type="range"
@@ -126,7 +146,7 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
                   onClick={handleFxMute}
                 />
               )}{" "}
-              {t("settingsPanel.keySounds")}
+              {t('settingsPanel.keySounds')}
             </label>
             <input
               type="range"
@@ -142,7 +162,7 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
           </div>
           <div className="flex flex-row justify-between gap-6">
             <label className="w-2/3 max-w-2/3 truncate text-xl font-semibold text-emerald-700 ">
-              {t("settingsPanel.bgSound")}
+              {t('settingsPanel.bgSound')}
             </label>
             <select
               value={selectedBgSound}
@@ -158,7 +178,7 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
           </div>
           <div className="flex flex-row justify-between gap-6">
             <label className="w-2/3 max-w-2/3 truncate text-xl font-semibold text-emerald-700">
-              {t("settingsPanel.vocabulary")}
+              {t('settingsPanel.vocabulary')}
             </label>
             <select
               value={selectedSentencesFile}
@@ -174,7 +194,7 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
           </div>
           <div className="flex flex-row justify-between gap-6">
             <label className="w-2/3 max-w-2/3 truncate text-xl font-semibold text-emerald-700">
-              {t("settingsPanel.timer")}
+              {t('settingsPanel.timer')}
             </label>
             <select
               value={timerValue}
@@ -191,7 +211,7 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
           </div>
           <div className="flex flex-row justify-between">
             <label className="w-2/3 max-w-2/3 truncate text-xl font-semibold text-emerald-700">
-              {t("settingsPanel.disableTimer")}
+              {t('settingsPanel.disableTimer')}
             </label>
             <div className="w-1/3 max-w-1/3 flex flex-row items-center justify-center">
               <NiceToggle
@@ -205,7 +225,7 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
           onClick={handleClose}
           className="my-8 mx-6 w-3/4 md:w-1/2 px-6 py-2 bg-emerald-700 bg-opacity-40 text-white ring-2 ring-zinc-100 rounded-full shadow-xl hover:bg-emerald-500 hover:bg-opacity-40 transition-colors duration-100 ease-in-out"
         >
-          {t("settingsPanel.close")}
+          {t('settingsPanel.close')}
         </button>
       </div>
     </div>

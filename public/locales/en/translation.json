@@ -8,6 +8,7 @@
     "close": "Close"
   },
   "settingsPanel": {
+    "language": "Language",
     "bgMusic": "Background Sounds",
     "keySounds": "Key Sounds",
     "bgSound": "Background Sound",
