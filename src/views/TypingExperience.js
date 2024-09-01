@@ -40,12 +40,25 @@ const TypingExperience = () => {
   const [SettingsPanelOpen, setSettingsPanelOpen] = useState(false);
   const [lastPlayedSound, setLastPlayedSound] = useState(null);
   const [upcomingText, setUpcomingText] = useState("");
+  const containerRef = useRef(null);
   const stateRef = useRef({ upcomingText, typedText, timerActive });
   const ableToBegRef = useRef(false);
   const inputRef = useRef(null);
-  const centerRef = useRef(null);
-  const centerRef2 = useRef(null);
-  const centerRef3 = useRef(null);
+
+  useEffect(() => {
+    const handleClick = (event) => {
+      if (!containerRef.current) return;
+      if (!containerRef.current.contains(event.target)) return;
+      if (inputRef.current && event.target !== inputRef.current) {
+        inputRef.current.focus();
+      }
+    };
+
+    document.addEventListener("click", handleClick);
+    return () => {
+      document.removeEventListener("click", handleClick);
+    };
+  }, []);
 
   // TODO: The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. <URL>
 
@@ -111,16 +124,8 @@ const TypingExperience = () => {
     abortTypingSession();
   };
 
-  const handleCentralClick = (event) => {
-    if (
-      inputRef.current &&
-      (!event ||
-        event.target === centerRef.current ||
-        event.target === centerRef2.current ||
-        event.target === centerRef3.current)
-    ) {
-      inputRef.current.focus();
-    }
+  const focusInput = () => {
+    if (inputRef.current) inputRef.current.focus();
   };
 
   const handleInputChange = (event) => {
@@ -219,7 +224,7 @@ const TypingExperience = () => {
   const prepareNextSession = () => {
     setUpcomingText(newSentence() + " " + newSentence());
     setTimeLeft(timerValue);
-    handleCentralClick(null);
+    focusInput();
   };
 
   const wrapUpSession = () => {
@@ -290,105 +295,102 @@ const TypingExperience = () => {
   };
 
   return (
-    <div
-      className={`min-h-screen bg-zinc-50 typing-container hover:cursor-pointer ${timerDisabled ? "pt-56" : "pt-32"}`}
-      onClick={handleCentralClick}
-      ref={centerRef}
-    >
-      <Helmet>
-        <title>Zen Typing Experience</title>
-      </Helmet>
+    <>
       <div
-        className={`fixed top-3 lg:top-6 left-3 lg:left-6 ${timerActive && !menuOpen ? "opacity-20" : ""}`}
-        onClick={() => setMenuOpen(!menuOpen)}
+        className={`min-h-screen bg-zinc-50 typing-container hover:cursor-pointer ${timerDisabled ? "pt-56" : "pt-32"}`}
+        ref={containerRef}
       >
-        <HeaderMenu
-          ableToBegRef={ableToBegRef}
-          isOpen={menuOpen}
-          closePopup={closeMenu}
-        />
-      </div>
-      <div
-        className="bg-zinc-100 shadow-inner-lg flex flex-col gap-12 sm:gap-16 md:gap-32 py-16 "
-        onClick={handleCentralClick}
-        ref={centerRef2}
-      >
-        <div className="z-10 absolute top-0 right-0 h-full w-8 md:w-[15%] lg:w-[20%] xl:w-[25%] bg-gradient-to-r from-transparent to-zinc-100 pointer-events-none"></div>
-        {!timerDisabled && (
-          <div className="flex flex-row justify-center">
-            <h1 className="text-center text-8xl font-semibold text-zinc-500">
-              {Math.max(timeLeft, 0).toFixed(0)} s
-            </h1>
-          </div>
-        )}
-        <div className="flex flex-row items-center ml-4 md:ml-[5%] lg:ml-[10%] xl:ml-[15%]">
-          <div className="flex flex-row items-center justify-start" onClick={handleCentralClick} ref={centerRef3}>
-            <div>
-              <div className="absolute">{Object.values(wordBubbles)}</div>
-              <span className="text-2xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl text-gray-600">
-                {typedText}
-              </span>
-              <input
-                ref={inputRef}
-                type="text"
-                onChange={handleInputChange}
-                className="w-0.5 max-w-0.5 h-0.5 max-h-0.5 text-zinc-50 bg-zinc-50 text-sm focus:outline-none hover:cursor-default"
-                autoFocus
-              />
-              {upcomingText.replace(/\$/g, "").length > 0 && (
-                <span className="my-0 rounded-lg ring ring-emerald-300 p-1 m-1 text-3xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold text-emerald-300">
-                  {upcomingText.replace(/\$/g, "").charAt(0) === " "
-                    ? "•"
-                    : upcomingText.replace(/\$/g, "").charAt(0)}
+        <Helmet>
+          <title>Zen Typing Experience</title>
+        </Helmet>
+        <div
+          className={`fixed top-3 lg:top-6 left-3 lg:left-6 ${timerActive && !menuOpen ? "opacity-20" : ""}`}
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          <HeaderMenu
+            ableToBegRef={ableToBegRef}
+            isOpen={menuOpen}
+            closePopup={closeMenu}
+          />
+        </div>
+        <div className="bg-zinc-100 shadow-inner-lg flex flex-col gap-12 sm:gap-16 md:gap-32 py-16">
+          <div className="z-10 absolute top-0 right-0 h-full w-8 md:w-[15%] lg:w-[20%] xl:w-[25%] bg-gradient-to-r from-transparent to-zinc-100 pointer-events-none"></div>
+          {!timerDisabled && (
+            <div className="flex flex-row justify-center">
+              <h1 className="text-center text-8xl font-semibold text-zinc-500">
+                {Math.max(timeLeft, 0).toFixed(0)} s
+              </h1>
+            </div>
+          )}
+          <div className="flex flex-row items-center ml-4 md:ml-[5%] lg:ml-[10%] xl:ml-[15%]">
+            <div className="flex flex-row items-center justify-start">
+              <div>
+                <div className="absolute">{Object.values(wordBubbles)}</div>
+                <span className="text-2xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl text-gray-600">
+                  {typedText}
                 </span>
-              )}
-              <span className="text-2xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl text-gray-500">
-                {upcomingText.replace(/\$/g, "").length > SLIDINGWINDOWSIZE
-                  ? upcomingText
-                      .replace(/\$/g, "")
-                      .slice(0, SLIDINGWINDOWSIZE)
-                      .slice(
-                        1,
-                        penultimateIndexOf(
-                          upcomingText
-                            .replace(/\$/g, "")
-                            .slice(0, SLIDINGWINDOWSIZE),
-                          " ",
-                        ) === -1
-                          ? upcomingText
+                <input
+                  ref={inputRef}
+                  type="text"
+                  onChange={handleInputChange}
+                  className="w-0.5 max-w-0.5 h-0.5 max-h-0.5 text-zinc-50 bg-zinc-50 text-sm focus:outline-none hover:cursor-default"
+                  autoFocus
+                />
+                {upcomingText.replace(/\$/g, "").length > 0 && (
+                  <span className="my-0 rounded-lg ring ring-emerald-300 p-1 m-1 text-3xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold text-emerald-300">
+                    {upcomingText.replace(/\$/g, "").charAt(0) === " "
+                      ? "•"
+                      : upcomingText.replace(/\$/g, "").charAt(0)}
+                  </span>
+                )}
+                <span className="text-2xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl text-gray-500">
+                  {upcomingText.replace(/\$/g, "").length > SLIDINGWINDOWSIZE
+                    ? upcomingText
+                        .replace(/\$/g, "")
+                        .slice(0, SLIDINGWINDOWSIZE)
+                        .slice(
+                          1,
+                          penultimateIndexOf(
+                            upcomingText
                               .replace(/\$/g, "")
-                              .slice(0, SLIDINGWINDOWSIZE).length
-                          : penultimateIndexOf(
-                              upcomingText
+                              .slice(0, SLIDINGWINDOWSIZE),
+                            " ",
+                          ) === -1
+                            ? upcomingText
                                 .replace(/\$/g, "")
-                                .slice(0, SLIDINGWINDOWSIZE),
-                              " ",
-                            ),
-                      ) + " "
-                  : upcomingText
-                      .replace(/\$/g, "")
-                      .slice(0, SLIDINGWINDOWSIZE)
-                      .slice(1)}
-              </span>
-              {upcomingText.replace(/\$/g, "").length > SLIDINGWINDOWSIZE &&
-                lastWordElem}
+                                .slice(0, SLIDINGWINDOWSIZE).length
+                            : penultimateIndexOf(
+                                upcomingText
+                                  .replace(/\$/g, "")
+                                  .slice(0, SLIDINGWINDOWSIZE),
+                                " ",
+                              ),
+                        ) + " "
+                    : upcomingText
+                        .replace(/\$/g, "")
+                        .slice(0, SLIDINGWINDOWSIZE)
+                        .slice(1)}
+                </span>
+                {upcomingText.replace(/\$/g, "").length > SLIDINGWINDOWSIZE &&
+                  lastWordElem}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className="fixed bottom-3 right-4">
-        <button
-          className="text-zinc-600 lg:text-zinc-800 hover:text-zinc-400 transition-colors duration-300 ease-in-out"
-          onClick={handleSettingsClick}
-        >
-          {SettingsPanelOpen ? (
-            <IoSettingsOutline className="w-16 h-16 md:w-24 md:h-24 animate-spin-slow-reverse" />
-          ) : (
-            <IoSettingsSharp
-              className={`w-16 h-16 md:w-24 md:h-24 animate-finish-spin ${timerActive ? "opacity-20" : ""}`}
-            />
-          )}
-        </button>
+        <div className="fixed bottom-3 right-4">
+          <button
+            className="text-zinc-600 lg:text-zinc-800 hover:text-zinc-400 transition-colors duration-300 ease-in-out"
+            onClick={handleSettingsClick}
+          >
+            {SettingsPanelOpen ? (
+              <IoSettingsOutline className="w-16 h-16 md:w-24 md:h-24 animate-spin-slow-reverse" />
+            ) : (
+              <IoSettingsSharp
+                className={`w-16 h-16 md:w-24 md:h-24 animate-finish-spin ${timerActive ? "opacity-20" : ""}`}
+              />
+            )}
+          </button>
+        </div>
       </div>
       <ResultsCard
         isOpen={resultsCardOpen}
@@ -403,7 +405,7 @@ const TypingExperience = () => {
         isOpen={SettingsPanelOpen}
         closePopup={closeSettingsPanel}
       />
-    </div>
+    </>
   );
 };
 

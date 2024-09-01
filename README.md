@@ -1,5 +1,9 @@
 # Zen-Typing
 
+[![logo](assets/images/logo196.png)](https://zen-typing.com)
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/7b3b3b3b-1b7b-4b1b-8b1b-3b1b7b1b7b1b/deploy-status)](https://app.netlify.com/sites/zen-typing/deploys)
+
 Zen-Typing ist eine einzigartige Web-App, die das Erlebnis des Tippens in eine meditative Erfahrung verwandelt. Verbessere deine Tippgeschwindigkeit und -genauigkeit in einer ruhigen, werbefreien Umgebung.
 
 ## 🌟 Funktionen
