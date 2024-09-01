@@ -20,7 +20,6 @@ function App() {
               <Route path="*" element={<TypingExperience />} />
             </Routes>
           </main>
-          <Footer />
         </div>
       </Router>
     </SettingsProvider>

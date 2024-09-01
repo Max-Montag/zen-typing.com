@@ -8,6 +8,7 @@ import SettingsPanel from "./settings/SettingsPanel";
 import HeaderMenu from "./components/HeaderMenu";
 import { SettingsContext } from "./settings/SettingsContext";
 import { penultimateIndexOf } from "./../utils/utility";
+import Footer from "./components/Footer";
 import "./styles/typing.css";
 
 const SLIDINGWINDOWSIZE = 40;
@@ -404,6 +405,7 @@ const TypingExperience = () => {
         isOpen={SettingsPanelOpen}
         closePopup={closeSettingsPanel}
       />
+      <Footer />
     </>
   );
 };
