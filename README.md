@@ -1,34 +1,34 @@
 ## Zen-Typing
 
-Zen-Typing ist eine einzigartige Web-App, die das Erlebnis des Tippens in eine meditative Erfahrung verwandelt. Verbessere deine Tippgeschwindigkeit und -genauigkeit in einer ruhigen, werbefreien Umgebung.
+Zen-Typing is a unique web app that transforms the typing experience into a meditative practice. Improve your typing speed and accuracy in a calm, ad-free environment.
 
-## 🌟 Funktionen
+## 🌟 Features
 
-- **Flexible Zeitoptionen**: Von 30 Sekunden bis zu 1 Stunde oder ohne Timer tippen.
-- **Harmonische Klanglandschaft**: Jede korrekt getippte Silbe wird mit einem Handpan-Klang in D-Moll belohnt.
-- **Fokussiertes Design**: Minimalistische Oberfläche für maximale Konzentration.
-- **Beruhigende Hintergrundgeräusche**: Optional Regen oder weißes Rauschen zur Förderung der Konzentration.
-- **Werbefrei**: Eine ungestörte Tipp-Erfahrung ohne Ablenkungen.
+- **Flexible Time Options**: Type for anywhere from 30 seconds to 1 hour, or without a timer.
+- **Harmonious Soundscape**: Each correctly typed syllable is rewarded with a handpan sound in D minor.
+- **Focused Design**: Minimalist interface for maximum concentration.
+- **Soothing Background Sounds**: Optional rain or white noise to enhance focus.
+- **Ad-Free**: An uninterrupted typing experience without distractions.
 
-## 🛠️ Technologien
+## 🛠️ Technologies
 
 - [React](https://reactjs.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
-- [Jest](https://jestjs.io/) für Tests
-- [Prettier](https://prettier.io/) für Code-Formatierung
+- [Jest](https://jestjs.io/) for testing
+- [Prettier](https://prettier.io/) for code formatting
 
-## 🤝 Beitragen
+## 🤝 Contributing
 
-Beiträge sind willkommen! Wenn du eine Idee für eine Verbesserung hast oder einen Fehler findest, erstelle bitte ein Issue oder einen Pull Request.
+Contributions are welcome! If you have an idea for an improvement or find a bug, please create an issue or a pull request.
 
-1. Forke das Projekt
-2. Erstelle einen Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Committe deine Änderungen (`git commit -m 'Add some AmazingFeature'`)
-4. Pushe zu dem Branch (`git push origin feature/AmazingFeature`)
-5. Öffne einen Pull Request
+1. Fork the project
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## 🙏 Unterstützung
+## 🙏 Support
 
-Wenn du Zen-Typing nützlich findest und das Projekt unterstützen möchtest, kannst du mir gerne einen Kaffee spendieren:
+If you find Zen-Typing useful and would like to support the project, feel free to buy me a coffee:
 
 [![Buy Me A Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://buymeacoffee.com/maxmontag1j)
