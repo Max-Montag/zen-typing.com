@@ -22,7 +22,7 @@ const AboutPage = () => {
           <IoIosArrowRoundBack className="w-10 h-10 md:w-12 md:h-12" />
         </Link>
       </div>
-      <div className="relative h-screen w-full overflow-y-scroll custom-scrollbar px-16 pb-36">
+      <div className="relative h-screen w-full overflow-y-scroll custom-scrollbar px-4 md:px-16 pb-36">
         <h1 className="text-5xl font-bold mb-8 text-center text-emerald-700">
           Willkommen bei Zen-Typing.com
         </h1>
