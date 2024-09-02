@@ -143,7 +143,7 @@ const AboutPage = () => {
             {t("aboutPage.githubButton")}
           </a>
         </section>
-        <footer className="flex flex-col items-center justify-center">
+        <footer className="flex flex-col items-center justify-center mb-8">
           <Link
             to="/impressum"
             className="text-zinc-800 hover:text-zinc-400 transition-colors ease-in-out duration-200 text-sm"

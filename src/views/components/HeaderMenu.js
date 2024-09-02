@@ -53,10 +53,10 @@ const HeaderMenu = ({ ableToBegRef, isOpen, closePopup }) => {
   return (
     <div
       ref={menuRef}
-      className="z-10 flex justify-center items-center w-16 h-16 bg-gradient-to-r from-zinc-100 to-emerald-200 ring-zinc-300 ring-1 shadow-xl rounded-full"
+      className="z-10 flex justify-center items-center w-16 h-16 bg-gradient-to-r from-zinc-100 to-emerald-200 shadow-xl rounded-full"
     >
       <div
-        className={`flex justify-center items-center w-8 h-8 bg-gradient-to-r from-zinc-100 to-emerald-200 shadow-md rounded-full ${isOpen ? "opacity-50" : "opacity-80"}`}
+        className={`flex justify-center items-center w-8 h-8 bg-gradient-to-r from-zinc-100 to-emerald-200 shadow-inner rounded-full ${isOpen ? "opacity-50" : "opacity-80"}`}
       >
         <IoMenu className="text-zinc-600 w-6 h-6" />
       </div>
@@ -74,8 +74,8 @@ const HeaderMenu = ({ ableToBegRef, isOpen, closePopup }) => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <div className="flex justify-center items-center w-20 h-20 bg-gradient-to-r from-zinc-100 to-emerald-200 ring-zinc-300 ring-1 shadow-xl rounded-full shadow-2xl">
-            <div className="flex justify-center items-center w-12 h-12 bg-gradient-to-r from-zinc-100 to-emerald-200 shadow-md rounded-full">
+          <div className="flex justify-center items-center w-20 h-20 bg-gradient-to-r from-zinc-100 to-emerald-200 shadow-xl rounded-full shadow-2xl">
+            <div className="flex justify-center items-center w-12 h-12 bg-gradient-to-r from-zinc-100 to-emerald-200 shadow-inner rounded-full">
               <SiBuymeacoffee
                 className={`text-zinc-600 w-8 h-8 ${peekingCoffee && !isOpen ? " animate-peek-rotation" : ""}`}
               />
@@ -95,8 +95,8 @@ const HeaderMenu = ({ ableToBegRef, isOpen, closePopup }) => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <div className="flex justify-center items-center w-20 h-20 bg-gradient-to-r from-zinc-100 to-emerald-200 ring-zinc-300 ring-1 shadow-xl rounded-full shadow-2xl">
-            <div className="flex justify-center items-center w-12 h-12 bg-gradient-to-r from-zinc-100 to-emerald-200 shadow-md rounded-full">
+          <div className="flex justify-center items-center w-20 h-20 bg-gradient-to-r from-zinc-100 to-emerald-200 shadow-xl rounded-full shadow-2xl">
+            <div className="flex justify-center items-center w-12 h-12 bg-gradient-to-r from-zinc-100 to-emerald-200 shadow-inner rounded-full">
               <FaLaptopCode className="text-zinc-600 w-8 h-8" />
             </div>
           </div>
@@ -110,8 +110,8 @@ const HeaderMenu = ({ ableToBegRef, isOpen, closePopup }) => {
         }`}
         onClick={handleAboutClick}
       >
-        <div className="flex justify-center items-center w-20 h-20 bg-gradient-to-r from-zinc-100 to-emerald-200 ring-zinc-300 ring-1 shadow-xl rounded-full shadow-2xl">
-          <div className="flex justify-center items-center w-12 h-12 bg-gradient-to-r from-zinc-100 to-emerald-200 shadow-md rounded-full text-xs font-bold">
+        <div className="flex justify-center items-center w-20 h-20 bg-gradient-to-r from-zinc-100 to-emerald-200  shadow-xl rounded-full shadow-2xl">
+          <div className="flex justify-center items-center w-12 h-12 bg-gradient-to-r from-zinc-100 to-emerald-200 shadow-inner rounded-full text-xs font-bold">
             about
           </div>
         </div>
