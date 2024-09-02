@@ -50,20 +50,23 @@ const TypingExperience = () => {
 
   useEffect(() => {
     const handleClick = (event) => {
-      if (!containerRef.current || menuRef.current.contains(event.target) || !containerRef.current.contains(event.target)) {
+      if (
+        !containerRef.current ||
+        menuRef.current.contains(event.target) ||
+        !containerRef.current.contains(event.target)
+      ) {
         return;
       }
       if (inputRef.current && event.target !== inputRef.current) {
         inputRef.current.focus();
       }
     };
-  
+
     document.addEventListener("click", handleClick);
     return () => {
       document.removeEventListener("click", handleClick);
     };
   }, []);
-  
 
   useEffect(() => {
     stateRef.current = {
