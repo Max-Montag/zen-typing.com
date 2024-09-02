@@ -43,24 +43,27 @@ const TypingExperience = () => {
   const [lastPlayedSound, setLastPlayedSound] = useState(null);
   const [upcomingText, setUpcomingText] = useState("");
   const containerRef = useRef(null);
+  const menuRef = useRef(null);
   const stateRef = useRef({ upcomingText, typedText, timerActive });
   const ableToBegRef = useRef(false);
   const inputRef = useRef(null);
 
   useEffect(() => {
     const handleClick = (event) => {
-      if (!containerRef.current) return;
-      if (!containerRef.current.contains(event.target)) return;
+      if (!containerRef.current || menuRef.current.contains(event.target) || !containerRef.current.contains(event.target)) {
+        return;
+      }
       if (inputRef.current && event.target !== inputRef.current) {
         inputRef.current.focus();
       }
     };
-
+  
     document.addEventListener("click", handleClick);
     return () => {
       document.removeEventListener("click", handleClick);
     };
   }, []);
+  
 
   useEffect(() => {
     stateRef.current = {
@@ -313,6 +316,7 @@ const TypingExperience = () => {
         <div
           className={`fixed top-3 lg:top-6 left-3 lg:left-6 ${timerActive && !menuOpen ? "opacity-20" : ""}`}
           onClick={() => setMenuOpen(!menuOpen)}
+          ref={menuRef}
         >
           <HeaderMenu
             ableToBegRef={ableToBegRef}
