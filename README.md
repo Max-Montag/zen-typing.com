@@ -14,7 +14,6 @@ Zen-Typing is a unique web app that transforms the typing experience into a medi
 
 - [React](https://reactjs.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
-- [Jest](https://jestjs.io/) for testing
 - [Prettier](https://prettier.io/) for code formatting
 
 ## 🤝 Contributing
