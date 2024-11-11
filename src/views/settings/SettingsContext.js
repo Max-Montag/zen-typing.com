@@ -8,7 +8,7 @@ export const SettingsProvider = ({ children }) => {
   const { i18n } = useTranslation();
   const [timerValue, setTimerValue] = useState(60);
   const [timerDisabled, setTimerDisabled] = useState(false);
-  const [bgMusicVolume, setBgMusicVolume] = useState(0.05);
+  const [bgMusicVolume, setBgMusicVolume] = useState(0.0);
   const [soundEffectsVolume, setSoundEffectsVolume] = useState(0.5);
   const [selectedSentencesFile, setSelectedSentencesFile] = useState(null);
   const [selectedBgSound, setSelectedBgSound] = useState("rain.mp3");
