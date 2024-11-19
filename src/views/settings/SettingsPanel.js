@@ -60,19 +60,19 @@ const SettingsPanel = ({ isOpen, closePopup }) => {
     setSoundEffectsVolume(soundEffectsVolume === 0 ? 0.5 : 0);
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (settingsRef.current && !settingsRef.current.contains(event.target)) {
-        handleClose();
-        event.preventDefault();
-      }
-    };
+  // useEffect(() => {
+  //   const handleClickOutside = (event) => {
+  //     if (settingsRef.current && !settingsRef.current.contains(event.target)) {
+  //       handleClose();
+  //       event.preventDefault();
+  //     }
+  //   };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  //   document.addEventListener("mousedown", handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //   };
+  // }, []);
 
   const handleLanguageChange = (e) => {
     i18n.changeLanguage(e.target.value);
