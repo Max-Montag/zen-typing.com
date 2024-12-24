@@ -29,9 +29,3 @@ Contributions are welcome! If you have an idea for an improvement or find a bug,
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
-
-## 🙏 Support
-
-If you find Zen-Typing useful and would like to support the project, feel free to buy me a coffee:
-
-[![Buy Me A Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://buymeacoffee.com/maxmontag1j)
